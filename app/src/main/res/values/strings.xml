@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Countries</string>
+
+    <string name="country_name_translations"><![CDATA[<b>Name translations:</b> %1$s]]></string>
+    <string name="country_region"><![CDATA[<b>Region:</b> %1$s]]></string>
+    <string name="country_borders"><![CDATA[<b>Borders:</b> %1$s]]></string>
+    <string name="country_capital"><![CDATA[<b>Capital:</b> %1$s]]></string>
+    <string name="country_population"><![CDATA[<b>Population:</b> %1$s]]></string>
+    <string name="country_languages"><![CDATA[<b>Languages:</b> %1$s]]></string>
+    <string name="country_currencies"><![CDATA[<b>Currencies:</b> %1$s]]></string>
+    <string name="country_location"><![CDATA[<b>Location:</b> %1$s, %2$s]]></string>
+    <string name="snackbar_action_retry">Retry</string>
+    <string name="menu_item_licenses">Licenses</string>
+</resources>
