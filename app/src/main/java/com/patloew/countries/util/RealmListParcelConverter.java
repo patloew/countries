@@ -28,27 +28,24 @@ public class RealmListParcelConverter implements TypeRangeParcelConverter<RealmL
 
   @Override
   public void toParcel(RealmList<? extends RealmObject> input, Parcel parcel) {
-    parcel.writeInt(input == null ? NULL : input.size());
-
-    if (input != null && !input.isEmpty()) {
-      boolean implementsParcelable = input.get(0) instanceof Parcelable;
-
+    if (input == null) {
+      parcel.writeInt(NULL);
+    } else {
+      parcel.writeInt(input.size());
       for (RealmObject item : input) {
-        parcel.writeParcelable(implementsParcelable ? (Parcelable) item : Parcels.wrap(item), 0);
+        parcel.writeParcelable(Parcels.wrap(item), 0);
       }
     }
   }
 
   @Override
   public RealmList fromParcel(Parcel parcel) {
-    Boolean isWrapped = null;
     int size = parcel.readInt();
-    RealmList list = size == NULL ? null : new RealmList();
+    RealmList list = new RealmList();
 
     for (int i=0; i<size; i++) {
       Parcelable parcelable = parcel.readParcelable(getClass().getClassLoader());
-      if(isWrapped == null) { isWrapped = parcelable instanceof ParcelWrapper; }
-      list.add((RealmObject) (isWrapped ? Parcels.unwrap(parcelable) : (RealmObject) parcelable));
+      list.add((RealmObject) Parcels.unwrap(parcelable));
     }
 
     return list;
