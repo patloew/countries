@@ -3,7 +3,6 @@ package com.patloew.countries.util;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.parceler.ParcelWrapper;
 import org.parceler.Parcels;
 import org.parceler.TypeRangeParcelConverter;
 

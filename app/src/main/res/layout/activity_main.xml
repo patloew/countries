@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/srl_countries"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
-        android:id="@+id/rv_countries"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_countries"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:fastScrollAutoHide="true"
-        app:fastScrollAutoHideDelay="1500"
-        app:fastScrollPopupBgColor="@color/colorAccent"
-        app:fastScrollPopupTextColor="@android:color/white"
-        app:fastScrollThumbColor="@color/colorAccent"
-        app:fastScrollTrackColor="@android:color/transparent"/>
+        android:layout_height="match_parent">
 
-</android.support.v4.widget.SwipeRefreshLayout>
+        <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+            android:id="@+id/rv_countries"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:fastScrollAutoHide="true"
+            app:fastScrollAutoHideDelay="1500"
+            app:fastScrollPopupBgColor="@color/colorAccent"
+            app:fastScrollPopupTextColor="@android:color/white"
+            app:fastScrollThumbColor="@color/colorAccent"
+            app:fastScrollTrackColor="@android:color/transparent"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+</layout>

@@ -6,7 +6,7 @@ A sample Android app, which lists all countries with some additional information
 
 The purpose of this is app is to show how:
 * the MVVM pattern can be used with the data binding lib and a RecyclerView.
-* Retrofit, Realm, Parceler and Gson with custom TypeAdapters work together
+* [Retrofit, Realm, Parceler and Gson with custom TypeAdapters work together](https://nullpointer.wtf/android/using-retrofit-realm-parceler/)
 * Dagger 2 can be used with different Scopes
 
 # License

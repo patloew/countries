@@ -1,5 +1,6 @@
 package com.patloew.countries;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.patloew.countries.dagger.CountryViewHolderModule;
 import com.patloew.countries.dagger.DaggerCountryViewHolderComponent;
+import com.patloew.countries.databinding.ActivityMainBinding;
 import com.patloew.countries.model.Country;
 import com.patloew.countries.network.ICountryApi;
 import com.patloew.countries.viewmodel.CountryViewModel;
@@ -31,8 +33,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.Sort;
 import rx.Subscription;
@@ -53,17 +53,13 @@ import rx.android.schedulers.AndroidSchedulers;
  * limitations under the License. */
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    @Bind(R.id.srl_countries)
-    SwipeRefreshLayout swipeRefreshLayout;
-
-    @Bind(R.id.rv_countries)
-    FastScrollRecyclerView recyclerView;
-
     @Inject
     Realm realm;
 
     @Inject
     ICountryApi countryApi;
+
+    ActivityMainBinding binding;
 
     private List<Country> countryList = new ArrayList<>();
 
@@ -79,22 +75,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         CountriesApp.getAppComponent().inject(this);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new CountryAdapter());
+        binding.rvCountries.setHasFixedSize(true);
+        binding.rvCountries.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvCountries.setAdapter(new CountryAdapter());
 
-        swipeRefreshLayout.setOnRefreshListener(this);
+        binding.srlCountries.setOnRefreshListener(this);
 
         if(savedInstanceState != null) {
             countryList = Parcels.unwrap(savedInstanceState.getParcelable("countryList"));
         } else {
             countryList = realm.copyFromRealm(realm.where(Country.class).findAllSorted("name", Sort.ASCENDING));
-            swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+            binding.srlCountries.post(() -> binding.srlCountries.setRefreshing(true));
             onRefresh();
         }
     }
@@ -159,16 +153,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(countries -> {
                             countryList = countries;
-                            recyclerView.getAdapter().notifyDataSetChanged();
+                            binding.rvCountries.getAdapter().notifyDataSetChanged();
                         },
                         throwable -> {
-                            swipeRefreshLayout.setRefreshing(false);
+                            binding.srlCountries.setRefreshing(false);
                             Log.e("MainActivity", "Could not load countries", throwable);
-                            Snackbar.make(recyclerView, "Could not load countries", Snackbar.LENGTH_INDEFINITE)
+                            Snackbar.make(binding.rvCountries, "Could not load countries", Snackbar.LENGTH_INDEFINITE)
                                 .setAction(R.string.snackbar_action_retry, view -> onRefresh())
                                 .show();
                         },
-                        () -> swipeRefreshLayout.setRefreshing(false));
+                        () -> binding.srlCountries.setRefreshing(false));
     }
 
     private class CountryAdapter extends RecyclerView.Adapter<CountryViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
