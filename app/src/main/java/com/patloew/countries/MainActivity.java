@@ -20,6 +20,7 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.patloew.countries.dagger.CountryViewHolderModule;
 import com.patloew.countries.dagger.DaggerCountryViewHolderComponent;
 import com.patloew.countries.databinding.ActivityMainBinding;
+import com.patloew.countries.databinding.CardCountryBinding;
 import com.patloew.countries.model.Country;
 import com.patloew.countries.network.ICountryApi;
 import com.patloew.countries.viewmodel.CountryViewModel;
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         @Override
         public void onBindViewHolder(CountryViewHolder countryViewHolder, int position) {
-            countryViewHolder.viewModel.update(countryList.get(position), countryList, position);
+            countryViewHolder.viewModel.update(countryList, position);
         }
 
         @Override
@@ -193,20 +194,35 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    public class CountryViewHolder extends RecyclerView.ViewHolder {
+    public class CountryViewHolder extends RecyclerView.ViewHolder implements CountryView {
 
         @Inject
         CountryViewModel viewModel;
+
+        @Inject
+        CardCountryBinding binding;
 
         public CountryViewHolder(View v) {
             super(v);
 
             DaggerCountryViewHolderComponent.builder()
                     .appComponent(CountriesApp.getAppComponent())
-                    .countryViewHolderModule(new CountryViewHolderModule(v, realm))
+                    .countryViewHolderModule(new CountryViewHolderModule(this, v, realm))
                     .build()
                     .inject(this);
+
+            binding.ivBookmark.setOnClickListener(bookmarkIcon -> viewModel.onBookmarkClick());
+            binding.ivMap.setOnClickListener(mapImage -> viewModel.onMapClick());
         }
+
+        @Override
+        public void setIsBookmarked(boolean isBookmarked) {
+            binding.ivBookmark.setImageResource(isBookmarked ? R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_border_black);
+        }
+    }
+
+    public interface CountryView {
+        void setIsBookmarked(boolean isBookmarked);
     }
 
 }

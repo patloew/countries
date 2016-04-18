@@ -2,7 +2,6 @@ package com.patloew.countries.viewmodel;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.BaseObservable;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
@@ -14,8 +13,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.patloew.countries.MainActivity;
 import com.patloew.countries.R;
-import com.patloew.countries.databinding.CardCountryBinding;
 import com.patloew.countries.model.Country;
 import com.patloew.countries.model.RealmString;
 import com.patloew.countries.model.RealmStringMapEntry;
@@ -49,6 +48,7 @@ public class CountryViewModel extends BaseObservable {
 
     private final Context ctx;
     private final Realm realm;
+    private final MainActivity.CountryView countryView;
     private final boolean mapsAvailable;
 
     private Country country;
@@ -56,57 +56,46 @@ public class CountryViewModel extends BaseObservable {
     private List<String> borderList;
     private int layoutPosition;
 
-    public CountryViewModel(Context context, Realm realm, CardCountryBinding binding) {
+    public CountryViewModel(Context context, Realm realm, MainActivity.CountryView countryView, boolean mapsAvailable) {
         this.ctx = context.getApplicationContext();
         this.realm = realm;
-
-        binding.ivBookmark.setOnClickListener(view -> {
-            Country country = countryList.get(layoutPosition);
-            Country realmCountry = realm.where(Country.class).equalTo("alpha2Code", country.alpha2Code).findFirst();
-
-            realm.beginTransaction();
-
-            if(realmCountry == null) {
-                realm.copyToRealmOrUpdate(country);
-                binding.ivBookmark.setImageResource(R.drawable.ic_bookmark_black);
-            } else {
-                // delete Country and all referenced RealmObjects
-                realmCountry.borders.deleteAllFromRealm();
-                realmCountry.currencies.deleteAllFromRealm();
-                realmCountry.languages.deleteAllFromRealm();
-                realmCountry.translations.deleteAllFromRealm();
-                realmCountry.removeFromRealm();
-
-                binding.ivBookmark.setImageResource(R.drawable.ic_bookmark_border_black);
-            }
-
-            realm.commitTransaction();
-        });
-
-
-        boolean tmpMapsAvailable = false;
-
-        try {
-            context.getPackageManager().getPackageInfo("com.google.android.apps.maps", 0);
-            tmpMapsAvailable = true;
-            binding.ivMap.setVisibility(View.VISIBLE);
-            binding.ivMap.setOnClickListener(mapImage -> {
-                Country country = countryList.get(layoutPosition);
-                Uri gmmIntentUri = Uri.parse("geo:"+country.lat+","+country.lng+"?q="+country.name+"&z=2");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                ctx.startActivity(mapIntent);
-            });
-        } catch(PackageManager.NameNotFoundException ignore) {
-            binding.ivMap.setVisibility(View.GONE);
-        }
-
-        mapsAvailable = tmpMapsAvailable;
+        this.countryView = countryView;
+        this.mapsAvailable = mapsAvailable;
     }
 
-    public void update(Country country, List<Country> countryList, int layoutPosition) {
-        this.country = country;
+    public void onMapClick() {
+        Country country = countryList.get(layoutPosition);
+        Uri gmmIntentUri = Uri.parse("geo:"+country.lat+","+country.lng+"?q="+country.name+"&z=2");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(mapIntent);
+    }
+
+    public void onBookmarkClick() {
+        Country realmCountry = realm.where(Country.class).equalTo("alpha2Code", country.alpha2Code).findFirst();
+
+        realm.beginTransaction();
+
+        if(realmCountry == null) {
+            realm.copyToRealmOrUpdate(country);
+            countryView.setIsBookmarked(true);
+        } else {
+            // delete Country and all referenced RealmObjects
+            realmCountry.borders.deleteAllFromRealm();
+            realmCountry.currencies.deleteAllFromRealm();
+            realmCountry.languages.deleteAllFromRealm();
+            realmCountry.translations.deleteAllFromRealm();
+            realmCountry.removeFromRealm();
+
+            countryView.setIsBookmarked(false);
+        }
+
+        realm.commitTransaction();
+    }
+
+    public void update(List<Country> countryList, int layoutPosition) {
+        this.country = countryList.get(layoutPosition);
         this.countryList = countryList;
         this.layoutPosition = layoutPosition;
 

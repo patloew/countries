@@ -5,6 +5,8 @@ import android.app.Application;
 import com.patloew.countries.MainActivity;
 import com.patloew.countries.dagger.scopes.PerApplication;
 
+import javax.inject.Named;
+
 import dagger.Component;
 import io.realm.Realm;
 
@@ -28,4 +30,6 @@ public interface AppComponent {
 
     Application app();
     Realm realm();
+
+    @Named("mapsAvailable") boolean mapsAvailable();
 }

@@ -1,10 +1,13 @@
 package com.patloew.countries.dagger;
 
 import android.app.Application;
+import android.content.pm.PackageManager;
 
 import com.patloew.countries.BuildConfig;
 import com.patloew.countries.CountriesApp;
 import com.patloew.countries.dagger.scopes.PerApplication;
+
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
@@ -31,6 +34,18 @@ public class AppModule {
     @PerApplication
     static Application provideApplication() {
         return CountriesApp.getInstance();
+    }
+
+    @Provides
+    @PerApplication
+    @Named("mapsAvailable")
+    static boolean provideMapsAvailable(Application app) {
+        try {
+            app.getPackageManager().getPackageInfo("com.google.android.apps.maps", 0);
+            return true;
+        } catch(PackageManager.NameNotFoundException ignore) {
+            return false;
+        }
     }
 
     @Provides

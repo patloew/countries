@@ -3,9 +3,12 @@ package com.patloew.countries.dagger;
 import android.app.Application;
 import android.view.View;
 
+import com.patloew.countries.MainActivity;
 import com.patloew.countries.dagger.scopes.PerCountryViewHolder;
 import com.patloew.countries.databinding.CardCountryBinding;
 import com.patloew.countries.viewmodel.CountryViewModel;
+
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
@@ -27,10 +30,12 @@ import io.realm.Realm;
 @Module
 public class CountryViewHolderModule {
 
+    private final MainActivity.CountryView countryView;
     private final View rootView;
     private final Realm realm;
 
-    public CountryViewHolderModule(View rootView, Realm realm) {
+    public CountryViewHolderModule(MainActivity.CountryView countryView, View rootView, Realm realm) {
+        this.countryView = countryView;
         this.rootView = rootView;
         this.realm = realm;
     }
@@ -43,8 +48,8 @@ public class CountryViewHolderModule {
 
     @Provides
     @PerCountryViewHolder
-    CountryViewModel provideViewModel(Application app, CardCountryBinding binding) {
-        CountryViewModel vm = new CountryViewModel(app, realm, binding);
+    CountryViewModel provideViewModel(Application app, CardCountryBinding binding, @Named("mapsAvailable") boolean mapsAvailable) {
+        CountryViewModel vm = new CountryViewModel(app, realm, countryView, mapsAvailable);
         binding.setVm(vm);
         return vm;
     }
