@@ -2,8 +2,8 @@ package com.patloew.countries.dagger;
 
 import android.app.Application;
 
-import com.patloew.countries.MainActivity;
 import com.patloew.countries.dagger.scopes.PerApplication;
+import com.patloew.countries.viewmodel.MainActivityViewModel;
 
 import javax.inject.Named;
 
@@ -26,7 +26,7 @@ import io.realm.Realm;
 @PerApplication
 @Component(modules={AppModule.class, NetModule.class})
 public interface AppComponent {
-    void inject(MainActivity mainActivity);
+    void inject(MainActivityViewModel mainActivityViewModel);
 
     Application app();
     Realm realm();

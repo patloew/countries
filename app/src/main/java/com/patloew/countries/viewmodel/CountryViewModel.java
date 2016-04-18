@@ -13,11 +13,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.patloew.countries.MainActivity;
 import com.patloew.countries.R;
 import com.patloew.countries.model.Country;
 import com.patloew.countries.model.RealmString;
 import com.patloew.countries.model.RealmStringMapEntry;
+import com.patloew.countries.view.CountryView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class CountryViewModel extends BaseObservable {
 
     private final Context ctx;
     private final Realm realm;
-    private final MainActivity.CountryView countryView;
+    private final CountryView countryView;
     private final boolean mapsAvailable;
 
     private Country country;
@@ -56,7 +56,7 @@ public class CountryViewModel extends BaseObservable {
     private List<String> borderList;
     private int layoutPosition;
 
-    public CountryViewModel(Context context, Realm realm, MainActivity.CountryView countryView, boolean mapsAvailable) {
+    public CountryViewModel(Context context, Realm realm, CountryView countryView, boolean mapsAvailable) {
         this.ctx = context.getApplicationContext();
         this.realm = realm;
         this.countryView = countryView;

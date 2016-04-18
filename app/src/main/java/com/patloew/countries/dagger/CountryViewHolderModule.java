@@ -3,9 +3,9 @@ package com.patloew.countries.dagger;
 import android.app.Application;
 import android.view.View;
 
-import com.patloew.countries.MainActivity;
 import com.patloew.countries.dagger.scopes.PerCountryViewHolder;
 import com.patloew.countries.databinding.CardCountryBinding;
+import com.patloew.countries.view.CountryView;
 import com.patloew.countries.viewmodel.CountryViewModel;
 
 import javax.inject.Named;
@@ -30,11 +30,11 @@ import io.realm.Realm;
 @Module
 public class CountryViewHolderModule {
 
-    private final MainActivity.CountryView countryView;
+    private final CountryView countryView;
     private final View rootView;
     private final Realm realm;
 
-    public CountryViewHolderModule(MainActivity.CountryView countryView, View rootView, Realm realm) {
+    public CountryViewHolderModule(CountryView countryView, View rootView, Realm realm) {
         this.countryView = countryView;
         this.rootView = rootView;
         this.realm = realm;
