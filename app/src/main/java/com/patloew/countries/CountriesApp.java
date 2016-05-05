@@ -3,8 +3,9 @@ package com.patloew.countries;
 import android.app.Application;
 import android.content.res.Resources;
 
-import com.patloew.countries.dagger.AppComponent;
-import com.patloew.countries.dagger.DaggerAppComponent;
+import com.patloew.countries.injection.components.AppComponent;
+import com.patloew.countries.injection.components.DaggerAppComponent;
+import com.patloew.countries.injection.modules.AppModule;
 
 import io.realm.Realm;
 
@@ -32,7 +33,9 @@ public class CountriesApp extends Application {
         super.onCreate();
 
         sInstance = this;
-        sAppComponent = DaggerAppComponent.create();
+        sAppComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
+                .build();
     }
 
     public static CountriesApp getInstance() { return sInstance; }
