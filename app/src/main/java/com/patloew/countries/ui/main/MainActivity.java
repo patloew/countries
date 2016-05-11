@@ -30,8 +30,7 @@ import javax.inject.Inject;
  * limitations under the License. */
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivityViewModel> implements MainActivityView {
 
-    @Inject
-    CountryAdapter adapter;
+    @Inject CountryAdapter adapter;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -43,7 +42,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
-        setBindingContentView(R.layout.activity_main);
+        setAndBindContentView(R.layout.activity_main);
         viewModel.attachView(this, savedInstanceState);
 
         binding.rvCountries.setHasFixedSize(true);
@@ -57,12 +56,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
         }
 
         viewModel.onRefresh(true);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        viewModel.detachView();
     }
 
     @Override

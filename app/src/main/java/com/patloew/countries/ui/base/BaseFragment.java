@@ -1,12 +1,23 @@
 package com.patloew.countries.ui.base;
 
 import android.databinding.ViewDataBinding;
+import android.os.Bundle;
+import android.support.annotation.CallSuper;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.patloew.countries.BR;
 import com.patloew.countries.CountriesApp;
 import com.patloew.countries.injection.components.DaggerFragmentComponent;
 import com.patloew.countries.injection.components.FragmentComponent;
 import com.patloew.countries.injection.modules.FragmentModule;
+
+import java.lang.reflect.ParameterizedType;
 
 import javax.inject.Inject;
 
@@ -39,5 +50,49 @@ public class BaseFragment<B extends ViewDataBinding, V extends ViewModel> extend
         }
 
         return mFragmentComponent;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    public View setAndBindContentView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @LayoutRes int layoutResId) {
+        if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via getFragmentComponent().inject(this)"); }
+        View view = inflater.inflate(layoutResId, container, false);
+        binding = getBinding(view);
+        binding.setVariable(BR.vm, viewModel);
+        return view;
+    }
+
+    private B getBinding(View view) {
+        Class clazz = getClass();
+        while(clazz.getSuperclass() != BaseFragment.class) { clazz = clazz.getSuperclass(); }
+
+        try {
+            //noinspection unchecked
+            return (B) ((Class)(((ParameterizedType)clazz.getGenericSuperclass()).getActualTypeArguments()[0]))
+                        .getMethod("bind", View.class)
+                        .invoke(null, view);
+        } catch (Exception e) {
+            throw new IllegalStateException("Could not get binding for " + getClass().getSimpleName(), e);
+        }
+    }
+
+    @Override
+    @CallSuper
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(viewModel != null) { viewModel.detachView(); }
+        binding = null;
+        viewModel = null;
+    }
+
+    @Override
+    @CallSuper
+    public void onDestroy() {
+        mFragmentComponent = null;
+        super.onDestroy();
     }
 }

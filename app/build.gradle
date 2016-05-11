@@ -66,7 +66,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.2'
     compile 'com.google.dagger:dagger:2.2'
 
-    compile 'io.reactivex:rxjava:1.1.4'
+    compile 'io.reactivex:rxjava:1.1.5'
     compile 'io.reactivex:rxandroid:1.2.0'
 
     compile('com.mikepenz:aboutlibraries:5.6.2@aar') {

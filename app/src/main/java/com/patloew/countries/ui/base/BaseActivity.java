@@ -2,6 +2,7 @@ package com.patloew.countries.ui.base;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 
@@ -39,7 +40,7 @@ public class BaseActivity<B extends ViewDataBinding, V extends ViewModel> extend
 
     private ActivityComponent mActivityComponent;
 
-    public void setBindingContentView(@LayoutRes int layoutResId) {
+    public void setAndBindContentView(@LayoutRes int layoutResId) {
         if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via getActivityComponent().inject(this)"); }
         binding = DataBindingUtil.setContentView(this, layoutResId);
         binding.setVariable(BR.vm, viewModel);
@@ -57,8 +58,15 @@ public class BaseActivity<B extends ViewDataBinding, V extends ViewModel> extend
     }
 
     @Override
+    @CallSuper
     protected void onDestroy() {
         super.onDestroy();
+        if(viewModel != null) { viewModel.detachView(); }
         if(realm != null) { realm.close(); }
+        binding = null;
+        viewModel = null;
+        mActivityComponent = null;
+        realm = null;
+
     }
 }
