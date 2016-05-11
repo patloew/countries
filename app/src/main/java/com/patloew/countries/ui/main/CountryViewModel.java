@@ -75,7 +75,6 @@ public class CountryViewModel extends BaseViewModel<CountryView> {
     }
 
     public void onMapClick() {
-        Country country = countryList.get(layoutPosition);
         Uri gmmIntentUri = Uri.parse("geo:"+country.lat+","+country.lng+"?q="+country.name+"&z=2");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
