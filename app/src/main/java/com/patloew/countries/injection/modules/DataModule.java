@@ -1,11 +1,10 @@
-package com.patloew.countries.data.remote;
+package com.patloew.countries.injection.modules;
 
-import com.patloew.countries.data.model.Country;
+import com.patloew.countries.data.local.CountryRepo;
+import com.patloew.countries.data.local.CountryRepoImpl;
 
-import java.util.List;
-
-import retrofit2.http.GET;
-import rx.Observable;
+import dagger.Binds;
+import dagger.Module;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -20,7 +19,10 @@ import rx.Observable;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface ICountryApi {
-    @GET("rest/v1/all")
-    Observable<List<Country>> getAllCountries();
+@Module
+public abstract class DataModule {
+
+    @Binds
+    abstract CountryRepo bindCountryRepo(CountryRepoImpl countryRepoImpl);
+
 }

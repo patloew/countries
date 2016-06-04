@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.patloew.countries.BuildConfig;
 import com.patloew.countries.data.model.Country;
-import com.patloew.countries.data.remote.ICountryApi;
+import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.scopes.PerApplication;
 import com.patloew.countries.util.CountryTypeAdapter;
 
@@ -63,7 +63,7 @@ public class NetModule {
 
     @Provides
     @PerApplication
-    static ICountryApi provideCountryApi(Gson gson, OkHttpClient okHttpClient) {
+    static CountryApi provideCountryApi(Gson gson, OkHttpClient okHttpClient) {
         OkHttpClient.Builder httpClientBuilder = okHttpClient.newBuilder();
 
         if(BuildConfig.DEBUG) {
@@ -77,6 +77,6 @@ public class NetModule {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .callFactory(httpClientBuilder.build())
-                .build().create(ICountryApi.class);
+                .build().create(CountryApi.class);
     }
 }

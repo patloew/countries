@@ -100,6 +100,12 @@ me.tatarka:gradle-retrolambda
 me.tatarka.retrolambda.projectlombok:lombok.ast
 https://github.com/evant/gradle-retrolambda
 
+------------------------
+RxSchedulersOverrideRule
+------------------------
+
+https://github.com/ribot/android-boilerplate/blob/master/app/src/test/java/uk/co/ribot/androidboilerplate/util/RxSchedulersOverrideRule.java
+
 =============
 Realm License
 =============

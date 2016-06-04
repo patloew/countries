@@ -10,7 +10,7 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.patloew.countries.R;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
-import com.patloew.countries.data.remote.ICountryApi;
+import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.qualifier.ActivityContext;
 import com.patloew.countries.injection.scopes.PerActivity;
 import com.patloew.countries.ui.base.BaseViewModel;
@@ -45,14 +45,14 @@ public class MainActivityViewModel extends BaseViewModel<MainActivityView> {
 
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
     private final CountryRepo countryRepo;
-    private final ICountryApi countryApi;
+    private final CountryApi countryApi;
 
     private Context ctx;
 
     private List<Country> countryList = new ArrayList<>();
 
     @Inject
-    public MainActivityViewModel(@ActivityContext Context context, CountryRepo countryRepo, ICountryApi countryApi) {
+    public MainActivityViewModel(@ActivityContext Context context, CountryRepo countryRepo, CountryApi countryApi) {
         this.ctx = context;
         this.countryRepo = countryRepo;
         this.countryApi = countryApi;

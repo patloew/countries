@@ -41,7 +41,7 @@ retrolambda {
     javaVersion JavaVersion.VERSION_1_6
 }
 
-ext.supportLibVersion = '23.3.0'
+ext.supportLibVersion = '23.4.0'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -57,16 +57,17 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
 
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.6'
 
     compile 'org.parceler:parceler-api:1.1.1'
     apt 'org.parceler:parceler:1.1.1'
 
-    apt 'com.google.dagger:dagger-compiler:2.2'
-    compile 'com.google.dagger:dagger:2.2'
+    apt 'com.google.guava:guava:19.0' // needed by Dagger 2.4
+    apt 'com.google.dagger:dagger-compiler:2.4'
+    compile 'com.google.dagger:dagger:2.4'
 
     compile 'io.reactivex:rxjava:1.1.5'
     compile 'io.reactivex:rxandroid:1.2.0'

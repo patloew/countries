@@ -3,8 +3,9 @@ package com.patloew.countries.injection.components;
 import android.content.Context;
 
 import com.patloew.countries.data.local.CountryRepo;
-import com.patloew.countries.data.remote.ICountryApi;
+import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.modules.AppModule;
+import com.patloew.countries.injection.modules.DataModule;
 import com.patloew.countries.injection.modules.NetModule;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerApplication;
@@ -26,10 +27,10 @@ import io.realm.Realm;
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 @PerApplication
-@Component(modules={AppModule.class, NetModule.class})
+@Component(modules={AppModule.class, NetModule.class, DataModule.class})
 public interface AppComponent {
     @AppContext Context context();
     Realm realm();
     CountryRepo countryRepo();
-    ICountryApi countryApi();
+    CountryApi countryApi();
 }

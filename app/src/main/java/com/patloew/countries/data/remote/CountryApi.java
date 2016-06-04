@@ -1,13 +1,11 @@
-package com.patloew.countries.data.local;
-
-import android.support.annotation.Nullable;
+package com.patloew.countries.data.remote;
 
 import com.patloew.countries.data.model.Country;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Sort;
+import retrofit2.http.GET;
+import rx.Observable;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -22,15 +20,7 @@ import io.realm.Sort;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface CountryRepo {
-    List<Country> findAllSorted(String sortField, Sort sort, boolean detached);
-
-    @Nullable
-    Country getByField(String field, String value, boolean detached);
-
-    void save(Country country);
-
-    void delete(Country country);
-
-    ArrayList<Country> update(List<Country> countryList);
+public interface CountryApi {
+    @GET("rest/v1/all")
+    Observable<List<Country>> getAllCountries();
 }

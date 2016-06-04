@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
-import com.patloew.countries.data.remote.ICountryApi;
+import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.ui.main.MainActivityView;
 import com.patloew.countries.ui.main.MainActivityViewModel;
 
@@ -36,7 +36,7 @@ public class MainActivityViewModelUnitTest {
 
     @Mock Context ctx;
     @Mock CountryRepo countryRepo;
-    @Mock ICountryApi countryApi;
+    @Mock CountryApi countryApi;
 
     @Mock MainActivityView mainActivityView;
     MainActivityViewModel mainActivityViewModel;

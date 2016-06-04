@@ -9,11 +9,11 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.1.0'
 
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.4.2'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
-        classpath "io.realm:realm-gradle-plugin:0.90.0"
+        classpath "io.realm:realm-gradle-plugin:1.0.0"
     }
 
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
