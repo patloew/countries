@@ -6,10 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.patloew.countries.R;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.databinding.ActivityMainBinding;
 import com.patloew.countries.ui.base.BaseActivity;
+import com.patloew.countries.ui.main.recyclerview.CountryAdapter;
 
 import java.util.List;
 
@@ -41,9 +44,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivityComponent().inject(this);
-        setAndBindContentView(R.layout.activity_main);
-        viewModel.attachView(this, savedInstanceState);
+
+        activityComponent().inject(this);
+        setAndBindContentView(R.layout.activity_main, savedInstanceState);
 
         binding.rvCountries.setHasFixedSize(true);
         binding.rvCountries.setLayoutManager(new LinearLayoutManager(this));
@@ -67,7 +70,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_item_licenses) {
-            viewModel.onLicensesClick();
+            new LibsBuilder()
+                    .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                    .withActivityTitle(getString(R.string.menu_item_licenses))
+                    .withLibraries("rxJavaAndroid", "parceler", "recyclerview_fastscroll", "gradle_retrolambda")
+                    .withLicenseShown(true)
+                    .start(this);
         }
 
         return super.onOptionsItemSelected(item);

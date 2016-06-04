@@ -3,11 +3,12 @@ package com.patloew.countries;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.view.View;
 
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
-import com.patloew.countries.ui.main.CountryView;
-import com.patloew.countries.ui.main.CountryViewModel;
+import com.patloew.countries.ui.base.MvvmView;
+import com.patloew.countries.ui.main.recyclerview.CountryViewModelImpl;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,9 +32,10 @@ public class CountryViewModelUnitTest {
     @Mock Context ctx;
     @Mock PackageManager packageManager;
     @Mock CountryRepo countryRepo;
+    @Mock View view;
 
-    @Mock CountryView countryView;
-    CountryViewModel countryViewModel;
+    @Mock MvvmView mvvmView;
+    CountryViewModelImpl countryViewModel;
 
     Country internalCountry = new Country();
 
@@ -46,16 +48,15 @@ public class CountryViewModelUnitTest {
         //noinspection WrongConstant
         when(packageManager.getPackageInfo(Matchers.anyString(), Matchers.anyInt())).thenReturn(null);
 
-        countryViewModel = new CountryViewModel(ctx, countryRepo);
-        countryViewModel.attachView(countryView, null);
+        countryViewModel = new CountryViewModelImpl(ctx, countryRepo);
+        countryViewModel.attachView(mvvmView, null);
 
         Whitebox.setInternalState(countryViewModel, "country", internalCountry);
     }
 
-
     @Test
     public void onMapClick_startActivity() {
-        countryViewModel.onMapClick();
+        countryViewModel.onMapClick(view);
         verify(ctx).startActivity(Matchers.any(Intent.class));
     }
 
@@ -64,17 +65,15 @@ public class CountryViewModelUnitTest {
         Country country = new Country();
         doReturn(country).when(countryRepo).getByField(Matchers.anyString(), Matchers.anyString(), Matchers.anyBoolean());
 
-        countryViewModel.onBookmarkClick();
+        countryViewModel.onBookmarkClick(view);
         verify(countryRepo).delete(country);
-        verify(countryView).setIsBookmarked(false);
     }
 
     @Test
     public void onBookmarkClick_wasNotBookmarked() {
         doReturn(null).when(countryRepo).getByField(Matchers.anyString(), Matchers.anyString(), Matchers.anyBoolean());
 
-        countryViewModel.onBookmarkClick();
+        countryViewModel.onBookmarkClick(view);
         verify(countryRepo).save(internalCountry);
-        verify(countryView).setIsBookmarked(true);
     }
 }

@@ -1,4 +1,4 @@
-package com.patloew.countries.ui.main;
+package com.patloew.countries.ui.main.recyclerview;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.patloew.countries.BR;
 import com.patloew.countries.R;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
@@ -21,6 +22,7 @@ import com.patloew.countries.data.model.RealmStringMapEntry;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerViewHolder;
 import com.patloew.countries.ui.base.BaseViewModel;
+import com.patloew.countries.ui.base.MvvmView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ import javax.inject.Inject;
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 @PerViewHolder
-public class CountryViewModel extends BaseViewModel<CountryView> {
+public class CountryViewModelImpl extends BaseViewModel<MvvmView> implements CountryViewModel {
 
     private static final Locale DISPLAY_LOCALE = new Locale("EN");
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat();
@@ -60,7 +62,7 @@ public class CountryViewModel extends BaseViewModel<CountryView> {
     private int layoutPosition;
 
     @Inject
-    public CountryViewModel(@AppContext Context context, CountryRepo countryRepo) {
+    public CountryViewModelImpl(@AppContext Context context, CountryRepo countryRepo) {
         this.ctx = context.getApplicationContext();
         this.countryRepo = countryRepo;
 
@@ -74,7 +76,8 @@ public class CountryViewModel extends BaseViewModel<CountryView> {
         this.mapsAvailable = mapsAvailable;
     }
 
-    public void onMapClick() {
+    @Override
+    public void onMapClick(View view) {
         Uri gmmIntentUri = Uri.parse("geo:"+country.lat+","+country.lng+"?q="+country.name+"&z=2");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
@@ -82,18 +85,20 @@ public class CountryViewModel extends BaseViewModel<CountryView> {
         ctx.startActivity(mapIntent);
     }
 
-    public void onBookmarkClick() {
+    @Override
+    public void onBookmarkClick(View view) {
         Country realmCountry = countryRepo.getByField("alpha2Code", country.alpha2Code, false);
 
         if(realmCountry == null) {
             countryRepo.save(country);
-            getView().setIsBookmarked(true);
         } else {
             countryRepo.delete(realmCountry);
-            getView().setIsBookmarked(false);
         }
+
+        notifyPropertyChanged(BR.bookmarkDrawable);
     }
 
+    @Override
     public void update(List<Country> countryList, int layoutPosition) {
         this.country = countryList.get(layoutPosition);
         this.countryList = countryList;
@@ -125,12 +130,14 @@ public class CountryViewModel extends BaseViewModel<CountryView> {
 
     // Properties
 
+    @Override
     public String getName() {
         String nameInfo = country.name + " (" + country.alpha2Code;
         if(!country.name.equals(country.nativeName)) { nameInfo += ", " + country.nativeName; }
         return nameInfo + ")";
     }
 
+    @Override
     public CharSequence getNameTranslations() {
         ArrayList<String> nameList = new ArrayList<>(country.translations.size());
 
@@ -143,22 +150,27 @@ public class CountryViewModel extends BaseViewModel<CountryView> {
         return Html.fromHtml(String.format(ctx.getString(R.string.country_name_translations), TextUtils.join(", ", nameList)));
     }
 
+    @Override
     public CharSequence getRegion() {
         return Html.fromHtml(String.format(ctx.getString(R.string.country_region), country.region));
     }
 
+    @Override
     public int getCapitalVisibility() {
         return TextUtils.isEmpty(country.capital) ? View.GONE : View.VISIBLE;
     }
 
+    @Override
     public CharSequence getCapital() {
         return Html.fromHtml(String.format(ctx.getString(R.string.country_capital), country.capital));
     }
 
+    @Override
     public CharSequence getPopulation() {
         return Html.fromHtml(String.format(ctx.getString(R.string.country_capital), DECIMAL_FORMAT.format(country.population)));
     }
 
+    @Override
     public CharSequence getLanguages() {
         ArrayList<String> languageList = new ArrayList<>(country.languages.size());
 
@@ -171,6 +183,7 @@ public class CountryViewModel extends BaseViewModel<CountryView> {
         return Html.fromHtml(String.format(ctx.getString(R.string.country_languages), TextUtils.join(", ", languageList)));
     }
 
+    @Override
     public CharSequence getCurrencies() {
         ArrayList<String> currenciesList = new ArrayList<>(country.currencies.size());
 
@@ -195,10 +208,12 @@ public class CountryViewModel extends BaseViewModel<CountryView> {
         return Html.fromHtml(String.format(ctx.getString(R.string.country_currencies), TextUtils.join(", ", currenciesList)));
     }
 
+    @Override
     public int getLocationVisibility() {
         return country.lat == null && country.lng == null ? View.GONE : View.VISIBLE;
     }
 
+    @Override
     public CharSequence getLocation() {
         if(getLocationVisibility() == View.VISIBLE) {
             return Html.fromHtml(String.format(ctx.getString(R.string.country_location), DECIMAL_FORMAT.format(country.lat), DECIMAL_FORMAT.format(country.lng)));
@@ -207,22 +222,27 @@ public class CountryViewModel extends BaseViewModel<CountryView> {
         }
     }
 
+    @Override
     public int getBorderVisibility() {
         return borderList.isEmpty() ? View.GONE : View.VISIBLE;
     }
 
+    @Override
     public CharSequence getBorders() {
         return Html.fromHtml(String.format(ctx.getString(R.string.country_borders), TextUtils.join(", ", borderList)));
     }
 
+    @Override
     public Drawable getBookmarkDrawable() {
         return AppCompatDrawableManager.get().getDrawable(ctx, countryRepo.getByField("alpha2Code", country.alpha2Code, false) != null ? R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_border_black);
     }
 
+    @Override
     public int getMapVisibility() {
         return mapsAvailable && country.lat != null && country.lng != null ? View.VISIBLE : View.GONE;
     }
 
+    @Override
     public int getCardBottomMargin() {
         return layoutPosition == countryList.size()-1 ? (int) ctx.getResources().getDimension(R.dimen.card_outer_padding) : 0;
     }

@@ -1,12 +1,10 @@
 package com.patloew.countries;
 
-import android.content.Context;
-
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.ui.main.MainActivityView;
-import com.patloew.countries.ui.main.MainActivityViewModel;
+import com.patloew.countries.ui.main.MainActivityViewModelImpl;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,27 +25,23 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 public class MainActivityViewModelUnitTest {
 
     @Rule RxSchedulersOverrideRule rxSchedulersOverrideRule = new RxSchedulersOverrideRule();
 
-    @Mock Context ctx;
     @Mock CountryRepo countryRepo;
     @Mock CountryApi countryApi;
 
     @Mock MainActivityView mainActivityView;
-    MainActivityViewModel mainActivityViewModel;
+    MainActivityViewModelImpl mainActivityViewModel;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        when(ctx.getApplicationContext()).thenReturn(ctx);
-
-        mainActivityViewModel = new MainActivityViewModel(ctx, countryRepo, countryApi);
+        mainActivityViewModel = new MainActivityViewModelImpl(countryRepo, countryApi);
         mainActivityViewModel.attachView(mainActivityView, null);
     }
 

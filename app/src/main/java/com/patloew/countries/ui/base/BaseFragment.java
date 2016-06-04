@@ -1,5 +1,6 @@
 package com.patloew.countries.ui.base;
 
+import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -17,8 +18,6 @@ import com.patloew.countries.injection.components.DaggerFragmentComponent;
 import com.patloew.countries.injection.components.FragmentComponent;
 import com.patloew.countries.injection.modules.FragmentModule;
 
-import java.lang.reflect.ParameterizedType;
-
 import javax.inject.Inject;
 
 /* Copyright 2016 Patrick Löwenstein
@@ -34,14 +33,14 @@ import javax.inject.Inject;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public class BaseFragment<B extends ViewDataBinding, V extends ViewModel> extends Fragment {
+public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewModel> extends Fragment {
 
     protected B binding;
     @Inject protected V viewModel;
 
     private FragmentComponent mFragmentComponent;
 
-    public FragmentComponent getFragmentComponent() {
+    protected FragmentComponent fragmentComponent() {
         if(mFragmentComponent == null) {
             mFragmentComponent = DaggerFragmentComponent.builder()
                     .appComponent(CountriesApp.getAppComponent())
@@ -52,32 +51,13 @@ public class BaseFragment<B extends ViewDataBinding, V extends ViewModel> extend
         return mFragmentComponent;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    public View setAndBindContentView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @LayoutRes int layoutResId) {
-        if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via getFragmentComponent().inject(this)"); }
-        View view = inflater.inflate(layoutResId, container, false);
-        binding = getBinding(view);
+    protected View setAndBindContentView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @LayoutRes int layoutResId, @NonNull Bundle savedInstanceState) {
+        if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via fragmentComponent().inject(this)"); }
+        binding = DataBindingUtil.inflate(inflater, layoutResId, container, false);
         binding.setVariable(BR.vm, viewModel);
-        return view;
-    }
-
-    private B getBinding(View view) {
-        Class clazz = getClass();
-        while(clazz.getSuperclass() != BaseFragment.class) { clazz = clazz.getSuperclass(); }
-
-        try {
-            //noinspection unchecked
-            return (B) ((Class)(((ParameterizedType)clazz.getGenericSuperclass()).getActualTypeArguments()[0]))
-                        .getMethod("bind", View.class)
-                        .invoke(null, view);
-        } catch (Exception e) {
-            throw new IllegalStateException("Could not get binding for " + getClass().getSimpleName(), e);
-        }
+        //noinspection unchecked
+        viewModel.attachView((MvvmView) this, savedInstanceState);
+        return binding.getRoot();
     }
 
     @Override

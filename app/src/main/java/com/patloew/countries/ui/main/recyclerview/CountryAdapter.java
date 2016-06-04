@@ -1,4 +1,4 @@
-package com.patloew.countries.ui.main;
+package com.patloew.countries.ui.main.recyclerview;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -51,7 +51,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryViewHolder> impl
 
     @Override
     public void onBindViewHolder(CountryViewHolder countryViewHolder, int position) {
-        countryViewHolder.getViewModel().update(countryList, position);
+        countryViewHolder.viewModel().update(countryList, position);
     }
 
     @Override

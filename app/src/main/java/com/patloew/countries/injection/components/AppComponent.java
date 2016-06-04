@@ -1,6 +1,7 @@
 package com.patloew.countries.injection.components;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.remote.CountryApi;
@@ -30,6 +31,8 @@ import io.realm.Realm;
 @Component(modules={AppModule.class, NetModule.class, DataModule.class})
 public interface AppComponent {
     @AppContext Context context();
+    Resources resources();
+
     Realm realm();
     CountryRepo countryRepo();
     CountryApi countryApi();

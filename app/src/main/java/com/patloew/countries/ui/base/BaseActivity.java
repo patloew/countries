@@ -2,8 +2,10 @@ package com.patloew.countries.ui.base;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.patloew.countries.BR;
@@ -29,7 +31,7 @@ import io.realm.Realm;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public class BaseActivity<B extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<B extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity {
 
     protected B binding;
     @Inject protected V viewModel;
@@ -40,13 +42,15 @@ public class BaseActivity<B extends ViewDataBinding, V extends ViewModel> extend
 
     private ActivityComponent mActivityComponent;
 
-    public void setAndBindContentView(@LayoutRes int layoutResId) {
-        if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via getActivityComponent().inject(this)"); }
+    protected void setAndBindContentView(@LayoutRes int layoutResId, @Nullable Bundle savedInstanceState) {
+        if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via activityComponent().inject(this)"); }
         binding = DataBindingUtil.setContentView(this, layoutResId);
         binding.setVariable(BR.vm, viewModel);
+        //noinspection unchecked
+        viewModel.attachView((MvvmView) this, savedInstanceState);
     }
 
-    public ActivityComponent getActivityComponent() {
+    protected ActivityComponent activityComponent() {
         if(mActivityComponent == null) {
             mActivityComponent = DaggerActivityComponent.builder()
                     .appComponent(CountriesApp.getAppComponent())

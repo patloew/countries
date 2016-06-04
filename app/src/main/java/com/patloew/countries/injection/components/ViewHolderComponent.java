@@ -1,7 +1,8 @@
 package com.patloew.countries.injection.components;
 
+import com.patloew.countries.injection.modules.ViewModelModule;
 import com.patloew.countries.injection.scopes.PerViewHolder;
-import com.patloew.countries.ui.main.CountryViewHolder;
+import com.patloew.countries.ui.main.recyclerview.CountryViewHolder;
 
 import dagger.Component;
 
@@ -19,7 +20,7 @@ import dagger.Component;
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 @PerViewHolder
-@Component(dependencies = AppComponent.class)
+@Component(dependencies = AppComponent.class, modules = ViewModelModule.class)
 public interface ViewHolderComponent {
     void inject(CountryViewHolder viewHolder);
 }

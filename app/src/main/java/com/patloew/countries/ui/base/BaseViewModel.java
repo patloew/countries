@@ -40,7 +40,9 @@ public abstract class BaseViewModel<V extends MvvmView> extends BaseObservable i
         mView = null;
     }
 
+    @Override
     public void saveInstanceState(@NonNull Bundle outState) { }
 
+    @Override
     public void restoreInstanceState(@NonNull Bundle savedInstanceState) { }
 }

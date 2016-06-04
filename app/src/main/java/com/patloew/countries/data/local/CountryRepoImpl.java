@@ -66,9 +66,7 @@ public class CountryRepoImpl implements CountryRepo {
     @Override
     public void save(Country country) {
         try(Realm realm = realmProvider.get()) {
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(country);
-            realm.commitTransaction();
+            realm.executeTransaction(r -> r.copyToRealmOrUpdate(country));
         }
     }
 
@@ -76,13 +74,13 @@ public class CountryRepoImpl implements CountryRepo {
     public void delete(Country realmCountry) {
         if(realmCountry.isValid()) {
             try (Realm realm = realmProvider.get()) {
-                realm.beginTransaction();
-                realmCountry.borders.deleteAllFromRealm();
-                realmCountry.currencies.deleteAllFromRealm();
-                realmCountry.languages.deleteAllFromRealm();
-                realmCountry.translations.deleteAllFromRealm();
-                realmCountry.deleteFromRealm();
-                realm.commitTransaction();
+                realm.executeTransaction(r -> {
+                    realmCountry.borders.deleteAllFromRealm();
+                    realmCountry.currencies.deleteAllFromRealm();
+                    realmCountry.languages.deleteAllFromRealm();
+                    realmCountry.translations.deleteAllFromRealm();
+                    realmCountry.deleteFromRealm();
+                });
             }
         }
     }
@@ -93,17 +91,17 @@ public class CountryRepoImpl implements CountryRepo {
         try(Realm realm = realmProvider.get()) {
             ArrayList<Country> newCountryList = new ArrayList<>();
 
-            realm.beginTransaction();
-            for(Country country : countryList) {
-                if(realm.where(Country.class).equalTo("alpha2Code", country.alpha2Code).findFirst() != null) {
-                    // realm objects are live objects, the RealmObjects
-                    // in the list are therefore updated
-                    realm.copyToRealmOrUpdate(country);
-                } else{
-                    newCountryList.add(country);
+            realm.executeTransaction(r -> {
+                for(Country country : countryList) {
+                    if(r.where(Country.class).equalTo("alpha2Code", country.alpha2Code).findFirst() != null) {
+                        // realm objects are live objects, the RealmObjects
+                        // in the list are therefore updated
+                        r.copyToRealmOrUpdate(country);
+                    } else{
+                        newCountryList.add(country);
+                    }
                 }
-            }
-            realm.commitTransaction();
+            });
 
             for(Country country : realm.where(Country.class).findAllSorted("name", Sort.DESCENDING)) {
                 newCountryList.add(0, realm.copyFromRealm(country));

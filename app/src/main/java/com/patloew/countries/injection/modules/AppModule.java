@@ -2,6 +2,7 @@ package com.patloew.countries.injection.modules;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.patloew.countries.BuildConfig;
 import com.patloew.countries.injection.qualifier.AppContext;
@@ -39,6 +40,12 @@ public class AppModule {
     @AppContext
     Context provideAppContext() {
         return mApp;
+    }
+
+    @Provides
+    @PerApplication
+    Resources provideResources() {
+        return mApp.getResources();
     }
 
     @Provides

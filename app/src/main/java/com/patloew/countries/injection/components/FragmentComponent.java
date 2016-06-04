@@ -1,6 +1,7 @@
 package com.patloew.countries.injection.components;
 
 import com.patloew.countries.injection.modules.FragmentModule;
+import com.patloew.countries.injection.modules.ViewModelModule;
 import com.patloew.countries.injection.scopes.PerFragment;
 
 import dagger.Component;
@@ -19,7 +20,7 @@ import dagger.Component;
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 @PerFragment
-@Component(dependencies = AppComponent.class, modules = FragmentModule.class)
+@Component(dependencies = AppComponent.class, modules = {FragmentModule.class, ViewModelModule.class})
 public interface FragmentComponent {
 
 }

@@ -1,9 +1,12 @@
 package com.patloew.countries.ui.base;
 
+import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.patloew.countries.BR;
 import com.patloew.countries.CountriesApp;
 import com.patloew.countries.injection.components.DaggerViewHolderComponent;
 import com.patloew.countries.injection.components.ViewHolderComponent;
@@ -23,7 +26,7 @@ import javax.inject.Inject;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public class BaseViewHolder<B extends ViewDataBinding, V extends ViewModel> extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder<B extends ViewDataBinding, V extends ViewModel> extends RecyclerView.ViewHolder {
 
     protected B binding;
     @Inject protected V viewModel;
@@ -34,7 +37,7 @@ public class BaseViewHolder<B extends ViewDataBinding, V extends ViewModel> exte
         super(itemView);
     }
 
-    public ViewHolderComponent getViewHolderComponent() {
+    protected ViewHolderComponent viewHolderComponent() {
         if(viewHolderComponent == null) {
             viewHolderComponent = DaggerViewHolderComponent.builder()
                     .appComponent(CountriesApp.getAppComponent())
@@ -44,5 +47,13 @@ public class BaseViewHolder<B extends ViewDataBinding, V extends ViewModel> exte
         return viewHolderComponent;
     }
 
-    public V getViewModel() { return viewModel; }
+    protected void bindContentView(@NonNull View view) {
+        if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via viewHolderComponent().inject(this)"); }
+        binding = DataBindingUtil.bind(view);
+        binding.setVariable(BR.vm, viewModel);
+        //noinspection unchecked
+        viewModel.attachView((MvvmView) this, null);
+    }
+
+    public V viewModel() { return viewModel; }
 }

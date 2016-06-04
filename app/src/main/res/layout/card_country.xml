@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="vm" type="com.patloew.countries.ui.main.CountryViewModel" />
+        <variable name="vm" type="com.patloew.countries.ui.main.recyclerview.CountryViewModel" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -61,6 +61,7 @@
                 android:id="@+id/country_capital"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
                 android:paddingTop="4dp"
                 android:visibility="@{vm.capitalVisibility}"
                 android:text='@{vm.capital}'
@@ -116,28 +117,30 @@
 
         </LinearLayout>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv_bookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="12dp"
             android:layout_gravity="right|top"
             android:adjustViewBounds="true"
             android:src="@{vm.bookmarkDrawable}"
-            tools:src="@drawable/ic_bookmark_border_black"/>
+            android:onClick="@{vm.onBookmarkClick}"
+            tools:src="@drawable/ic_bookmark_border_black"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/iv_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="58dp"
+            android:layout_marginTop="50dp"
             android:layout_gravity="right|top"
             android:adjustViewBounds="true"
             android:visibility='@{vm.mapVisibility}'
             app:srcCompat="@drawable/ic_map_black"
-            tools:src="@drawable/ic_map_black"/>
+            android:onClick="@{vm.onMapClick}"
+            tools:src="@drawable/ic_map_black"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
 
     </android.support.v7.widget.CardView>
 
