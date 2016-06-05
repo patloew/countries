@@ -6,10 +6,12 @@ import com.google.gson.reflect.TypeToken;
 import com.patloew.countries.BuildConfig;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.data.model.RealmString;
+import com.patloew.countries.data.model.RealmStringMapEntry;
 import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.scopes.PerApplication;
 import com.patloew.countries.util.CountryTypeAdapter;
 import com.patloew.countries.util.RealmStringListTypeAdapter;
+import com.patloew.countries.util.RealmStringMapEntryListTypeAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -44,9 +46,10 @@ public class NetModule {
                 // Custom type adapters for models are not needed when using Gson, but this
                 // type adapter is a good example if you want to write one yourself.
                 .registerTypeAdapter(Country.class, CountryTypeAdapter.INSTANCE)
-                // This type adapter for RealmList<RealmString> is needed, since the
-                // RealmString wrapper is not recognized by Gson in the default configuration.
+                // These type adapters for RealmLists are needed, since RealmString and RealmStringMapEntry
+                // wrappers are not recognized by Gson in the default configuration.
                 .registerTypeAdapter(new TypeToken<RealmList<RealmString>>(){}.getType(), RealmStringListTypeAdapter.INSTANCE)
+                .registerTypeAdapter(new TypeToken<RealmList<RealmStringMapEntry>>(){}.getType(), RealmStringMapEntryListTypeAdapter.INSTANCE)
                 .create();
     }
 

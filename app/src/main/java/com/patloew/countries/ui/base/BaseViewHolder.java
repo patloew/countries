@@ -26,6 +26,20 @@ import javax.inject.Inject;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
+
+/* Base class for ViewHolders when using a view model with data binding.
+ * This class provides the binding and the view model to the subclass. The
+ * view model is injected and the binding is created when the content view is bound.
+ * Each subclass therefore has to call the following code in the constructor:
+ *    viewHolderComponent().inject(this);
+ *    bindContentView(view);
+ *
+ * After calling these methods, the binding and the view model is initialized.
+ * saveInstanceState() and restoreInstanceState() are not called/used for ViewHolder
+ * view models.
+ *
+ * Your subclass must implement the MvvmView implementation that you use in your
+ * view model. */
 public abstract class BaseViewHolder<B extends ViewDataBinding, V extends ViewModel> extends RecyclerView.ViewHolder {
 
     protected B binding;
@@ -37,7 +51,7 @@ public abstract class BaseViewHolder<B extends ViewDataBinding, V extends ViewMo
         super(itemView);
     }
 
-    protected ViewHolderComponent viewHolderComponent() {
+    protected final ViewHolderComponent viewHolderComponent() {
         if(viewHolderComponent == null) {
             viewHolderComponent = DaggerViewHolderComponent.builder()
                     .appComponent(CountriesApp.getAppComponent())
@@ -47,7 +61,9 @@ public abstract class BaseViewHolder<B extends ViewDataBinding, V extends ViewMo
         return viewHolderComponent;
     }
 
-    protected void bindContentView(@NonNull View view) {
+    /* Use this method to create the binding for the ViewHolder. This method also handles
+     * setting the view model on the binding and attaching the view. */
+    protected final void bindContentView(@NonNull View view) {
         if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via viewHolderComponent().inject(this)"); }
         binding = DataBindingUtil.bind(view);
         binding.setVariable(BR.vm, viewModel);
@@ -55,5 +71,5 @@ public abstract class BaseViewHolder<B extends ViewDataBinding, V extends ViewMo
         viewModel.attachView((MvvmView) this, null);
     }
 
-    public V viewModel() { return viewModel; }
+    public final V viewModel() { return viewModel; }
 }

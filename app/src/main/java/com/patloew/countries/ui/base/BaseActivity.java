@@ -31,6 +31,21 @@ import io.realm.Realm;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
+
+/* Base class for Activities when using a view model with data binding.
+ * This class provides the binding and the view model to the subclass. The
+ * view model is injected and the binding is created when the content view is set.
+ * Each subclass therefore has to call the following code in onCreate():
+ *    activityComponent().inject(this);
+ *    setAndBindContentView(R.layout.my_activity_layout, savedInstanceState);
+ *
+ * After calling these methods, the binding and the view model is initialized.
+ * saveInstanceState() and restoreInstanceState() methods of the view model
+ * are automatically called in the appropriate lifecycle events when above calls
+ * are made.
+ *
+ * Your subclass must implement the MvvmView implementation that you use in your
+ * view model. */
 public abstract class BaseActivity<B extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity {
 
     protected B binding;
@@ -42,7 +57,9 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends ViewMode
 
     private ActivityComponent mActivityComponent;
 
-    protected void setAndBindContentView(@LayoutRes int layoutResId, @Nullable Bundle savedInstanceState) {
+    /* Use this method to set the content view on your Activity. This method also handles
+     * creating the binding, setting the view model on the binding and attaching the view. */
+    protected final void setAndBindContentView(@LayoutRes int layoutResId, @Nullable Bundle savedInstanceState) {
         if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via activityComponent().inject(this)"); }
         binding = DataBindingUtil.setContentView(this, layoutResId);
         binding.setVariable(BR.vm, viewModel);
@@ -50,7 +67,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends ViewMode
         viewModel.attachView((MvvmView) this, savedInstanceState);
     }
 
-    protected ActivityComponent activityComponent() {
+    protected final ActivityComponent activityComponent() {
         if(mActivityComponent == null) {
             mActivityComponent = DaggerActivityComponent.builder()
                     .appComponent(CountriesApp.getAppComponent())
@@ -62,6 +79,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends ViewMode
     }
 
     @Override
+    @CallSuper
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if(viewModel != null) { viewModel.saveInstanceState(outState); }
