@@ -61,6 +61,12 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(viewModel != null) { viewModel.saveInstanceState(outState); }
+    }
+
+    @Override
     @CallSuper
     public void onDestroyView() {
         super.onDestroyView();

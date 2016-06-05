@@ -1,18 +1,19 @@
 package com.patloew.countries.injection.modules;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.patloew.countries.BuildConfig;
 import com.patloew.countries.data.model.Country;
+import com.patloew.countries.data.model.RealmString;
 import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.scopes.PerApplication;
 import com.patloew.countries.util.CountryTypeAdapter;
+import com.patloew.countries.util.RealmStringListTypeAdapter;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.RealmObject;
+import io.realm.RealmList;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -40,18 +41,12 @@ public class NetModule {
     @PerApplication
     static Gson provideGson() {
         return new GsonBuilder()
+                // Custom type adapters for models are not needed when using Gson, but this
+                // type adapter is a good example if you want to write one yourself.
                 .registerTypeAdapter(Country.class, CountryTypeAdapter.INSTANCE)
-                .setExclusionStrategies(new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        return f.getDeclaringClass().equals(RealmObject.class);
-                    }
-
-                    @Override
-                    public boolean shouldSkipClass(Class<?> clazz) {
-                        return false;
-                    }
-                })
+                // This type adapter for RealmList<RealmString> is needed, since the
+                // RealmString wrapper is not recognized by Gson in the default configuration.
+                .registerTypeAdapter(new TypeToken<RealmList<RealmString>>(){}.getType(), RealmStringListTypeAdapter.INSTANCE)
                 .create();
     }
 

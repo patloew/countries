@@ -62,6 +62,12 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends ViewMode
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(viewModel != null) { viewModel.saveInstanceState(outState); }
+    }
+
+    @Override
     @CallSuper
     protected void onDestroy() {
         super.onDestroy();

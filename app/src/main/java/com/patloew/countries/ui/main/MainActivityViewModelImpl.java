@@ -9,6 +9,7 @@ import com.patloew.countries.data.model.Country;
 import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.scopes.PerActivity;
 import com.patloew.countries.ui.base.BaseViewModel;
+import com.patloew.countries.util.ParcelUtil;
 
 import org.parceler.Parcels;
 
@@ -38,6 +39,8 @@ import rx.subscriptions.CompositeSubscription;
 @PerActivity
 public class MainActivityViewModelImpl extends BaseViewModel<MainActivityView> implements MainActivityViewModel {
 
+    private static final String KEY_COUNTRYLIST = "countryList";
+
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
     private final CountryRepo countryRepo;
     private final CountryApi countryApi;
@@ -52,12 +55,12 @@ public class MainActivityViewModelImpl extends BaseViewModel<MainActivityView> i
 
     @Override
     public void saveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable("countryList", Parcels.wrap(countryList));
+        outState.putParcelable(KEY_COUNTRYLIST, Parcels.wrap(countryList));
     }
 
     @Override
     public void restoreInstanceState(@NonNull Bundle savedInstanceState) {
-        countryList = Parcels.unwrap(savedInstanceState.getParcelable("countryList"));
+        countryList = ParcelUtil.getParcelable(savedInstanceState, KEY_COUNTRYLIST, countryList);
     }
 
     @Override
@@ -69,17 +72,24 @@ public class MainActivityViewModelImpl extends BaseViewModel<MainActivityView> i
     @Override
     public void onRefresh(boolean initialLoading) {
         if(initialLoading) {
-            getView().onRefresh(true, countryRepo.findAllSorted("name", Sort.ASCENDING, true));
+            if(!countryList.isEmpty()) {
+                getView().onRefresh(true, countryList);
+                return;
+            } else {
+                getView().onRefresh(true, countryRepo.findAllSorted("name", Sort.ASCENDING, true));
+            }
         }
 
         compositeSubscription.add(countryApi.getAllCountries()
                 .doOnNext(Collections::sort)
                 .map(countryRepo::update)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(countries -> getView().onRefresh(true, countries),
-                    throwable ->  {
-                        Log.e("MainActivity", "Could not load countries", throwable);
-                        getView().onRefresh(false, null);
-                    }));
+                .subscribe(countries -> {
+                            countryList = countries;
+                            getView().onRefresh(true, countries);
+                        }, throwable ->  {
+                            Log.e("MainActivity", "Could not load countries", throwable);
+                            getView().onRefresh(false, null);
+                        }));
     }
 }

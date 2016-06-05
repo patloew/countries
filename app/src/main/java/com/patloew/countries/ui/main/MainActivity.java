@@ -36,12 +36,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
     @Inject CountryAdapter adapter;
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        viewModel.saveInstanceState(outState);
-
-    }
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
