@@ -8,7 +8,7 @@ import android.view.View;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.ui.base.MvvmView;
-import com.patloew.countries.ui.main.recyclerview.CountryViewModelImpl;
+import com.patloew.countries.ui.main.recyclerview.CountryViewModel;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,7 +35,7 @@ public class CountryViewModelUnitTest {
     @Mock View view;
 
     @Mock MvvmView mvvmView;
-    CountryViewModelImpl countryViewModel;
+    CountryViewModel countryViewModel;
 
     Country internalCountry = new Country();
 
@@ -48,7 +48,7 @@ public class CountryViewModelUnitTest {
         //noinspection WrongConstant
         when(packageManager.getPackageInfo(Matchers.anyString(), Matchers.anyInt())).thenReturn(null);
 
-        countryViewModel = new CountryViewModelImpl(ctx, countryRepo);
+        countryViewModel = new CountryViewModel(ctx, countryRepo);
         countryViewModel.attachView(mvvmView, null);
 
         Whitebox.setInternalState(countryViewModel, "country", internalCountry);

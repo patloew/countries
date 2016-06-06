@@ -3,8 +3,8 @@ package com.patloew.countries;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.data.remote.CountryApi;
-import com.patloew.countries.ui.main.MainActivityView;
-import com.patloew.countries.ui.main.MainActivityViewModelImpl;
+import com.patloew.countries.ui.main.MainActivityMvvm;
+import com.patloew.countries.ui.main.MainActivityViewModel;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,14 +34,14 @@ public class MainActivityViewModelUnitTest {
     @Mock CountryRepo countryRepo;
     @Mock CountryApi countryApi;
 
-    @Mock MainActivityView mainActivityView;
-    MainActivityViewModelImpl mainActivityViewModel;
+    @Mock MainActivityMvvm.View mainActivityView;
+    MainActivityViewModel mainActivityViewModel;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        mainActivityViewModel = new MainActivityViewModelImpl(countryRepo, countryApi);
+        mainActivityViewModel = new MainActivityViewModel(countryRepo, countryApi);
         mainActivityViewModel.attachView(mainActivityView, null);
     }
 

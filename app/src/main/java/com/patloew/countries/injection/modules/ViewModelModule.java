@@ -1,9 +1,9 @@
 package com.patloew.countries.injection.modules;
 
+import com.patloew.countries.ui.main.MainActivityMvvm;
 import com.patloew.countries.ui.main.MainActivityViewModel;
-import com.patloew.countries.ui.main.MainActivityViewModelImpl;
+import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
 import com.patloew.countries.ui.main.recyclerview.CountryViewModel;
-import com.patloew.countries.ui.main.recyclerview.CountryViewModelImpl;
 
 import dagger.Binds;
 import dagger.Module;
@@ -25,9 +25,9 @@ import dagger.Module;
 public abstract class ViewModelModule {
 
     @Binds
-    abstract MainActivityViewModel bindMainActivityViewModel(MainActivityViewModelImpl mainActivityViewModelImpl);
+    abstract MainActivityMvvm.ViewModel bindMainActivityViewModel(MainActivityViewModel mainActivityViewModel);
 
     @Binds
-    abstract CountryViewModel bindCountryViewModel(CountryViewModelImpl countryViewModelImpl);
+    abstract CountryMvvm.ViewModel bindCountryViewModel(CountryViewModel countryViewModel);
 
 }

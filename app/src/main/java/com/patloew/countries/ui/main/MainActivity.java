@@ -31,7 +31,7 @@ import javax.inject.Inject;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivityViewModel> implements MainActivityView {
+public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivityMvvm.ViewModel> implements MainActivityMvvm.View {
 
     @Inject CountryAdapter adapter;
 

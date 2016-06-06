@@ -19,7 +19,7 @@ import android.support.annotation.Nullable;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public abstract class BaseViewModel<V extends MvvmView> extends BaseObservable implements ViewModel<V> {
+public abstract class BaseViewModel<V extends MvvmView> extends BaseObservable implements MvvmViewModel<V> {
 
     private V mView;
 

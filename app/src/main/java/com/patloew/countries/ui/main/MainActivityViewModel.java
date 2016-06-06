@@ -1,6 +1,27 @@
 package com.patloew.countries.ui.main;
 
-import com.patloew.countries.ui.base.ViewModel;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.patloew.countries.data.local.CountryRepo;
+import com.patloew.countries.data.model.Country;
+import com.patloew.countries.data.remote.CountryApi;
+import com.patloew.countries.injection.scopes.PerActivity;
+import com.patloew.countries.ui.base.BaseViewModel;
+import com.patloew.countries.util.ParcelUtil;
+
+import org.parceler.Parcels;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import io.realm.Sort;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -15,8 +36,60 @@ import com.patloew.countries.ui.base.ViewModel;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface MainActivityViewModel extends ViewModel<MainActivityView> {
+@PerActivity
+public class MainActivityViewModel extends BaseViewModel<MainActivityMvvm.View> implements MainActivityMvvm.ViewModel {
 
-    void onRefresh(boolean initialLoading);
+    private static final String KEY_COUNTRYLIST = "countryList";
 
+    private final CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private final CountryRepo countryRepo;
+    private final CountryApi countryApi;
+
+    private List<Country> countryList = new ArrayList<>();
+
+    @Inject
+    public MainActivityViewModel(CountryRepo countryRepo, CountryApi countryApi) {
+        this.countryRepo = countryRepo;
+        this.countryApi = countryApi;
+    }
+
+    @Override
+    public void saveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(KEY_COUNTRYLIST, Parcels.wrap(countryList));
+    }
+
+    @Override
+    public void restoreInstanceState(@NonNull Bundle savedInstanceState) {
+        countryList = ParcelUtil.getParcelable(savedInstanceState, KEY_COUNTRYLIST, countryList);
+    }
+
+    @Override
+    public void detachView() {
+        super.detachView();
+        compositeSubscription.clear();
+    }
+
+    @Override
+    public void onRefresh(boolean initialLoading) {
+        if(initialLoading) {
+            if(!countryList.isEmpty()) {
+                getView().onRefresh(true, countryList);
+                return;
+            } else {
+                getView().onRefresh(true, countryRepo.findAllSorted("name", Sort.ASCENDING, true));
+            }
+        }
+
+        compositeSubscription.add(countryApi.getAllCountries()
+                .doOnNext(Collections::sort)
+                .map(countryRepo::update)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(countries -> {
+                            countryList = countries;
+                            getView().onRefresh(true, countries);
+                        }, throwable ->  {
+                            Log.e("MainActivity", "Could not load countries", throwable);
+                            getView().onRefresh(false, null);
+                        }));
+    }
 }

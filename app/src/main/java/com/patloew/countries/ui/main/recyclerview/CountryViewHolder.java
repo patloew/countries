@@ -19,7 +19,7 @@ import com.patloew.countries.ui.base.MvvmView;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public class CountryViewHolder extends BaseViewHolder<CardCountryBinding, CountryViewModel> implements MvvmView {
+public class CountryViewHolder extends BaseViewHolder<CardCountryBinding, CountryMvvm.ViewModel> implements MvvmView {
 
     public CountryViewHolder(View v) {
         super(v);

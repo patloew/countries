@@ -1,8 +1,10 @@
-package com.patloew.countries.ui.base;
+package com.patloew.countries.ui.main;
 
-import android.databinding.Observable;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
+import com.patloew.countries.data.model.Country;
+import com.patloew.countries.ui.base.MvvmView;
+import com.patloew.countries.ui.base.MvvmViewModel;
+
+import java.util.List;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -17,10 +19,13 @@ import android.support.annotation.NonNull;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface ViewModel<V extends MvvmView> extends Observable {
-    void attachView(V view, Bundle savedInstanceState);
-    void detachView();
+public interface MainActivityMvvm {
 
-    void saveInstanceState(@NonNull Bundle outState);
-    void restoreInstanceState(@NonNull Bundle savedInstanceState);
+    interface View extends MvvmView {
+        void onRefresh(boolean success, List<Country> countries);
+    }
+
+    interface ViewModel extends MvvmViewModel<View> {
+        void onRefresh(boolean initialLoading);
+    }
 }

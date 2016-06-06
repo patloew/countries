@@ -40,7 +40,7 @@ import javax.inject.Inject;
  *
  * Your subclass must implement the MvvmView implementation that you use in your
  * view model. */
-public abstract class BaseViewHolder<B extends ViewDataBinding, V extends ViewModel> extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder<B extends ViewDataBinding, V extends MvvmViewModel> extends RecyclerView.ViewHolder {
 
     protected B binding;
     @Inject protected V viewModel;

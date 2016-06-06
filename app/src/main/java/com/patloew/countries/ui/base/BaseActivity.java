@@ -46,7 +46,7 @@ import io.realm.Realm;
  *
  * Your subclass must implement the MvvmView implementation that you use in your
  * view model. */
-public abstract class BaseActivity<B extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<B extends ViewDataBinding, V extends MvvmViewModel> extends AppCompatActivity {
 
     protected B binding;
     @Inject protected V viewModel;

@@ -48,7 +48,7 @@ import javax.inject.Inject;
  *
  * Your subclass must implement the MvvmView implementation that you use in your
  * view model. */
-public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewModel> extends Fragment {
+public abstract class BaseFragment<B extends ViewDataBinding, V extends MvvmViewModel> extends Fragment {
 
     protected B binding;
     @Inject protected V viewModel;
