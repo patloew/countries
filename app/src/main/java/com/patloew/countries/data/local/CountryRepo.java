@@ -4,7 +4,6 @@ import android.support.annotation.Nullable;
 
 import com.patloew.countries.data.model.Country;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Sort;
@@ -32,5 +31,5 @@ public interface CountryRepo {
 
     void delete(Country country);
 
-    ArrayList<Country> update(List<Country> countryList);
+    List<Country> update(List<Country> countryList);
 }

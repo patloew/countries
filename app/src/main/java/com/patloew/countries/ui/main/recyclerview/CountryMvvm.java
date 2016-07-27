@@ -1,6 +1,5 @@
 package com.patloew.countries.ui.main.recyclerview;
 
-import android.databinding.Bindable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -45,7 +44,6 @@ public interface CountryMvvm {
         CharSequence getLocation();
         int getBorderVisibility();
         CharSequence getBorders();
-        @Bindable
         Drawable getBookmarkDrawable();
         int getMapVisibility();
         int getCardBottomMargin();

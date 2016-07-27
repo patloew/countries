@@ -125,7 +125,7 @@
             android:layout_gravity="right|top"
             android:adjustViewBounds="true"
             android:src="@{vm.bookmarkDrawable}"
-            android:onClick="@{vm.onBookmarkClick}"
+            android:onClick="@{vm::onBookmarkClick}"
             tools:src="@drawable/ic_bookmark_border_black"
             style="@style/Widget.AppCompat.Button.Borderless"/>
 
@@ -138,7 +138,7 @@
             android:adjustViewBounds="true"
             android:visibility='@{vm.mapVisibility}'
             app:srcCompat="@drawable/ic_map_black"
-            android:onClick="@{vm.onMapClick}"
+            android:onClick="@{vm::onMapClick}"
             tools:src="@drawable/ic_map_black"
             style="@style/Widget.AppCompat.Button.Borderless"/>
 

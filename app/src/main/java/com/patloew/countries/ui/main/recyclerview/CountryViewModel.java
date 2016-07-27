@@ -3,6 +3,7 @@ package com.patloew.countries.ui.main.recyclerview;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -233,6 +234,7 @@ public class CountryViewModel extends BaseViewModel<MvvmView> implements Country
     }
 
     @Override
+    @Bindable
     public Drawable getBookmarkDrawable() {
         return AppCompatDrawableManager.get().getDrawable(ctx, countryRepo.getByField("alpha2Code", country.alpha2Code, false) != null ? R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_border_black);
     }

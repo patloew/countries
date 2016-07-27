@@ -1,7 +1,7 @@
 package com.patloew.countries.injection.modules;
 
 import com.patloew.countries.data.local.CountryRepo;
-import com.patloew.countries.data.local.CountryRepoImpl;
+import com.patloew.countries.data.local.RealmCountryRepo;
 
 import dagger.Binds;
 import dagger.Module;
@@ -23,6 +23,6 @@ import dagger.Module;
 public abstract class DataModule {
 
     @Binds
-    abstract CountryRepo bindCountryRepo(CountryRepoImpl countryRepoImpl);
+    abstract CountryRepo bindCountryRepo(RealmCountryRepo realmCountryRepo);
 
 }

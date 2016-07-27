@@ -31,12 +31,12 @@ import io.realm.Sort;
  * limitations under the License. */
 @PerApplication
 @SuppressLint("NewApi") // try-with-resources is backported by retrolambda
-public class CountryRepoImpl implements CountryRepo {
+public class RealmCountryRepo implements CountryRepo {
 
     private final Provider<Realm> realmProvider;
 
     @Inject
-    public CountryRepoImpl(Provider<Realm> realmProvider) {
+    public RealmCountryRepo(Provider<Realm> realmProvider) {
         this.realmProvider = realmProvider;
     }
 
@@ -87,7 +87,7 @@ public class CountryRepoImpl implements CountryRepo {
 
 
     @Override
-    public ArrayList<Country> update(List<Country> countryList) {
+    public List<Country> update(List<Country> countryList) {
         try(Realm realm = realmProvider.get()) {
             ArrayList<Country> newCountryList = new ArrayList<>();
 
