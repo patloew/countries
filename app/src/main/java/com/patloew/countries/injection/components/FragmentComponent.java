@@ -3,6 +3,8 @@ package com.patloew.countries.injection.components;
 import com.patloew.countries.injection.modules.FragmentModule;
 import com.patloew.countries.injection.modules.ViewModelModule;
 import com.patloew.countries.injection.scopes.PerFragment;
+import com.patloew.countries.ui.main.viewpager.all.AllCountriesFragment;
+import com.patloew.countries.ui.main.viewpager.favorites.FavoriteCountriesFragment;
 
 import dagger.Component;
 
@@ -22,5 +24,6 @@ import dagger.Component;
 @PerFragment
 @Component(dependencies = AppComponent.class, modules = {FragmentModule.class, ViewModelModule.class})
 public interface FragmentComponent {
-
+    void inject(AllCountriesFragment fragment);
+    void inject(FavoriteCountriesFragment fragment);
 }

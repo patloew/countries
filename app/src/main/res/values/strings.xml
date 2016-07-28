@@ -11,4 +11,6 @@
     <string name="country_location"><![CDATA[<b>Location:</b> %1$s, %2$s]]></string>
     <string name="snackbar_action_retry">Retry</string>
     <string name="menu_item_licenses">Licenses</string>
+    <string name="tab_title_all">All</string>
+    <string name="tab_title_favorites">Favorites</string>
 </resources>

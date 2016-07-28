@@ -7,7 +7,6 @@ import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v7.widget.AppCompatDrawableManager;
 import android.text.Html;
 import android.text.TextUtils;
@@ -18,18 +17,12 @@ import com.patloew.countries.BR;
 import com.patloew.countries.R;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
-import com.patloew.countries.data.model.RealmString;
-import com.patloew.countries.data.model.RealmStringMapEntry;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerViewHolder;
 import com.patloew.countries.ui.base.BaseViewModel;
 import com.patloew.countries.ui.base.MvvmView;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Currency;
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -58,9 +51,7 @@ public class CountryViewModel extends BaseViewModel<MvvmView> implements Country
     private final boolean mapsAvailable;
 
     private Country country;
-    private List<Country> countryList;
-    private List<String> borderList;
-    private int layoutPosition;
+    private boolean isLast = false;
 
     @Inject
     public CountryViewModel(@AppContext Context context, CountryRepo countryRepo) {
@@ -91,8 +82,9 @@ public class CountryViewModel extends BaseViewModel<MvvmView> implements Country
         Country realmCountry = countryRepo.getByField("alpha2Code", country.alpha2Code, false);
 
         if(realmCountry == null) {
-            countryRepo.save(country);
+            countryRepo.update(country);
         } else {
+            country = countryRepo.detach(country);
             countryRepo.delete(realmCountry);
         }
 
@@ -100,31 +92,9 @@ public class CountryViewModel extends BaseViewModel<MvvmView> implements Country
     }
 
     @Override
-    public void update(List<Country> countryList, int layoutPosition) {
-        this.country = countryList.get(layoutPosition);
-        this.countryList = countryList;
-        this.layoutPosition = layoutPosition;
-
-        if (country.borders.size() == 0 || countryList == null) {
-            borderList = new ArrayList<>(0);
-        } else {
-            borderList = new ArrayList<>(country.borders.size());
-            ArrayList<String> alpha3List = new ArrayList<>(country.borders.size());
-
-            for (RealmString borderAlpha3CodeString : country.borders) {
-                alpha3List.add(borderAlpha3CodeString.value);
-            }
-
-            for (Country c : countryList) {
-                if (alpha3List.contains(c.alpha3Code)) {
-                    borderList.add(c.name);
-                    alpha3List.remove(c.alpha3Code);
-                    if (alpha3List.isEmpty()) {
-                        break;
-                    }
-                }
-            }
-        }
+    public void update(Country country, boolean isLast) {
+        this.isLast = isLast;
+        this.country = country;
 
         notifyChange();
     }
@@ -136,19 +106,6 @@ public class CountryViewModel extends BaseViewModel<MvvmView> implements Country
         String nameInfo = country.name + " (" + country.alpha2Code;
         if(!country.name.equals(country.nativeName)) { nameInfo += ", " + country.nativeName; }
         return nameInfo + ")";
-    }
-
-    @Override
-    public CharSequence getNameTranslations() {
-        ArrayList<String> nameList = new ArrayList<>(country.translations.size());
-
-        for(RealmStringMapEntry entry : country.translations) {
-            nameList.add(entry.value + " <i>(" + new Locale(entry.key).getDisplayLanguage(DISPLAY_LOCALE) + ")</i>");
-        }
-
-        Collections.sort(nameList);
-
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_name_translations), TextUtils.join(", ", nameList)));
     }
 
     @Override
@@ -168,45 +125,7 @@ public class CountryViewModel extends BaseViewModel<MvvmView> implements Country
 
     @Override
     public CharSequence getPopulation() {
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_capital), DECIMAL_FORMAT.format(country.population)));
-    }
-
-    @Override
-    public CharSequence getLanguages() {
-        ArrayList<String> languageList = new ArrayList<>(country.languages.size());
-
-        for(RealmString language : country.languages) {
-            languageList.add(new Locale(language.value).getDisplayLanguage(DISPLAY_LOCALE));
-        }
-
-        Collections.sort(languageList);
-
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_languages), TextUtils.join(", ", languageList)));
-    }
-
-    @Override
-    public CharSequence getCurrencies() {
-        ArrayList<String> currenciesList = new ArrayList<>(country.currencies.size());
-
-        for(RealmString currencyRealmString : country.currencies) {
-            String currencyString = currencyRealmString.value;
-            if(Build.VERSION.SDK_INT >= 19) {
-                try {
-                    Currency currency = Currency.getInstance(currencyString);
-                    String currencySymbol = currency.getSymbol();
-                    if(!currencyString.equals(currencySymbol)) { currencySymbol = currencyString + ", " + currencySymbol;}
-                    currenciesList.add(currency.getDisplayName(DISPLAY_LOCALE) + " (" + currencySymbol + ")");
-                } catch(IllegalArgumentException ignore) {
-                    currenciesList.add(currencyString);
-                }
-            } else {
-                currenciesList.add(currencyString);
-            }
-        }
-
-        Collections.sort(currenciesList);
-
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_currencies), TextUtils.join(", ", currenciesList)));
+        return Html.fromHtml(String.format(ctx.getString(R.string.country_population), DECIMAL_FORMAT.format(country.population)));
     }
 
     @Override
@@ -224,16 +143,6 @@ public class CountryViewModel extends BaseViewModel<MvvmView> implements Country
     }
 
     @Override
-    public int getBorderVisibility() {
-        return borderList.isEmpty() ? View.GONE : View.VISIBLE;
-    }
-
-    @Override
-    public CharSequence getBorders() {
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_borders), TextUtils.join(", ", borderList)));
-    }
-
-    @Override
     @Bindable
     public Drawable getBookmarkDrawable() {
         return AppCompatDrawableManager.get().getDrawable(ctx, countryRepo.getByField("alpha2Code", country.alpha2Code, false) != null ? R.drawable.ic_bookmark_black : R.drawable.ic_bookmark_border_black);
@@ -246,7 +155,7 @@ public class CountryViewModel extends BaseViewModel<MvvmView> implements Country
 
     @Override
     public int getCardBottomMargin() {
-        return layoutPosition == countryList.size()-1 ? (int) ctx.getResources().getDimension(R.dimen.card_outer_padding) : 0;
+        return isLast ? (int) ctx.getResources().getDimension(R.dimen.card_outer_padding) : 0;
     }
 
     @BindingAdapter("android:layout_marginBottom")

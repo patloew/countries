@@ -1,10 +1,6 @@
-package com.patloew.countries.ui.main;
+package com.patloew.countries.ui.base;
 
-import com.patloew.countries.data.model.Country;
-import com.patloew.countries.ui.base.MvvmView;
-import com.patloew.countries.ui.base.MvvmViewModel;
-
-import java.util.List;
+import javax.inject.Inject;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -19,13 +15,8 @@ import java.util.List;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface MainActivityMvvm {
+public final class NoOpViewModel extends BaseViewModel<MvvmView> {
 
-    interface View extends MvvmView {
-        void onRefresh(boolean success, List<Country> countries);
-    }
-
-    interface ViewModel extends MvvmViewModel<View> {
-        void onRefresh(boolean initialLoading);
-    }
+    @Inject
+    public NoOpViewModel() { }
 }

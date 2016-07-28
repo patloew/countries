@@ -1,20 +1,20 @@
 package com.patloew.countries.ui.main;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.patloew.countries.R;
-import com.patloew.countries.data.model.Country;
 import com.patloew.countries.databinding.ActivityMainBinding;
 import com.patloew.countries.ui.base.BaseActivity;
-import com.patloew.countries.ui.main.recyclerview.CountryAdapter;
-
-import java.util.List;
+import com.patloew.countries.ui.base.MvvmView;
+import com.patloew.countries.ui.base.NoOpViewModel;
+import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
+import com.patloew.countries.ui.main.viewpager.MainAdapter;
 
 import javax.inject.Inject;
 
@@ -31,9 +31,9 @@ import javax.inject.Inject;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivityMvvm.ViewModel> implements MainActivityMvvm.View {
+public class MainActivity extends BaseActivity<ActivityMainBinding, NoOpViewModel> implements MvvmView {
 
-    @Inject CountryAdapter adapter;
+    @Inject MainAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +42,21 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
         activityComponent().inject(this);
         setAndBindContentView(R.layout.activity_main, savedInstanceState);
 
-        binding.rvCountries.setHasFixedSize(true);
-        binding.rvCountries.setLayoutManager(new LinearLayoutManager(this));
-        binding.rvCountries.setAdapter(adapter);
+        setSupportActionBar(binding.toolbar);
 
-        binding.srlCountries.setOnRefreshListener(() -> viewModel.onRefresh(false));
+        binding.viewPager.setAdapter(adapter);
+        binding.tabLayout.setupWithViewPager(binding.viewPager);
+        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+            @Override public void onPageScrollStateChanged(int state) {}
 
-        if(savedInstanceState == null) {
-            binding.srlCountries.post(() -> binding.srlCountries.setRefreshing(true));
-        }
-
-        viewModel.onRefresh(true);
+            @Override public void onPageSelected(int position) {
+                if (position == 0) {
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + binding.viewPager.getCurrentItem());
+                    ((CountriesMvvm.View) currentFragment).notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     @Override
@@ -75,17 +79,4 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onRefresh(boolean success, List<Country> countries) {
-        if(success) {
-            adapter.setCountryList(countries);
-            adapter.notifyDataSetChanged();
-        } else {
-            Snackbar.make(binding.rvCountries, "Could not load countries", Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.snackbar_action_retry, v -> viewModel.onRefresh(false))
-                    .show();
-        }
-
-        binding.srlCountries.setRefreshing(false);
-    }
 }

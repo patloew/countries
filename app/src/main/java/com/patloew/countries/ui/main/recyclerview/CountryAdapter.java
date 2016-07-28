@@ -8,9 +8,10 @@ import android.view.ViewGroup;
 
 import com.patloew.countries.R;
 import com.patloew.countries.data.model.Country;
-import com.patloew.countries.injection.scopes.PerActivity;
+import com.patloew.countries.injection.scopes.PerFragment;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,10 +29,10 @@ import javax.inject.Inject;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-@PerActivity
+@PerFragment
 public class CountryAdapter extends RecyclerView.Adapter<CountryViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
 
-    private List<Country> countryList;
+    private List<Country> countryList = new ArrayList<>();
 
     @Inject
     public CountryAdapter() { }
@@ -51,7 +52,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryViewHolder> impl
 
     @Override
     public void onBindViewHolder(CountryViewHolder countryViewHolder, int position) {
-        countryViewHolder.viewModel().update(countryList, position);
+        countryViewHolder.viewModel().update(countryList.get(position), position == countryList.size()-1);
     }
 
     @Override

@@ -68,7 +68,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends MvvmView
 
     /* Use this method to inflate the content view for your Fragment. This method also handles
      * creating the binding, setting the view model on the binding and attaching the view. */
-    protected final View setAndBindContentView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @LayoutRes int layoutResId, @NonNull Bundle savedInstanceState) {
+    protected final View setAndBindContentView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @LayoutRes int layoutResId, Bundle savedInstanceState) {
         if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via fragmentComponent().inject(this)"); }
         binding = DataBindingUtil.inflate(inflater, layoutResId, container, false);
         binding.setVariable(BR.vm, viewModel);

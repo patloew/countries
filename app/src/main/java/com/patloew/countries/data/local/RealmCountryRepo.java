@@ -6,13 +6,13 @@ import android.support.annotation.Nullable;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.injection.scopes.PerApplication;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -54,6 +54,15 @@ public class RealmCountryRepo implements CountryRepo {
     }
 
     @Override
+    public RealmResults<Country> findAllSortedWithListener(String sortField, Sort sort, RealmChangeListener<RealmResults<Country>> listener) {
+        try(Realm realm = realmProvider.get()) {
+            RealmResults<Country> realmResults = realm.where(Country.class).findAllSorted(sortField, sort);
+            realmResults.addChangeListener(listener);
+            return realmResults;
+        }
+    }
+
+    @Override
     @Nullable
     public Country getByField(String field, String value, boolean detached) {
         try(Realm realm = realmProvider.get()) {
@@ -64,7 +73,7 @@ public class RealmCountryRepo implements CountryRepo {
     }
 
     @Override
-    public void save(Country country) {
+    public void update(Country country) {
         try(Realm realm = realmProvider.get()) {
             realm.executeTransaction(r -> r.copyToRealmOrUpdate(country));
         }
@@ -85,29 +94,14 @@ public class RealmCountryRepo implements CountryRepo {
         }
     }
 
-
     @Override
-    public List<Country> update(List<Country> countryList) {
-        try(Realm realm = realmProvider.get()) {
-            ArrayList<Country> newCountryList = new ArrayList<>();
-
-            realm.executeTransaction(r -> {
-                for(Country country : countryList) {
-                    if(r.where(Country.class).equalTo("alpha2Code", country.alpha2Code).findFirst() != null) {
-                        // realm objects are live objects, the RealmObjects
-                        // in the list are therefore updated
-                        r.copyToRealmOrUpdate(country);
-                    } else{
-                        newCountryList.add(country);
-                    }
-                }
-            });
-
-            for(Country country : realm.where(Country.class).findAllSorted("name", Sort.DESCENDING)) {
-                newCountryList.add(0, realm.copyFromRealm(country));
+    public Country detach(Country country) {
+        if(country.isValid()) {
+            try(Realm realm = realmProvider.get()) {
+                return realm.copyFromRealm(country);
             }
-
-            return newCountryList;
+        } else {
+            return country;
         }
     }
 }

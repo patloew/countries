@@ -8,6 +8,7 @@ import com.patloew.countries.injection.components.DaggerAppComponent;
 import com.patloew.countries.injection.modules.AppModule;
 
 import io.realm.Realm;
+import timber.log.Timber;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -36,6 +37,8 @@ public class CountriesApp extends Application {
         sAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
+
+        if(BuildConfig.DEBUG) { Timber.plant(new Timber.DebugTree()); }
     }
 
     public static CountriesApp getInstance() { return sInstance; }

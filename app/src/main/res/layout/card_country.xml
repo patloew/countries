@@ -38,16 +38,6 @@
                 tools:text="Country"/>
 
             <TextView
-                android:id="@+id/country_name_translations"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="40dp"
-                android:paddingTop="4dp"
-                android:text='@{vm.nameTranslations}'
-                style="@style/TextAppearance.AppCompat"
-                tools:text="Name translations: Country Name"/>
-
-            <TextView
                 android:id="@+id/country_region"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,24 +68,6 @@
                 tools:text="Population: 1000000"/>
 
             <TextView
-                android:id="@+id/country_languages"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="4dp"
-                android:text='@{vm.languages}'
-                style="@style/TextAppearance.AppCompat"
-                tools:text="Languages: English"/>
-
-            <TextView
-                android:id="@+id/country_currencies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="4dp"
-                android:text='@{vm.currencies}'
-                style="@style/TextAppearance.AppCompat"
-                tools:text="Currencies: Euro €"/>
-
-            <TextView
                 android:id="@+id/country_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,16 +76,6 @@
                 android:text='@{vm.location}'
                 style="@style/TextAppearance.AppCompat"
                 tools:text="Location: 12.45, 67.89"/>
-
-            <TextView
-                android:id="@+id/country_borders"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="4dp"
-                android:visibility="@{vm.borderVisibility}"
-                android:text='@{vm.borders}'
-                style="@style/TextAppearance.AppCompat"
-                tools:text="Borders: Other country"/>
 
         </LinearLayout>
 
