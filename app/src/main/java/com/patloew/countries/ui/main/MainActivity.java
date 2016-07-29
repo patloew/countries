@@ -11,8 +11,8 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.patloew.countries.R;
 import com.patloew.countries.databinding.ActivityMainBinding;
 import com.patloew.countries.ui.base.BaseActivity;
-import com.patloew.countries.ui.base.MvvmView;
-import com.patloew.countries.ui.base.NoOpViewModel;
+import com.patloew.countries.ui.base.view.MvvmView;
+import com.patloew.countries.ui.base.viewmodel.NoOpViewModel;
 import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
 import com.patloew.countries.ui.main.viewpager.MainAdapter;
 

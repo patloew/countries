@@ -13,6 +13,8 @@ import com.patloew.countries.CountriesApp;
 import com.patloew.countries.injection.components.ActivityComponent;
 import com.patloew.countries.injection.components.DaggerActivityComponent;
 import com.patloew.countries.injection.modules.ActivityModule;
+import com.patloew.countries.ui.base.view.MvvmView;
+import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
 
 import javax.inject.Inject;
 

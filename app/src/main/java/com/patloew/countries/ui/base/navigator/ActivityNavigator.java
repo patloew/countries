@@ -1,7 +1,7 @@
-package com.patloew.countries.ui.detail;
+package com.patloew.countries.ui.base.navigator;
 
-import com.patloew.countries.ui.base.view.MvvmView;
-import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -16,19 +16,21 @@ import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface DetailMvvm {
+public class ActivityNavigator extends BaseNavigator {
 
-    interface View extends MvvmView {
+    private final FragmentActivity activity;
 
+    public ActivityNavigator(FragmentActivity activity) {
+        this.activity = activity;
     }
 
-    interface ViewModel extends CountryMvvm.ViewModel<View> {
-        // Properties
-        boolean getDetailVisibility();
-        CharSequence getNameTranslations();
-        CharSequence getLanguages();
-        CharSequence getCurrencies();
-        int getBorderVisibility();
-        CharSequence getBorders();
+    @Override
+    final FragmentActivity getActivity() {
+        return activity;
+    }
+
+    @Override
+    final FragmentManager getChildFragmentManager() {
+        throw new UnsupportedOperationException("Activities do not have a child fragment manager.");
     }
 }

@@ -1,7 +1,9 @@
-package com.patloew.countries.ui.detail;
+package com.patloew.countries.injection.qualifier;
 
-import com.patloew.countries.ui.base.view.MvvmView;
-import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import javax.inject.Qualifier;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -16,19 +18,6 @@ import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface DetailMvvm {
-
-    interface View extends MvvmView {
-
-    }
-
-    interface ViewModel extends CountryMvvm.ViewModel<View> {
-        // Properties
-        boolean getDetailVisibility();
-        CharSequence getNameTranslations();
-        CharSequence getLanguages();
-        CharSequence getCurrencies();
-        int getBorderVisibility();
-        CharSequence getBorders();
-    }
-}
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ChildFragmentManager {}

@@ -1,7 +1,10 @@
-package com.patloew.countries.ui.detail;
+package com.patloew.countries.ui.base.viewmodel;
+
+import android.databinding.Observable;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.patloew.countries.ui.base.view.MvvmView;
-import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -16,19 +19,10 @@ import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface DetailMvvm {
+public interface MvvmViewModel<V extends MvvmView> extends Observable {
+    void attachView(V view, Bundle savedInstanceState);
+    void detachView();
 
-    interface View extends MvvmView {
-
-    }
-
-    interface ViewModel extends CountryMvvm.ViewModel<View> {
-        // Properties
-        boolean getDetailVisibility();
-        CharSequence getNameTranslations();
-        CharSequence getLanguages();
-        CharSequence getCurrencies();
-        int getBorderVisibility();
-        CharSequence getBorders();
-    }
+    void saveInstanceState(@NonNull Bundle outState);
+    void restoreInstanceState(@NonNull Bundle savedInstanceState);
 }

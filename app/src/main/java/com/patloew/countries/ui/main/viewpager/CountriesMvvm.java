@@ -1,8 +1,8 @@
 package com.patloew.countries.ui.main.viewpager;
 
 import com.patloew.countries.data.model.Country;
-import com.patloew.countries.ui.base.MvvmView;
-import com.patloew.countries.ui.base.MvvmViewModel;
+import com.patloew.countries.ui.base.view.MvvmView;
+import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
 
 import java.util.List;
 

@@ -18,8 +18,8 @@ import com.patloew.countries.R;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.injection.qualifier.AppContext;
-import com.patloew.countries.ui.base.BaseViewModel;
-import com.patloew.countries.ui.base.MvvmView;
+import com.patloew.countries.ui.base.view.MvvmView;
+import com.patloew.countries.ui.base.viewmodel.BaseViewModel;
 
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -66,10 +66,7 @@ public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewM
     @Override
     public void onMapClick(View view) {
         Uri gmmIntentUri = Uri.parse("geo:"+country.lat+","+country.lng+"?q="+country.name+"&z=2");
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        ctx.startActivity(mapIntent);
+        navigator.startActivity(Intent.ACTION_VIEW, gmmIntentUri);
     }
 
     @Override

@@ -1,6 +1,9 @@
-package com.patloew.countries.ui.base;
+package com.patloew.countries.injection.qualifier;
 
-import javax.inject.Inject;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import javax.inject.Qualifier;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -15,8 +18,6 @@ import javax.inject.Inject;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public final class NoOpViewModel extends BaseViewModel<MvvmView> {
-
-    @Inject
-    public NoOpViewModel() { }
-}
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DefaultFragmentManager {}

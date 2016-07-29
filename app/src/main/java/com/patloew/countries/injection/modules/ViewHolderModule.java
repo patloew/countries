@@ -3,9 +3,10 @@ package com.patloew.countries.injection.modules;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.patloew.countries.injection.qualifier.ActivityContext;
-import com.patloew.countries.injection.scopes.PerActivity;
+import com.patloew.countries.injection.scopes.PerViewHolder;
 import com.patloew.countries.ui.base.navigator.ActivityNavigator;
 import com.patloew.countries.ui.base.navigator.Navigator;
 
@@ -26,25 +27,25 @@ import dagger.Provides;
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 @Module
-public class ActivityModule {
+public class ViewHolderModule {
 
-    private final AppCompatActivity mActivity;
+    private final AppCompatActivity activity;
 
-    public ActivityModule(AppCompatActivity activity) {
-        mActivity = activity;
+    public ViewHolderModule(View itemView) {
+        activity = (AppCompatActivity) itemView.getContext();
     }
 
     @Provides
-    @PerActivity
+    @PerViewHolder
     @ActivityContext
-    Context provideActivityContext() { return mActivity; }
+    Context provideActivityContext() { return activity; }
 
     @Provides
-    @PerActivity
-    FragmentManager provideFragmentManager() { return mActivity.getSupportFragmentManager(); }
+    @PerViewHolder
+    FragmentManager provideFragmentManager() { return activity.getSupportFragmentManager(); }
 
     @Provides
-    @PerActivity
-    Navigator provideNavigator() { return new ActivityNavigator(mActivity); }
+    @PerViewHolder
+    Navigator provideNavigator() { return new ActivityNavigator(activity); }
 
 }

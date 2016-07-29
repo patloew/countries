@@ -1,7 +1,4 @@
-package com.patloew.countries.ui.detail;
-
-import com.patloew.countries.ui.base.view.MvvmView;
-import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
+package com.patloew.countries.ui.base.view;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -16,19 +13,6 @@ import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface DetailMvvm {
+public interface MvvmView {
 
-    interface View extends MvvmView {
-
-    }
-
-    interface ViewModel extends CountryMvvm.ViewModel<View> {
-        // Properties
-        boolean getDetailVisibility();
-        CharSequence getNameTranslations();
-        CharSequence getLanguages();
-        CharSequence getCurrencies();
-        int getBorderVisibility();
-        CharSequence getBorders();
-    }
 }

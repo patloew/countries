@@ -10,6 +10,9 @@ import com.patloew.countries.BR;
 import com.patloew.countries.CountriesApp;
 import com.patloew.countries.injection.components.DaggerViewHolderComponent;
 import com.patloew.countries.injection.components.ViewHolderComponent;
+import com.patloew.countries.injection.modules.ViewHolderModule;
+import com.patloew.countries.ui.base.view.MvvmView;
+import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
 
 import javax.inject.Inject;
 
@@ -47,15 +50,21 @@ public abstract class BaseViewHolder<B extends ViewDataBinding, V extends MvvmVi
 
     private ViewHolderComponent viewHolderComponent;
 
+    private View itemView = null;
+
     public BaseViewHolder(View itemView) {
         super(itemView);
+        this.itemView = itemView;
     }
 
     protected final ViewHolderComponent viewHolderComponent() {
         if(viewHolderComponent == null) {
             viewHolderComponent = DaggerViewHolderComponent.builder()
                     .appComponent(CountriesApp.getAppComponent())
+                    .viewHolderModule(new ViewHolderModule(itemView))
                     .build();
+
+            itemView = null;
         }
 
         return viewHolderComponent;

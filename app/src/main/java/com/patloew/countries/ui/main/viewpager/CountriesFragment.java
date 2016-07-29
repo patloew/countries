@@ -11,7 +11,7 @@ import com.patloew.countries.R;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.databinding.FragmentRecyclerviewBinding;
 import com.patloew.countries.ui.base.BaseFragment;
-import com.patloew.countries.ui.base.MvvmViewModel;
+import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
 import com.patloew.countries.ui.main.recyclerview.CountryAdapter;
 
 import java.util.List;

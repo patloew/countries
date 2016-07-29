@@ -1,4 +1,8 @@
-package com.patloew.countries.ui.base;
+package com.patloew.countries.ui.base.navigator;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -13,6 +17,21 @@ package com.patloew.countries.ui.base;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface MvvmView {
+public class FragmentNavigator extends BaseNavigator {
 
+    private final Fragment fragment;
+
+    public FragmentNavigator(Fragment fragment) {
+        this.fragment = fragment;
+    }
+
+    @Override
+    final FragmentActivity getActivity() {
+        return fragment.getActivity();
+    }
+
+    @Override
+    final FragmentManager getChildFragmentManager() {
+        return fragment.getChildFragmentManager();
+    }
 }

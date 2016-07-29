@@ -1,11 +1,15 @@
 package com.patloew.countries.ui.main.recyclerview;
 
 import android.content.Context;
+import android.view.View;
 
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerViewHolder;
-import com.patloew.countries.ui.base.MvvmView;
+import com.patloew.countries.ui.base.view.MvvmView;
+import com.patloew.countries.ui.detail.DetailActivity;
+
+import org.parceler.Parcels;
 
 import javax.inject.Inject;
 
@@ -29,6 +33,10 @@ public class CountryViewModel extends BaseCountryViewModel<MvvmView> {
     @Inject
     public CountryViewModel(@AppContext Context context, CountryRepo countryRepo) {
         super(context, countryRepo);
+    }
+
+    public void onCardClick(View v) {
+        navigator.startActivity(DetailActivity.class, Parcels.wrap(country));
     }
 
 }

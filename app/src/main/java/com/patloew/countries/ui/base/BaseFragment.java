@@ -17,6 +17,8 @@ import com.patloew.countries.CountriesApp;
 import com.patloew.countries.injection.components.DaggerFragmentComponent;
 import com.patloew.countries.injection.components.FragmentComponent;
 import com.patloew.countries.injection.modules.FragmentModule;
+import com.patloew.countries.ui.base.view.MvvmView;
+import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
 
 import javax.inject.Inject;
 

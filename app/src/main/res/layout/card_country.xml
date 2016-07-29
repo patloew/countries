@@ -16,6 +16,7 @@
         android:layout_marginRight="@dimen/card_outer_padding"
         android:layout_marginBottom='@{vm.cardBottomMargin}'
         android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{vm::onCardClick}"
         app:cardElevation="2dp"
         app:cardCornerRadius="2dp"
         app:cardUseCompatPadding="true">

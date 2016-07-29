@@ -1,10 +1,15 @@
-package com.patloew.countries.ui.base;
+package com.patloew.countries.ui.base.viewmodel;
 
 import android.databinding.BaseObservable;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.patloew.countries.ui.base.navigator.Navigator;
+import com.patloew.countries.ui.base.view.MvvmView;
+
+import javax.inject.Inject;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -20,6 +25,8 @@ import android.support.annotation.Nullable;
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 public abstract class BaseViewModel<V extends MvvmView> extends BaseObservable implements MvvmViewModel<V> {
+
+    @Inject protected Navigator navigator;
 
     private V mView;
 

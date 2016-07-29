@@ -1,6 +1,6 @@
 package com.patloew.countries.ui.main.viewpager.favorites;
 
-import com.patloew.countries.ui.base.MvvmViewModel;
+import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
 import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
 
 /* Copyright 2016 Patrick Löwenstein

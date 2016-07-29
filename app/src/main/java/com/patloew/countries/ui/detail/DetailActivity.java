@@ -1,7 +1,5 @@
 package com.patloew.countries.ui.detail;
 
-import android.content.Context;
-import android.content.Intent;
 import android.databinding.Observable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,9 +10,9 @@ import android.view.MenuItem;
 
 import com.patloew.countries.BR;
 import com.patloew.countries.R;
-import com.patloew.countries.data.model.Country;
 import com.patloew.countries.databinding.ActivityDetailBinding;
 import com.patloew.countries.ui.base.BaseActivity;
+import com.patloew.countries.ui.base.navigator.Navigator;
 
 import org.parceler.Parcels;
 
@@ -33,14 +31,6 @@ import org.parceler.Parcels;
  * limitations under the License. */
 public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailMvvm.ViewModel> implements DetailMvvm.View {
 
-    public static Intent getIntent(Context context, Country country) {
-        Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra(EXTRA_COUNTRY, Parcels.wrap(country));
-        return intent;
-    }
-
-    private static final String EXTRA_COUNTRY = "country";
-
     private Menu menu = null;
 
     @Override
@@ -53,7 +43,7 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailMv
         getSupportActionBar().setTitle(R.string.toolbar_title_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewModel.update(Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_COUNTRY)), false);
+        viewModel.update(Parcels.unwrap(getIntent().getParcelableExtra(Navigator.EXTRA_ARGS)), false);
 
         viewModel.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override

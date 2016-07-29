@@ -4,8 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import com.patloew.countries.data.model.Country;
-import com.patloew.countries.ui.base.MvvmView;
-import com.patloew.countries.ui.base.MvvmViewModel;
+import com.patloew.countries.ui.base.view.MvvmView;
+import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
 
 /* Copyright 2016 Patrick Löwenstein
  *

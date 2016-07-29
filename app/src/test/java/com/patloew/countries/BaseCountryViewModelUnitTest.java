@@ -3,11 +3,13 @@ package com.patloew.countries;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.View;
 
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
-import com.patloew.countries.ui.base.MvvmView;
+import com.patloew.countries.ui.base.navigator.Navigator;
+import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.main.recyclerview.CountryViewModel;
 
 import org.junit.Before;
@@ -49,7 +51,9 @@ public class BaseCountryViewModelUnitTest {
     @Mock View view;
 
     @Mock MvvmView mvvmView;
+    @Mock Navigator navigator;
     CountryViewModel countryViewModel;
+
 
     Country internalCountry = new Country();
 
@@ -66,12 +70,13 @@ public class BaseCountryViewModelUnitTest {
         countryViewModel.attachView(mvvmView, null);
 
         Whitebox.setInternalState(countryViewModel, "country", internalCountry);
+        Whitebox.setInternalState(countryViewModel, "navigator", navigator);
     }
 
     @Test
     public void onMapClick_startActivity() {
         countryViewModel.onMapClick(view);
-        verify(ctx).startActivity(Matchers.any(Intent.class));
+        verify(navigator).startActivity(Matchers.eq(Intent.ACTION_VIEW), Matchers.any(Uri.class));
     }
 
     @Test

@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.scopes.PerFragment;
-import com.patloew.countries.ui.base.BaseViewModel;
+import com.patloew.countries.ui.base.viewmodel.BaseViewModel;
 import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
 import com.patloew.countries.util.ParcelUtil;
 

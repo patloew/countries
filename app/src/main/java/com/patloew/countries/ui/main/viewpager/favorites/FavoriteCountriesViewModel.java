@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.injection.scopes.PerFragment;
-import com.patloew.countries.ui.base.BaseViewModel;
+import com.patloew.countries.ui.base.viewmodel.BaseViewModel;
 import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
 
 import javax.inject.Inject;
