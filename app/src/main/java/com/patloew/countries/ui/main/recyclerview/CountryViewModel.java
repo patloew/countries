@@ -36,7 +36,7 @@ public class CountryViewModel extends BaseCountryViewModel<MvvmView> {
     }
 
     public void onCardClick(View v) {
-        navigator.startActivity(DetailActivity.class, Parcels.wrap(country));
+        navigator.get().startActivity(DetailActivity.class, Parcels.wrap(country));
     }
 
 }

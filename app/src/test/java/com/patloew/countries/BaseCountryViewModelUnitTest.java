@@ -22,6 +22,8 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import javax.inject.Provider;
+
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -51,6 +53,7 @@ public class BaseCountryViewModelUnitTest {
     @Mock View view;
 
     @Mock MvvmView mvvmView;
+    @Mock Provider<Navigator> navigatorProvider;
     @Mock Navigator navigator;
     CountryViewModel countryViewModel;
 
@@ -61,6 +64,7 @@ public class BaseCountryViewModelUnitTest {
     public void setup() throws PackageManager.NameNotFoundException {
         MockitoAnnotations.initMocks(this);
 
+        when(navigatorProvider.get()).thenReturn(navigator);
         when(ctx.getApplicationContext()).thenReturn(ctx);
         when(ctx.getPackageManager()).thenReturn(packageManager);
         //noinspection WrongConstant
@@ -70,7 +74,7 @@ public class BaseCountryViewModelUnitTest {
         countryViewModel.attachView(mvvmView, null);
 
         Whitebox.setInternalState(countryViewModel, "country", internalCountry);
-        Whitebox.setInternalState(countryViewModel, "navigator", navigator);
+        Whitebox.setInternalState(countryViewModel, "navigator", navigatorProvider);
     }
 
     @Test

@@ -10,6 +10,7 @@ import com.patloew.countries.ui.base.navigator.Navigator;
 import com.patloew.countries.ui.base.view.MvvmView;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -26,7 +27,7 @@ import javax.inject.Inject;
  * limitations under the License. */
 public abstract class BaseViewModel<V extends MvvmView> extends BaseObservable implements MvvmViewModel<V> {
 
-    @Inject protected Navigator navigator;
+    @Inject protected Provider<Navigator> navigator;
 
     private V mView;
 

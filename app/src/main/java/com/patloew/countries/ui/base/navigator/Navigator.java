@@ -33,9 +33,13 @@ public interface Navigator {
     void startActivity(@NonNull Class<? extends Activity> activityClass, Parcelable args);
 
     void replaceFragment(@IdRes int containerId, @NonNull Fragment fragment, Bundle args);
-    void replaceFragmentAndAddToBackstack(@IdRes int containerId, @NonNull Fragment fragment, Bundle args, String backstackTag);
+    void replaceFragment(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args);
+    void replaceFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, Bundle args, String backstackTag);
+    void replaceFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args, String backstackTag);
 
     void replaceChildFragment(@IdRes int containerId, @NonNull Fragment fragment, Bundle args);
-    void replaceChildFragmentAndAddToBackstack(@IdRes int containerId, @NonNull Fragment fragment, Bundle args, String backstackTag);
+    void replaceChildFragment(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args);
+    void replaceChildFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, Bundle args, String backstackTag);
+    void replaceChildFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args, String backstackTag);
 
 }

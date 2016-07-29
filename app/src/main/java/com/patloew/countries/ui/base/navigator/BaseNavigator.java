@@ -68,26 +68,47 @@ public abstract class BaseNavigator implements Navigator {
 
     @Override
     public final void replaceFragment(@IdRes int containerId, Fragment fragment, Bundle args) {
-        replaceFragmentInternal(getActivity().getSupportFragmentManager(), containerId, fragment, args, false, null);
+        replaceFragmentInternal(getActivity().getSupportFragmentManager(), containerId, fragment, null, args, false, null);
     }
 
     @Override
-    public final void replaceFragmentAndAddToBackstack(@IdRes int containerId, Fragment fragment, Bundle args, String backstackTag) {
-        replaceFragmentInternal(getActivity().getSupportFragmentManager(), containerId, fragment, args, true, backstackTag);
+    public void replaceFragment(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args) {
+        replaceFragmentInternal(getActivity().getSupportFragmentManager(), containerId, fragment, fragmentTag, args, false, null);
     }
 
     @Override
-    public void replaceChildFragment(@IdRes int containerId, @NonNull Fragment fragment, Bundle args) {
-        replaceFragmentInternal(getChildFragmentManager(), containerId, fragment, args, false, null);
+    public final void replaceFragmentAndAddToBackStack(@IdRes int containerId, Fragment fragment, Bundle args, String backstackTag) {
+        replaceFragmentInternal(getActivity().getSupportFragmentManager(), containerId, fragment, null, args, true, backstackTag);
     }
 
     @Override
-    public void replaceChildFragmentAndAddToBackstack(@IdRes int containerId, @NonNull Fragment fragment, Bundle args, String backstackTag) {
-        replaceFragmentInternal(getChildFragmentManager(), containerId, fragment, args, true, backstackTag);
+    public void replaceFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args, String backstackTag) {
+        replaceFragmentInternal(getActivity().getSupportFragmentManager(), containerId, fragment, fragmentTag, args, true, backstackTag);
     }
 
-    private void replaceFragmentInternal(FragmentManager fm, @IdRes int containerId, Fragment fragment, Bundle args, boolean addToBackstack,  String backstackTag) {
-        FragmentTransaction ft = fm.beginTransaction().replace(containerId, fragment);
+    @Override
+    public final void replaceChildFragment(@IdRes int containerId, @NonNull Fragment fragment, Bundle args) {
+        replaceFragmentInternal(getChildFragmentManager(), containerId, fragment, null, args, false, null);
+    }
+
+    @Override
+    public void replaceChildFragment(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args) {
+        replaceFragmentInternal(getChildFragmentManager(), containerId, fragment, fragmentTag, args, false, null);
+    }
+
+    @Override
+    public final void replaceChildFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, Bundle args, String backstackTag) {
+        replaceFragmentInternal(getChildFragmentManager(), containerId, fragment, null, args, true, backstackTag);
+    }
+
+    @Override
+    public final void replaceChildFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args, String backstackTag) {
+        replaceFragmentInternal(getChildFragmentManager(), containerId, fragment, fragmentTag, args, true, backstackTag);
+    }
+
+    private void replaceFragmentInternal(FragmentManager fm, @IdRes int containerId, Fragment fragment, String fragmentTag, Bundle args, boolean addToBackstack,  String backstackTag) {
+        if(args != null) { fragment.setArguments(args);}
+        FragmentTransaction ft = fm.beginTransaction().replace(containerId, fragment, fragmentTag);
         if(addToBackstack) {
             ft.addToBackStack(backstackTag).commitNow();
         } else {

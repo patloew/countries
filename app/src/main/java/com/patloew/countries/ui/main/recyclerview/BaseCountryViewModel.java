@@ -66,7 +66,7 @@ public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewM
     @Override
     public void onMapClick(View view) {
         Uri gmmIntentUri = Uri.parse("geo:"+country.lat+","+country.lng+"?q="+country.name+"&z=2");
-        navigator.startActivity(Intent.ACTION_VIEW, gmmIntentUri);
+        navigator.get().startActivity(Intent.ACTION_VIEW, gmmIntentUri);
     }
 
     @Override
