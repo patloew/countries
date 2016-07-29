@@ -13,4 +13,7 @@
     <string name="menu_item_licenses">Licenses</string>
     <string name="tab_title_all">All</string>
     <string name="tab_title_favorites">Favorites</string>
+    <string name="menu_item_favorite">Favorite</string>
+    <string name="menu_item_maps">Show on map</string>
+    <string name="toolbar_title_detail">Country Detail</string>
 </resources>

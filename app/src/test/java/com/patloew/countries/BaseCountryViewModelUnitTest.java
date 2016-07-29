@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
  * limitations under the License. */
 
 @RunWith(PowerMockRunner.class)
-public class CountryViewModelUnitTest {
+public class BaseCountryViewModelUnitTest {
 
     @Rule RxSchedulersOverrideRule rxSchedulersOverrideRule = new RxSchedulersOverrideRule();
 

@@ -44,6 +44,12 @@ public class AllCountriesFragment extends CountriesFragment<IAllCountriesViewMod
         viewModel.onRefresh(true);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        notifyDataSetChanged();
+    }
+
     // View
 
     @Override

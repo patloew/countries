@@ -1,5 +1,7 @@
 package com.patloew.countries.injection.modules;
 
+import com.patloew.countries.ui.detail.DetailMvvm;
+import com.patloew.countries.ui.detail.DetailViewModel;
 import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
 import com.patloew.countries.ui.main.recyclerview.CountryViewModel;
 import com.patloew.countries.ui.main.viewpager.all.AllCountriesViewModel;
@@ -25,6 +27,12 @@ import dagger.Module;
  * limitations under the License. */
 @Module
 public abstract class ViewModelModule {
+
+    // Activities
+
+    @Binds
+    abstract DetailMvvm.ViewModel bindDetailViewModel(DetailViewModel detailViewModel);
+
 
     // Fragments
 

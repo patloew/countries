@@ -5,6 +5,7 @@ import android.view.View;
 import com.patloew.countries.databinding.CardCountryBinding;
 import com.patloew.countries.ui.base.BaseViewHolder;
 import com.patloew.countries.ui.base.MvvmView;
+import com.patloew.countries.ui.detail.DetailActivity;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -26,5 +27,7 @@ public class CountryViewHolder extends BaseViewHolder<CardCountryBinding, Countr
 
         viewHolderComponent().inject(this);
         bindContentView(v);
+
+        binding.getRoot().setOnClickListener(view -> view.getContext().startActivity(DetailActivity.getIntent(view.getContext(), viewModel.getCountry())));
     }
 }

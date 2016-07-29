@@ -22,7 +22,7 @@ import com.patloew.countries.ui.base.MvvmViewModel;
  * limitations under the License. */
 public interface CountryMvvm {
 
-    interface ViewModel extends MvvmViewModel<MvvmView> {
+    interface ViewModel<V extends MvvmView> extends MvvmViewModel<V> {
 
         void onMapClick(View view);
         void onBookmarkClick(View view);
@@ -30,6 +30,7 @@ public interface CountryMvvm {
 
         // Properties
 
+        Country getCountry();
         String getName();
         CharSequence getRegion();
         int getCapitalVisibility();

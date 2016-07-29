@@ -76,7 +76,7 @@ public class AllCountriesViewModel extends BaseViewModel<CountriesMvvm.View> imp
                     countryList = countries;
                     getView().onRefresh(true, countries);
                 }, throwable ->  {
-                    Timber.e(throwable, "MainActivity", "Could not load countries");
+                    Timber.e(throwable, "Could not load countries");
                     getView().onRefresh(false, null);
                 }));
     }

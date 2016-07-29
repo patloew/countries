@@ -1,13 +1,7 @@
-package com.patloew.countries.ui.main.recyclerview;
+package com.patloew.countries.ui.detail;
 
-import android.content.Context;
-
-import com.patloew.countries.data.local.CountryRepo;
-import com.patloew.countries.injection.qualifier.AppContext;
-import com.patloew.countries.injection.scopes.PerViewHolder;
 import com.patloew.countries.ui.base.MvvmView;
-
-import javax.inject.Inject;
+import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -22,13 +16,19 @@ import javax.inject.Inject;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
+public interface DetailMvvm {
 
-@PerViewHolder
-public class CountryViewModel extends BaseCountryViewModel<MvvmView> {
+    interface View extends MvvmView {
 
-    @Inject
-    public CountryViewModel(@AppContext Context context, CountryRepo countryRepo) {
-        super(context, countryRepo);
     }
 
+    interface ViewModel extends CountryMvvm.ViewModel<View> {
+        // Properties
+        boolean getDetailVisibility();
+        CharSequence getNameTranslations();
+        CharSequence getLanguages();
+        CharSequence getCurrencies();
+        int getBorderVisibility();
+        CharSequence getBorders();
+    }
 }
