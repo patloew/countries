@@ -81,4 +81,8 @@ public abstract class BaseViewHolder<B extends ViewDataBinding, V extends MvvmVi
     }
 
     public final V viewModel() { return viewModel; }
+
+    public final void executePendingBindings() {
+        if(binding != null) { binding.executePendingBindings(); }
+    }
 }

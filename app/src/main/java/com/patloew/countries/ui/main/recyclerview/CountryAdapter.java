@@ -53,6 +53,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryViewHolder> impl
     @Override
     public void onBindViewHolder(CountryViewHolder countryViewHolder, int position) {
         countryViewHolder.viewModel().update(countryList.get(position), position == countryList.size()-1);
+        countryViewHolder.executePendingBindings();
     }
 
     @Override
