@@ -2,6 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable name="vm" type="com.patloew.countries.ui.main.MainMvvm.ViewModel" />
+    </data>
+
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
@@ -27,11 +31,10 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="com.patloew.countries.ui.main.MainContainerBehaviour"
             android:foreground="?android:windowContentOverlay" />
 
     </android.support.design.widget.CoordinatorLayout>

@@ -3,7 +3,6 @@ package com.patloew.countries.injection.components;
 import com.patloew.countries.injection.modules.ViewHolderModule;
 import com.patloew.countries.injection.modules.ViewModelModule;
 import com.patloew.countries.injection.scopes.PerViewHolder;
-import com.patloew.countries.ui.main.recyclerview.CountryViewHolder;
 
 import dagger.Component;
 
@@ -23,5 +22,6 @@ import dagger.Component;
 @PerViewHolder
 @Component(dependencies = AppComponent.class, modules = {ViewHolderModule.class, ViewModelModule.class})
 public interface ViewHolderComponent {
-    void inject(CountryViewHolder viewHolder);
+    // create inject methods for your ViewHolders here
+
 }

@@ -3,8 +3,8 @@ package com.patloew.countries.injection.components;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.patloew.countries.data.local.CountryRepo;
-import com.patloew.countries.data.remote.CountryApi;
+import com.patloew.countries.data.local.MyRepo;
+import com.patloew.countries.data.remote.MyApi;
 import com.patloew.countries.injection.modules.AppModule;
 import com.patloew.countries.injection.modules.DataModule;
 import com.patloew.countries.injection.modules.NetModule;
@@ -34,6 +34,6 @@ public interface AppComponent {
     Resources resources();
 
     Realm realm();
-    CountryRepo countryRepo();
-    CountryApi countryApi();
+    MyRepo myRepo();
+    MyApi myApi();
 }

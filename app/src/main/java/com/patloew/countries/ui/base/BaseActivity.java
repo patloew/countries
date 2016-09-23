@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.patloew.countries.BR;
-import com.patloew.countries.CountriesApp;
+import com.patloew.countries.MyApp;
 import com.patloew.countries.injection.components.ActivityComponent;
 import com.patloew.countries.injection.components.DaggerActivityComponent;
 import com.patloew.countries.injection.modules.ActivityModule;
@@ -72,7 +72,7 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends MvvmView
     protected final ActivityComponent activityComponent() {
         if(mActivityComponent == null) {
             mActivityComponent = DaggerActivityComponent.builder()
-                    .appComponent(CountriesApp.getAppComponent())
+                    .appComponent(MyApp.getAppComponent())
                     .activityModule(new ActivityModule(this))
                     .build();
         }

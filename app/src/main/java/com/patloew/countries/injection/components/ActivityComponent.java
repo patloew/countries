@@ -3,7 +3,6 @@ package com.patloew.countries.injection.components;
 import com.patloew.countries.injection.modules.ActivityModule;
 import com.patloew.countries.injection.modules.ViewModelModule;
 import com.patloew.countries.injection.scopes.PerActivity;
-import com.patloew.countries.ui.detail.DetailActivity;
 import com.patloew.countries.ui.main.MainActivity;
 
 import dagger.Component;
@@ -24,6 +23,7 @@ import dagger.Component;
 @PerActivity
 @Component(dependencies = AppComponent.class, modules = {ActivityModule.class, ViewModelModule.class})
 public interface ActivityComponent {
+    // create inject methods for your Activities here
+
     void inject(MainActivity activity);
-    void inject(DetailActivity activity);
 }

@@ -1,13 +1,7 @@
 package com.patloew.countries.injection.modules;
 
-import com.patloew.countries.ui.detail.DetailMvvm;
-import com.patloew.countries.ui.detail.DetailViewModel;
-import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
-import com.patloew.countries.ui.main.recyclerview.CountryViewModel;
-import com.patloew.countries.ui.main.viewpager.all.AllCountriesViewModel;
-import com.patloew.countries.ui.main.viewpager.all.IAllCountriesViewModel;
-import com.patloew.countries.ui.main.viewpager.favorites.FavoriteCountriesViewModel;
-import com.patloew.countries.ui.main.viewpager.favorites.IFavoriteCountriesViewModel;
+import com.patloew.countries.ui.main.MainMvvm;
+import com.patloew.countries.ui.main.MainViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -27,25 +21,19 @@ import dagger.Module;
  * limitations under the License. */
 @Module
 public abstract class ViewModelModule {
+    // Bind your ViewModel implementations to interfaces here
+
 
     // Activities
 
     @Binds
-    abstract DetailMvvm.ViewModel bindDetailViewModel(DetailViewModel detailViewModel);
+    abstract MainMvvm.ViewModel bindMainViewModel(MainViewModel viewModel);
 
 
     // Fragments
 
-    @Binds
-    abstract IAllCountriesViewModel bindAllCountriesViewModel(AllCountriesViewModel allCountriesViewModel);
-
-    @Binds
-    abstract IFavoriteCountriesViewModel bindFavoriteCountriesViewModel(FavoriteCountriesViewModel countryViewModel);
-
 
     // View Holders
 
-    @Binds
-    abstract CountryMvvm.ViewModel bindCountryViewModel(CountryViewModel countryViewModel);
 
 }

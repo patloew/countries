@@ -73,8 +73,6 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:${okHttpVersion}"
     compile "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}"
 
-    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.10'
-
     compile 'com.jakewharton.timber:timber:4.3.0'
 
     compile "org.parceler:parceler-api:${parcelerVersion}"
@@ -85,10 +83,6 @@ dependencies {
 
     compile 'io.reactivex:rxjava:1.2.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-
-    compile('com.mikepenz:aboutlibraries:5.8.1@aar') {
-        transitive = true
-    }
 
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
 

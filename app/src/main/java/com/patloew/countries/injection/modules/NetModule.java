@@ -2,20 +2,12 @@ package com.patloew.countries.injection.modules;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.patloew.countries.BuildConfig;
-import com.patloew.countries.data.model.Country;
-import com.patloew.countries.data.model.RealmString;
-import com.patloew.countries.data.model.RealmStringMapEntry;
-import com.patloew.countries.data.remote.CountryApi;
+import com.patloew.countries.data.remote.MyApi;
 import com.patloew.countries.injection.scopes.PerApplication;
-import com.patloew.countries.util.CountryTypeAdapter;
-import com.patloew.countries.util.RealmStringListTypeAdapter;
-import com.patloew.countries.util.RealmStringMapEntryListTypeAdapter;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.RealmList;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -42,15 +34,7 @@ public class NetModule {
     @Provides
     @PerApplication
     static Gson provideGson() {
-        return new GsonBuilder()
-                // Custom type adapters for models are not needed when using Gson, but this
-                // type adapter is a good example if you want to write one yourself.
-                .registerTypeAdapter(Country.class, CountryTypeAdapter.INSTANCE)
-                // These type adapters for RealmLists are needed, since RealmString and RealmStringMapEntry
-                // wrappers are not recognized by Gson in the default configuration.
-                .registerTypeAdapter(new TypeToken<RealmList<RealmString>>(){}.getType(), RealmStringListTypeAdapter.INSTANCE)
-                .registerTypeAdapter(new TypeToken<RealmList<RealmStringMapEntry>>(){}.getType(), RealmStringMapEntryListTypeAdapter.INSTANCE)
-                .create();
+        return new GsonBuilder().create();
     }
 
     @Provides
@@ -61,7 +45,7 @@ public class NetModule {
 
     @Provides
     @PerApplication
-    static CountryApi provideCountryApi(Gson gson, OkHttpClient okHttpClient) {
+    static MyApi provideCountryApi(Gson gson, OkHttpClient okHttpClient) {
         OkHttpClient.Builder httpClientBuilder = okHttpClient.newBuilder();
 
         if(BuildConfig.DEBUG) {
@@ -71,10 +55,10 @@ public class NetModule {
         }
 
         return new Retrofit.Builder()
-                .baseUrl("https://restcountries.eu/")
+                .baseUrl("https://example.com/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .callFactory(httpClientBuilder.build())
-                .build().create(CountryApi.class);
+                .build().create(MyApi.class);
     }
 }

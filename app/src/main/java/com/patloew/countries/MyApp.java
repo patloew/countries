@@ -23,9 +23,9 @@ import timber.log.Timber;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public class CountriesApp extends Application {
+public class MyApp extends Application {
 
-    private static CountriesApp sInstance = null;
+    private static MyApp sInstance = null;
 
     private static AppComponent sAppComponent = null;
 
@@ -41,7 +41,7 @@ public class CountriesApp extends Application {
         if(BuildConfig.DEBUG) { Timber.plant(new Timber.DebugTree()); }
     }
 
-    public static CountriesApp getInstance() { return sInstance; }
+    public static MyApp getInstance() { return sInstance; }
 
     public static AppComponent getAppComponent() { return sAppComponent; }
 

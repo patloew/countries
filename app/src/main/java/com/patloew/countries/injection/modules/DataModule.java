@@ -1,7 +1,7 @@
 package com.patloew.countries.injection.modules;
 
-import com.patloew.countries.data.local.CountryRepo;
-import com.patloew.countries.data.local.RealmCountryRepo;
+import com.patloew.countries.data.local.MyRepo;
+import com.patloew.countries.data.local.MyRepoImpl;
 
 import dagger.Binds;
 import dagger.Module;
@@ -21,8 +21,8 @@ import dagger.Module;
  * limitations under the License. */
 @Module
 public abstract class DataModule {
+    // Bind your repository implementations to interfaces here
 
     @Binds
-    abstract CountryRepo bindCountryRepo(RealmCountryRepo realmCountryRepo);
-
+    abstract MyRepo bindMyRepo(MyRepoImpl repo);
 }
