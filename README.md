@@ -9,6 +9,8 @@ The purpose of this is app is to show how:
 * [Retrofit, Realm, Parceler and Gson with custom TypeAdapters work together](https://nullpointer.wtf/android/using-retrofit-realm-parceler/)
 * Dagger 2 can be used with different Scopes
 
+This project can also be used as a template for new apps. Check out the template branch for a cleaned up version of this project.
+
 # License
 
 	Copyright 2016 Patrick Löwenstein
