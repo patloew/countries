@@ -25,6 +25,7 @@ import android.support.v4.app.Fragment;
 public interface Navigator {
     String EXTRA_ARGS = "_args";
 
+    void finishActivity();
     void startActivity(@NonNull Intent intent);
     void startActivity(@NonNull String action);
     void startActivity(@NonNull String action, @NonNull Uri uri);
