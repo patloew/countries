@@ -31,6 +31,11 @@ public abstract class BaseNavigator implements Navigator {
     abstract FragmentManager getChildFragmentManager();
 
     @Override
+    public final void finishActivity() {
+        getActivity().finish();
+    }
+
+    @Override
     public final void startActivity(@NonNull Intent intent) {
         getActivity().startActivity(intent);
     }
@@ -72,7 +77,7 @@ public abstract class BaseNavigator implements Navigator {
     }
 
     @Override
-    public void replaceFragment(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args) {
+    public final void replaceFragment(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args) {
         replaceFragmentInternal(getActivity().getSupportFragmentManager(), containerId, fragment, fragmentTag, args, false, null);
     }
 
@@ -82,7 +87,7 @@ public abstract class BaseNavigator implements Navigator {
     }
 
     @Override
-    public void replaceFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args, String backstackTag) {
+    public final void replaceFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args, String backstackTag) {
         replaceFragmentInternal(getActivity().getSupportFragmentManager(), containerId, fragment, fragmentTag, args, true, backstackTag);
     }
 
@@ -92,7 +97,7 @@ public abstract class BaseNavigator implements Navigator {
     }
 
     @Override
-    public void replaceChildFragment(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args) {
+    public final void replaceChildFragment(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args) {
         replaceFragmentInternal(getChildFragmentManager(), containerId, fragment, fragmentTag, args, false, null);
     }
 
@@ -110,10 +115,10 @@ public abstract class BaseNavigator implements Navigator {
         if(args != null) { fragment.setArguments(args);}
         FragmentTransaction ft = fm.beginTransaction().replace(containerId, fragment, fragmentTag);
         if(addToBackstack) {
-            ft.addToBackStack(backstackTag).commitNow();
-        } else {
-            ft.commit();
+            ft.addToBackStack(backstackTag).commit();
             fm.executePendingTransactions();
+        } else {
+            ft.commitNow();
         }
     }
 }
