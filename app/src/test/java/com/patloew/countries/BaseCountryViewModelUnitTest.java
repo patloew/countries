@@ -18,7 +18,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
@@ -43,6 +46,7 @@ import static org.mockito.Mockito.when;
  * limitations under the License. */
 
 @RunWith(PowerMockRunner.class)
+@PrepareOnlyThisForTest({Uri.class})
 public class BaseCountryViewModelUnitTest {
 
     @Rule RxSchedulersOverrideRule rxSchedulersOverrideRule = new RxSchedulersOverrideRule();
@@ -79,8 +83,10 @@ public class BaseCountryViewModelUnitTest {
 
     @Test
     public void onMapClick_startActivity() {
+        Uri uri = Mockito.mock(Uri.class);
+        PowerMockito.mockStatic(Uri.class, invocation -> uri);
         countryViewModel.onMapClick(view);
-        verify(navigator).startActivity(Matchers.eq(Intent.ACTION_VIEW), Matchers.any(Uri.class));
+        verify(navigator).startActivity(Matchers.eq(Intent.ACTION_VIEW), Matchers.eq(uri));
     }
 
     @Test

@@ -12,9 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
+import rx.Observable;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -54,11 +54,12 @@ public class RealmCountryRepo implements CountryRepo {
     }
 
     @Override
-    public RealmResults<Country> findAllSortedWithListener(String sortField, Sort sort, RealmChangeListener<RealmResults<Country>> listener) {
+    public Observable<List<Country>> findAllSortedWithChanges(String sortField, Sort sort) {
         try(Realm realm = realmProvider.get()) {
-            RealmResults<Country> realmResults = realm.where(Country.class).findAllSorted(sortField, sort);
-            realmResults.addChangeListener(listener);
-            return realmResults;
+            return realm.where(Country.class).findAllSortedAsync(sortField, sort)
+                    .asObservable()
+                    .filter(RealmResults::isLoaded)
+                    .map(result -> result);
         }
     }
 

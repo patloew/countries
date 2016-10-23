@@ -6,9 +6,8 @@ import com.patloew.countries.data.model.Country;
 
 import java.util.List;
 
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 import io.realm.Sort;
+import rx.Observable;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -25,7 +24,7 @@ import io.realm.Sort;
  * limitations under the License. */
 public interface CountryRepo {
     List<Country> findAllSorted(String sortField, Sort sort, boolean detached);
-    RealmResults<Country> findAllSortedWithListener(String sortField, Sort sort, RealmChangeListener<RealmResults<Country>> listener);
+    Observable<List<Country>> findAllSortedWithChanges(String sortField, Sort sort);
 
     @Nullable
     Country getByField(String field, String value, boolean detached);

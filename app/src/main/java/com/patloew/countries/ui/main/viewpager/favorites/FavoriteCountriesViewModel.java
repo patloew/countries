@@ -10,10 +10,13 @@ import com.patloew.countries.injection.scopes.PerFragment;
 import com.patloew.countries.ui.base.viewmodel.BaseViewModel;
 import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
-import io.realm.RealmResults;
 import io.realm.Sort;
+import rx.Subscription;
+import timber.log.Timber;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -33,8 +36,7 @@ import io.realm.Sort;
 public class FavoriteCountriesViewModel extends BaseViewModel<CountriesMvvm.View> implements IFavoriteCountriesViewModel {
 
     private final CountryRepo countryRepo;
-
-    private RealmResults<Country> countryList;
+    private Subscription subscription;
 
     @Inject
     public FavoriteCountriesViewModel(CountryRepo countryRepo) {
@@ -44,13 +46,22 @@ public class FavoriteCountriesViewModel extends BaseViewModel<CountriesMvvm.View
     @Override
     public void attachView(@NonNull CountriesMvvm.View view, @Nullable Bundle savedInstanceState) {
         super.attachView(view, savedInstanceState);
-        countryList = countryRepo.findAllSortedWithListener("name", Sort.ASCENDING, element -> getView().onRefresh(true, countryList));
+
+        subscription = countryRepo.findAllSortedWithChanges("name", Sort.ASCENDING)
+                .subscribe(this::refreshView, Timber::e);
+    }
+
+    private void refreshView(List<Country> countryList) {
         getView().onRefresh(true, countryList);
     }
 
     @Override
     public void detachView() {
         super.detachView();
-        if(countryList != null) { countryList.removeChangeListeners(); }
+
+        if(subscription != null) {
+            subscription.unsubscribe();
+            subscription = null;
+        }
     }
 }

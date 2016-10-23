@@ -12,16 +12,17 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import io.realm.RealmChangeListener;
+import java.util.ArrayList;
+import java.util.List;
+
 import io.realm.RealmResults;
 import io.realm.Sort;
+import rx.Observable;
 
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -64,36 +65,27 @@ public class FavoriteCountriesViewModelUnitTest {
 
     @Test
     public void onRealmChangeListener_twoTimes() {
-        RealmResults<Country> countryList = PowerMockito.mock(RealmResults.class);
+        List<Country> countryList = new ArrayList<>(0);
 
-        doAnswer(invocation -> {
-            RealmChangeListener realmChangeListener = (RealmChangeListener) invocation.getArguments()[2];
-            realmChangeListener.onChange(null);
-            realmChangeListener.onChange(null);
-            return countryList;
-        }).when(countryRepo).findAllSortedWithListener(Matchers.anyString(), Matchers.any(Sort.class), Matchers.any(RealmChangeListener.class));
+        doReturn(Observable.just(countryList, countryList, countryList)).when(countryRepo).findAllSortedWithChanges(Matchers.anyString(), Matchers.any(Sort.class));
 
         favoriteCountriesViewModel.attachView(mainActivityView, null);
 
         verify(mainActivityView, times(3)).onRefresh(eq(true), Matchers.anyList());
 
         favoriteCountriesViewModel.detachView();
-
-        verify(countryList, times(1)).removeChangeListeners();
     }
 
     @Test
     public void onRealmChangeListener_never() {
-        RealmResults<Country> countryList = PowerMockito.mock(RealmResults.class);
+        List<Country> countryList = new ArrayList<>(0);
 
-        doReturn(countryList).when(countryRepo).findAllSortedWithListener(Matchers.anyString(), Matchers.any(Sort.class), Matchers.any(RealmChangeListener.class));
+        doReturn(Observable.just(countryList)).when(countryRepo).findAllSortedWithChanges(Matchers.anyString(), Matchers.any(Sort.class));
 
         favoriteCountriesViewModel.attachView(mainActivityView, null);
 
         verify(mainActivityView, times(1)).onRefresh(eq(true), Matchers.anyList());
 
         favoriteCountriesViewModel.detachView();
-
-        verify(countryList, times(1)).removeChangeListeners();
     }
 }
