@@ -50,8 +50,8 @@ public class AppModule {
 
     @Provides
     @PerApplication
-    static RealmConfiguration provideRealmConfiguration(@AppContext Context context) {
-        RealmConfiguration.Builder builder = new RealmConfiguration.Builder(context);
+    static RealmConfiguration provideRealmConfiguration() {
+        RealmConfiguration.Builder builder = new RealmConfiguration.Builder();
         if(BuildConfig.DEBUG) { builder = builder.deleteRealmIfMigrationNeeded(); }
         return builder.build();
     }
