@@ -23,13 +23,15 @@ import rx.Observable;
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 public interface CountryRepo {
+    Observable<String> getFavoriteChangeObservable();
+
     List<Country> findAllSorted(String sortField, Sort sort, boolean detached);
     Observable<List<Country>> findAllSortedWithChanges(String sortField, Sort sort);
 
     @Nullable
     Country getByField(String field, String value, boolean detached);
 
-    void update(Country country);
+    void save(Country country);
     void delete(Country country);
 
     Country detach(Country country);

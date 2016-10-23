@@ -1,17 +1,22 @@
 package com.patloew.countries;
 
+import android.support.v7.widget.RecyclerView;
+
+import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.data.remote.CountryApi;
-import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
+import com.patloew.countries.ui.main.recyclerview.CountryAdapter;
+import com.patloew.countries.ui.main.viewpager.CountriesView;
 import com.patloew.countries.ui.main.viewpager.all.AllCountriesViewModel;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
@@ -19,10 +24,10 @@ import java.util.List;
 
 import rx.Observable;
 
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -39,20 +44,29 @@ import static org.mockito.Mockito.verify;
  * limitations under the License. */
 
 @RunWith(PowerMockRunner.class)
+@PrepareOnlyThisForTest({ RecyclerView.Adapter.class })
 public class AllCountriesViewModelUnitTest {
 
     @Rule RxSchedulersOverrideRule rxSchedulersOverrideRule = new RxSchedulersOverrideRule();
 
     @Mock CountryApi countryApi;
+    CountryAdapter adapter;
+    @Mock CountryRepo countryRepo;
 
-    @Mock CountriesMvvm.View countriesView;
+    @Mock CountriesView countriesView;
     AllCountriesViewModel allCountriesViewModel;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        allCountriesViewModel = new AllCountriesViewModel(countryApi);
+        adapter = PowerMockito.mock(CountryAdapter.class);
+        PowerMockito.doAnswer(invocation -> null).when((RecyclerView.Adapter)adapter).notifyDataSetChanged();
+
+        doReturn(Observable.never()).when(countryRepo).getFavoriteChangeObservable();
+
+        doReturn(Observable.never()).when(countryApi).getAllCountries();
+        allCountriesViewModel = new AllCountriesViewModel(adapter, countryApi, countryRepo);
         allCountriesViewModel.attachView(countriesView, null);
     }
 
@@ -63,17 +77,20 @@ public class AllCountriesViewModelUnitTest {
 
         doReturn(Observable.just(countryList)).when(countryApi).getAllCountries();
 
-        allCountriesViewModel.onRefresh(false);
+        allCountriesViewModel.reloadData();
 
-        verify(countriesView, times(1)).onRefresh(eq(true), Matchers.anyList());
+        verify(adapter, times(1)).setCountryList(countryList);
+        verify(adapter, times(1)).notifyDataSetChanged();
+        verify(countriesView, times(1)).onRefresh(true);
     }
 
     @Test
     public void onRefresh_error() {
         doReturn(Observable.error(new RuntimeException("Error getting countries"))).when(countryApi).getAllCountries();
 
-        allCountriesViewModel.onRefresh(false);
+        allCountriesViewModel.reloadData();
 
-        verify(countriesView, times(1)).onRefresh(eq(false), Matchers.anyList());
+        verifyZeroInteractions(adapter);
+        verify(countriesView, times(1)).onRefresh(false);
     }
 }

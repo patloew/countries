@@ -1,7 +1,8 @@
-package com.patloew.countries.ui.main.viewpager.all;
+package com.patloew.countries.ui.base.viewmodel;
 
-import com.patloew.countries.ui.base.viewmodel.AdapterMvvmViewModel;
-import com.patloew.countries.ui.main.viewpager.CountriesView;
+import android.support.v7.widget.RecyclerView;
+
+import com.patloew.countries.ui.base.view.MvvmView;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -16,6 +17,7 @@ import com.patloew.countries.ui.main.viewpager.CountriesView;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface IAllCountriesViewModel extends AdapterMvvmViewModel<CountriesView> {
-    void reloadData();
+public interface AdapterMvvmViewModel<V extends MvvmView> extends MvvmViewModel<V> {
+
+    RecyclerView.Adapter getAdapter();
 }

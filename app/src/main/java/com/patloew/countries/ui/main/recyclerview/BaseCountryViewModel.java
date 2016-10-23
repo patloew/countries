@@ -74,9 +74,9 @@ public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewM
         Country realmCountry = countryRepo.getByField("alpha2Code", country.alpha2Code, false);
 
         if(realmCountry == null) {
-            countryRepo.update(country);
+            countryRepo.save(country);
         } else {
-            country = countryRepo.detach(country);
+            country = countryRepo.detach(realmCountry);
             countryRepo.delete(realmCountry);
         }
 

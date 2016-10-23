@@ -1,7 +1,7 @@
 package com.patloew.countries.ui.main.viewpager.favorites;
 
-import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
-import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
+import com.patloew.countries.ui.base.viewmodel.AdapterMvvmViewModel;
+import com.patloew.countries.ui.main.viewpager.CountriesView;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -16,6 +16,6 @@ import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface IFavoriteCountriesViewModel extends MvvmViewModel<CountriesMvvm.View> {
+public interface IFavoriteCountriesViewModel extends AdapterMvvmViewModel<CountriesView> {
 
 }

@@ -8,7 +8,8 @@ import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.injection.scopes.PerFragment;
 import com.patloew.countries.ui.base.viewmodel.BaseViewModel;
-import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
+import com.patloew.countries.ui.main.recyclerview.CountryAdapter;
+import com.patloew.countries.ui.main.viewpager.CountriesView;
 
 import java.util.List;
 
@@ -33,18 +34,20 @@ import timber.log.Timber;
  * limitations under the License. */
 
 @PerFragment
-public class FavoriteCountriesViewModel extends BaseViewModel<CountriesMvvm.View> implements IFavoriteCountriesViewModel {
+public class FavoriteCountriesViewModel extends BaseViewModel<CountriesView> implements IFavoriteCountriesViewModel {
 
+    private final CountryAdapter adapter;
     private final CountryRepo countryRepo;
     private Subscription subscription;
 
     @Inject
-    public FavoriteCountriesViewModel(CountryRepo countryRepo) {
+    public FavoriteCountriesViewModel(CountryAdapter adapter, CountryRepo countryRepo) {
+        this.adapter = adapter;
         this.countryRepo = countryRepo;
     }
 
     @Override
-    public void attachView(@NonNull CountriesMvvm.View view, @Nullable Bundle savedInstanceState) {
+    public void attachView(@NonNull CountriesView view, @Nullable Bundle savedInstanceState) {
         super.attachView(view, savedInstanceState);
 
         subscription = countryRepo.findAllSortedWithChanges("name", Sort.ASCENDING)
@@ -52,7 +55,9 @@ public class FavoriteCountriesViewModel extends BaseViewModel<CountriesMvvm.View
     }
 
     private void refreshView(List<Country> countryList) {
-        getView().onRefresh(true, countryList);
+        adapter.setCountryList(countryList);
+        adapter.notifyDataSetChanged();
+        getView().onRefresh(true);
     }
 
     @Override
@@ -63,5 +68,10 @@ public class FavoriteCountriesViewModel extends BaseViewModel<CountriesMvvm.View
             subscription.unsubscribe();
             subscription = null;
         }
+    }
+
+    @Override
+    public CountryAdapter getAdapter() {
+        return adapter;
     }
 }

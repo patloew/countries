@@ -1,10 +1,6 @@
 package com.patloew.countries.ui.main.viewpager;
 
-import com.patloew.countries.data.model.Country;
 import com.patloew.countries.ui.base.view.MvvmView;
-import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
-
-import java.util.List;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -19,14 +15,6 @@ import java.util.List;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public interface CountriesMvvm  {
-
-    public interface View extends MvvmView {
-        void onRefresh(boolean success, List<Country> countries);
-        void notifyDataSetChanged();
-    }
-
-    public interface ViewModel extends MvvmViewModel<View> {
-        void onRefresh(boolean initialLoading);
-    }
+public interface CountriesView extends MvvmView {
+    void onRefresh(boolean success);
 }

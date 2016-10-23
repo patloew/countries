@@ -2,19 +2,16 @@ package com.patloew.countries.ui.main.viewpager.all;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import com.patloew.countries.data.model.Country;
+import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.scopes.PerFragment;
 import com.patloew.countries.ui.base.viewmodel.BaseViewModel;
-import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
-import com.patloew.countries.util.ParcelUtil;
+import com.patloew.countries.ui.main.recyclerview.CountryAdapter;
+import com.patloew.countries.ui.main.viewpager.CountriesView;
 
-import org.parceler.Parcels;
-
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,28 +34,31 @@ import timber.log.Timber;
  * limitations under the License. */
 
 @PerFragment
-public class AllCountriesViewModel extends BaseViewModel<CountriesMvvm.View> implements IAllCountriesViewModel {
-
-    private static final String KEY_COUNTRYLIST = "countryList";
+public class AllCountriesViewModel extends BaseViewModel<CountriesView> implements IAllCountriesViewModel {
 
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
-    private final CountryApi countryApi;
 
-    private List<Country> countryList = new ArrayList<>();
+    private final CountryAdapter adapter;
+    private final CountryApi countryApi;
+    private final CountryRepo countryRepo;
 
     @Inject
-    public AllCountriesViewModel(CountryApi countryApi) {
+    public AllCountriesViewModel(CountryAdapter adapter, CountryApi countryApi, CountryRepo countryRepo) {
+        this.adapter = adapter;
         this.countryApi = countryApi;
+        this.countryRepo = countryRepo;
     }
 
     @Override
-    public void saveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(KEY_COUNTRYLIST, Parcels.wrap(countryList));
-    }
+    public void attachView(@NonNull CountriesView view, @Nullable Bundle savedInstanceState) {
+        super.attachView(view, savedInstanceState);
 
-    @Override
-    public void restoreInstanceState(@NonNull Bundle savedInstanceState) {
-        countryList = ParcelUtil.getParcelable(savedInstanceState, KEY_COUNTRYLIST, countryList);
+        compositeSubscription.add(
+                countryRepo.getFavoriteChangeObservable()
+                    .subscribe(alpha2Code -> adapter.notifyDataSetChanged(), Timber::e)
+        );
+
+        reloadData();
     }
 
     @Override
@@ -68,16 +68,22 @@ public class AllCountriesViewModel extends BaseViewModel<CountriesMvvm.View> imp
     }
 
     @Override
-    public void onRefresh(boolean initialLoading) {
+    public void reloadData() {
         compositeSubscription.add(countryApi.getAllCountries()
                 .doOnNext(Collections::sort)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(countries -> {
-                    countryList = countries;
-                    getView().onRefresh(true, countries);
+                    adapter.setCountryList(countries);
+                    adapter.notifyDataSetChanged();
+                    getView().onRefresh(true);
                 }, throwable ->  {
                     Timber.e(throwable, "Could not load countries");
-                    getView().onRefresh(false, null);
+                    getView().onRefresh(false);
                 }));
+    }
+
+    @Override
+    public CountryAdapter getAdapter() {
+        return adapter;
     }
 }

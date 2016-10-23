@@ -1,8 +1,6 @@
 package com.patloew.countries.ui.main;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,7 +11,6 @@ import com.patloew.countries.databinding.ActivityMainBinding;
 import com.patloew.countries.ui.base.BaseActivity;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.base.viewmodel.NoOpViewModel;
-import com.patloew.countries.ui.main.viewpager.CountriesMvvm;
 import com.patloew.countries.ui.main.viewpager.MainAdapter;
 
 import javax.inject.Inject;
@@ -46,17 +43,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, NoOpViewMode
 
         binding.viewPager.setAdapter(adapter);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
-        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
-            @Override public void onPageScrollStateChanged(int state) {}
-
-            @Override public void onPageSelected(int position) {
-                if (position == 0) {
-                    Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + binding.viewPager.getCurrentItem());
-                    ((CountriesMvvm.View) currentFragment).notifyDataSetChanged();
-                }
-            }
-        });
     }
 
     @Override

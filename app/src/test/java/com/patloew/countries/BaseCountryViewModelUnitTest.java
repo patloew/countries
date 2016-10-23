@@ -103,6 +103,6 @@ public class BaseCountryViewModelUnitTest {
         doReturn(null).when(countryRepo).getByField(Matchers.anyString(), Matchers.anyString(), Matchers.anyBoolean());
 
         countryViewModel.onBookmarkClick(view);
-        verify(countryRepo).update(internalCountry);
+        verify(countryRepo).save(internalCountry);
     }
 }

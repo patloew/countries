@@ -11,7 +11,7 @@ import com.patloew.countries.data.model.Country;
 import com.patloew.countries.injection.scopes.PerFragment;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,7 +32,7 @@ import javax.inject.Inject;
 @PerFragment
 public class CountryAdapter extends RecyclerView.Adapter<CountryViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
 
-    private List<Country> countryList = new ArrayList<>();
+    private List<Country> countryList = Collections.emptyList();
 
     @Inject
     public CountryAdapter() { }

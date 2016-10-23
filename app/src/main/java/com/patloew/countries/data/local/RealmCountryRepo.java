@@ -15,6 +15,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import rx.Observable;
+import rx.subjects.PublishSubject;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -33,11 +34,18 @@ import rx.Observable;
 @SuppressLint("NewApi") // try-with-resources is backported by retrolambda
 public class RealmCountryRepo implements CountryRepo {
 
+    private final PublishSubject<String> favoriteChangeSubject = PublishSubject.create();
+
     private final Provider<Realm> realmProvider;
 
     @Inject
     public RealmCountryRepo(Provider<Realm> realmProvider) {
         this.realmProvider = realmProvider;
+    }
+
+    @Override
+    public Observable<String> getFavoriteChangeObservable() {
+        return favoriteChangeSubject;
     }
 
     @Override
@@ -74,9 +82,10 @@ public class RealmCountryRepo implements CountryRepo {
     }
 
     @Override
-    public void update(Country country) {
+    public void save(Country country) {
         try(Realm realm = realmProvider.get()) {
             realm.executeTransaction(r -> r.copyToRealmOrUpdate(country));
+            favoriteChangeSubject.onNext(country.alpha2Code);
         }
     }
 
@@ -84,6 +93,8 @@ public class RealmCountryRepo implements CountryRepo {
     public void delete(Country realmCountry) {
         if(realmCountry.isValid()) {
             try (Realm realm = realmProvider.get()) {
+                String alpha2Code = realmCountry.alpha2Code;
+
                 realm.executeTransaction(r -> {
                     realmCountry.borders.deleteAllFromRealm();
                     realmCountry.currencies.deleteAllFromRealm();
@@ -91,13 +102,15 @@ public class RealmCountryRepo implements CountryRepo {
                     realmCountry.translations.deleteAllFromRealm();
                     realmCountry.deleteFromRealm();
                 });
+
+                favoriteChangeSubject.onNext(alpha2Code);
             }
         }
     }
 
     @Override
     public Country detach(Country country) {
-        if(country.isValid()) {
+        if(country.isManaged()) {
             try(Realm realm = realmProvider.get()) {
                 return realm.copyFromRealm(country);
             }

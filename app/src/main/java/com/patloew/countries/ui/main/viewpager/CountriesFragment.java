@@ -8,13 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.patloew.countries.R;
-import com.patloew.countries.data.model.Country;
 import com.patloew.countries.databinding.FragmentRecyclerviewBinding;
 import com.patloew.countries.ui.base.BaseFragment;
 import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
 import com.patloew.countries.ui.main.recyclerview.CountryAdapter;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,7 +28,7 @@ import javax.inject.Inject;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public abstract class CountriesFragment<V extends MvvmViewModel> extends BaseFragment<FragmentRecyclerviewBinding, V> implements CountriesMvvm.View {
+public abstract class CountriesFragment<V extends MvvmViewModel> extends BaseFragment<FragmentRecyclerviewBinding, V> implements CountriesView {
 
     @Inject CountryAdapter adapter;
 
@@ -53,17 +50,8 @@ public abstract class CountriesFragment<V extends MvvmViewModel> extends BaseFra
     // View
 
     @Override
-    public void onRefresh(boolean success, List<Country> countries) {
-        if(success) {
-            adapter.setCountryList(countries);
-            adapter.notifyDataSetChanged();
-        }
-
+    public void onRefresh(boolean success) {
         binding.swipeRefreshLayout.setRefreshing(false);
     }
 
-    @Override
-    public void notifyDataSetChanged() {
-        adapter.notifyDataSetChanged();
-    }
 }
