@@ -33,6 +33,7 @@ public class CountriesApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+        Realm.init(this);
         sInstance = this;
         sAppComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
