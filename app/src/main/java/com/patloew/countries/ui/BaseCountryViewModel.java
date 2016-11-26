@@ -1,4 +1,4 @@
-package com.patloew.countries.ui.main.recyclerview;
+package com.patloew.countries.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.AppCompatDrawableManager;
-import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,7 @@ import com.patloew.countries.R;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.injection.qualifier.AppContext;
+import com.patloew.countries.ui.ICountryViewModel;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.base.viewmodel.BaseViewModel;
 
@@ -37,7 +38,7 @@ import java.util.Locale;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewModel<V> implements CountryMvvm.ViewModel<V> {
+public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewModel<V> implements ICountryViewModel<V> {
 
     protected static final Locale DISPLAY_LOCALE = new Locale("EN");
     protected static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat();
@@ -108,33 +109,39 @@ public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewM
 
     @Override
     public CharSequence getRegion() {
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_region), country.region));
+        return new SpannableStringBuilder(ctx.getText(R.string.country_region))
+                .append(country.region);
     }
 
     @Override
-    public int getCapitalVisibility() {
-        return TextUtils.isEmpty(country.capital) ? View.GONE : View.VISIBLE;
+    public boolean isCapitalVisible() {
+        return !TextUtils.isEmpty(country.capital);
     }
 
     @Override
     public CharSequence getCapital() {
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_capital), country.capital));
+        return new SpannableStringBuilder(ctx.getText(R.string.country_capital))
+                .append(country.capital);
     }
 
     @Override
     public CharSequence getPopulation() {
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_population), DECIMAL_FORMAT.format(country.population)));
+        return new SpannableStringBuilder(ctx.getText(R.string.country_population))
+                .append(DECIMAL_FORMAT.format(country.population));
     }
 
     @Override
-    public int getLocationVisibility() {
-        return country.lat == null && country.lng == null ? View.GONE : View.VISIBLE;
+    public boolean isLocationVisible() {
+        return country.lat != null && country.lng != null;
     }
 
     @Override
     public CharSequence getLocation() {
-        if(getLocationVisibility() == View.VISIBLE) {
-            return Html.fromHtml(String.format(ctx.getString(R.string.country_location), DECIMAL_FORMAT.format(country.lat), DECIMAL_FORMAT.format(country.lng)));
+        if(isLocationVisible()) {
+            return new SpannableStringBuilder(ctx.getText(R.string.country_location))
+                    .append(DECIMAL_FORMAT.format(country.lat))
+                    .append(", ")
+                    .append(DECIMAL_FORMAT.format(country.lng));
         } else {
             return null;
         }
@@ -147,8 +154,8 @@ public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewM
     }
 
     @Override
-    public int getMapVisibility() {
-        return mapsAvailable && country.lat != null && country.lng != null ? View.VISIBLE : View.GONE;
+    public boolean isMapVisible() {
+        return mapsAvailable && country.lat != null && country.lng != null;
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.patloew.countries.ui.detail;
 
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
+
+import com.patloew.countries.ui.ICountryViewModel;
 import com.patloew.countries.ui.base.view.MvvmView;
-import com.patloew.countries.ui.main.recyclerview.CountryMvvm;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -22,13 +25,13 @@ public interface DetailMvvm {
 
     }
 
-    interface ViewModel extends CountryMvvm.ViewModel<View> {
+    interface ViewModel extends ICountryViewModel<View> {
         // Properties
-        boolean getDetailVisibility();
-        CharSequence getNameTranslations();
-        CharSequence getLanguages();
-        CharSequence getCurrencies();
-        int getBorderVisibility();
-        CharSequence getBorders();
+
+        ObservableBoolean isLoaded();
+        ObservableField<CharSequence> getBorders();
+        ObservableField<CharSequence> getCurrencies();
+        ObservableField<CharSequence> getLanguages();
+        ObservableField<CharSequence> getNameTranslations();
     }
 }

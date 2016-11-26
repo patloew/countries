@@ -38,6 +38,8 @@ public class AllCountriesFragment extends CountriesFragment<IAllCountriesViewMod
         if(savedInstanceState == null) {
             binding.swipeRefreshLayout.post(() -> binding.swipeRefreshLayout.setRefreshing(true));
         }
+
+        viewModel.reloadData();
     }
 
 

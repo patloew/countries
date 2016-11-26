@@ -1,12 +1,14 @@
 package com.patloew.countries.ui.detail;
 
 import android.content.Context;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.patloew.countries.R;
 import com.patloew.countries.data.local.CountryRepo;
@@ -16,15 +18,19 @@ import com.patloew.countries.data.model.RealmStringMapEntry;
 import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerActivity;
-import com.patloew.countries.ui.main.recyclerview.BaseCountryViewModel;
+import com.patloew.countries.ui.BaseCountryViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
+import rx.Single;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -51,7 +57,12 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
 
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
 
-    private ArrayList<String> borderList = null;
+    private final ObservableField<CharSequence> borders = new ObservableField<>();
+    private final ObservableField<CharSequence> currencies = new ObservableField<>();
+    private final ObservableField<CharSequence> languages = new ObservableField<>();
+    private final ObservableField<CharSequence> nameTranslations = new ObservableField<>();
+
+    private final ObservableBoolean loaded = new ObservableBoolean();
 
     @Inject
     public DetailViewModel(@AppContext Context context, CountryRepo countryRepo, CountryApi countryApi) {
@@ -61,12 +72,14 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
 
     @Override
     public void saveInstanceState(@NonNull Bundle outState) {
-        outState.putStringArrayList(KEY_BORDERLIST, borderList);
+        outState.putCharSequence(KEY_BORDERLIST, borders.get());
     }
 
     @Override
     public void restoreInstanceState(@NonNull Bundle savedInstanceState) {
-        borderList = savedInstanceState.containsKey(KEY_BORDERLIST) ? savedInstanceState.getStringArrayList(KEY_BORDERLIST) : borderList;
+        if(savedInstanceState.containsKey(KEY_BORDERLIST)) {
+            borders.set(savedInstanceState.getCharSequence(KEY_BORDERLIST));
+        }
     }
 
     @Override
@@ -79,57 +92,25 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
     public void update(Country country, boolean isLast) {
         super.update(country, isLast);
 
-        if(borderList == null) {
-            compositeSubscription.add(countryApi.getAllCountries()
-                    .subscribe(countryList -> {
-                        if (country.borders.size() == 0 || countryList == null) {
-                            borderList = new ArrayList<>(0);
-                        } else {
-                            borderList = new ArrayList<>(country.borders.size());
-                            ArrayList<String> alpha3List = new ArrayList<>(country.borders.size());
-
-                            for (RealmString borderAlpha3CodeString : country.borders) {
-                                alpha3List.add(borderAlpha3CodeString.value);
-                            }
-
-                            for (Country c : countryList) {
-                                if (alpha3List.contains(c.alpha3Code)) {
-                                    borderList.add(c.name);
-                                    alpha3List.remove(c.alpha3Code);
-                                    if (alpha3List.isEmpty()) {
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        notifyChange();
-                    }, throwable -> Timber.e(throwable, "Could not load countries")));
-        }
+        compositeSubscription.clear();
+        loadBorders();
+        loadDataForField(nameTranslations, this::calculateNameTranslations);
+        loadDataForField(currencies, this::calculateCurrencies);
+        loadDataForField(languages, this::calculateLanguages);
     }
 
-    // Properties
-
-    @Override
-    public boolean getDetailVisibility() {
-        return borderList != null;
+    private <T> void loadDataForField(ObservableField<T> field, Callable<T> producer) {
+        compositeSubscription.add(
+                Single.fromCallable(producer)
+                        .subscribeOn(Schedulers.computation())
+                        .subscribe(field::set, throwable -> {
+                            Timber.e(throwable, "Could not load data for field");
+                            field.set(null);
+                        })
+        );
     }
 
-    @Override
-    public CharSequence getNameTranslations() {
-        ArrayList<String> nameList = new ArrayList<>(country.translations.size());
-
-        for(RealmStringMapEntry entry : country.translations) {
-            nameList.add(entry.value + " <i>(" + new Locale(entry.key).getDisplayLanguage(DISPLAY_LOCALE) + ")</i>");
-        }
-
-        Collections.sort(nameList);
-
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_name_translations), TextUtils.join(", ", nameList)));
-    }
-
-    @Override
-    public CharSequence getLanguages() {
+    private CharSequence calculateLanguages() {
         ArrayList<String> languageList = new ArrayList<>(country.languages.size());
 
         for(RealmString language : country.languages) {
@@ -138,11 +119,22 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
 
         Collections.sort(languageList);
 
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_languages), TextUtils.join(", ", languageList)));
+        return new SpannableStringBuilder(ctx.getText(R.string.country_languages)).append(TextUtils.join(", ", languageList));
     }
 
-    @Override
-    public CharSequence getCurrencies() {
+    private CharSequence calculateNameTranslations() {
+        ArrayList<String> nameList = new ArrayList<>(country.translations.size());
+
+        for(RealmStringMapEntry entry : country.translations) {
+            nameList.add(entry.value + " <i>(" + new Locale(entry.key).getDisplayLanguage(DISPLAY_LOCALE) + ")</i>");
+        }
+
+        Collections.sort(nameList);
+
+        return new SpannableStringBuilder(ctx.getText(R.string.country_name_translations)).append(Html.fromHtml(TextUtils.join(", ", nameList)));
+    }
+
+    private CharSequence calculateCurrencies() {
         ArrayList<String> currenciesList = new ArrayList<>(country.currencies.size());
 
         for (RealmString currencyRealmString : country.currencies) {
@@ -165,17 +157,79 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
 
         Collections.sort(currenciesList);
 
-        return Html.fromHtml(String.format(ctx.getString(R.string.country_currencies), TextUtils.join(", ", currenciesList)));
+        return new SpannableStringBuilder(ctx.getText(R.string.country_currencies)).append(TextUtils.join(", ", currenciesList));
+    }
+
+    private void loadBorders() {
+        borders.set(null);
+
+        if(country.borders.size() > 0) {
+            compositeSubscription.add(
+                    countryApi.getAllCountries()
+                        .subscribe(this::calculateBorders, this::onLoadCountriesError)
+            );
+
+        } else {
+            loaded.set(true);
+        }
+    }
+
+    private void calculateBorders(List<Country> countryList) {
+        if(countryList != null) {
+            List<String> borderList = new ArrayList<>(country.borders.size());
+            ArrayList<String> alpha3List = new ArrayList<>(country.borders.size());
+
+            for (RealmString borderAlpha3CodeString : country.borders) {
+                alpha3List.add(borderAlpha3CodeString.value);
+            }
+
+            for (Country c : countryList) {
+                if (alpha3List.contains(c.alpha3Code)) {
+                    borderList.add(c.name);
+                    alpha3List.remove(c.alpha3Code);
+                    if (alpha3List.isEmpty()) {
+                        break;
+                    }
+                }
+            }
+
+            borders.set(new SpannableStringBuilder(ctx.getText(R.string.country_borders)).append(TextUtils.join(", ", borderList)));
+        }
+
+        loaded.set(true);
+    }
+
+    private void onLoadCountriesError(Throwable throwable) {
+        Timber.e(throwable, "Could not load countries");
+        loaded.set(true);
+    }
+
+    // Properties
+
+    @Override
+    public ObservableField<CharSequence> getNameTranslations() {
+        return nameTranslations;
     }
 
     @Override
-    public int getBorderVisibility() {
-        return borderList == null ? View.GONE : View.VISIBLE;
+    public ObservableField<CharSequence> getLanguages() {
+        return languages;
     }
 
     @Override
-    public CharSequence getBorders() {
-        return borderList == null ? "" : Html.fromHtml(String.format(ctx.getString(R.string.country_borders), TextUtils.join(", ", borderList)));
+    public ObservableBoolean isLoaded() {
+        return loaded;
     }
+
+    @Override
+    public ObservableField<CharSequence> getBorders() {
+        return borders;
+    }
+
+    @Override
+    public ObservableField<CharSequence> getCurrencies() {
+        return currencies;
+    }
+
 
 }

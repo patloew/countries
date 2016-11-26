@@ -1,11 +1,9 @@
 package com.patloew.countries.ui.main.recyclerview;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.patloew.countries.data.model.Country;
+import com.patloew.countries.ui.ICountryViewModel;
 import com.patloew.countries.ui.base.view.MvvmView;
-import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -22,25 +20,7 @@ import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
  * limitations under the License. */
 public interface CountryMvvm {
 
-    interface ViewModel<V extends MvvmView> extends MvvmViewModel<V> {
-
-        void onMapClick(View view);
-        void onBookmarkClick(View view);
-        void update(Country country, boolean isLast);
-
-        // Properties
-
-        Country getCountry();
-        String getName();
-        CharSequence getRegion();
-        int getCapitalVisibility();
-        CharSequence getCapital();
-        CharSequence getPopulation();
-        int getLocationVisibility();
-        CharSequence getLocation();
-        Drawable getBookmarkDrawable();
-        int getMapVisibility();
-        int getCardBottomMargin();
-
+    interface ViewModel extends ICountryViewModel<MvvmView> {
+        void onCardClick(View v);
     }
 }

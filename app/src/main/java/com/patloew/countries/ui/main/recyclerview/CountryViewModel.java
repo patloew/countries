@@ -6,6 +6,7 @@ import android.view.View;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerViewHolder;
+import com.patloew.countries.ui.BaseCountryViewModel;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.detail.DetailActivity;
 
@@ -28,13 +29,14 @@ import javax.inject.Inject;
  * limitations under the License. */
 
 @PerViewHolder
-public class CountryViewModel extends BaseCountryViewModel<MvvmView> {
+public class CountryViewModel extends BaseCountryViewModel<MvvmView> implements CountryMvvm.ViewModel {
 
     @Inject
     public CountryViewModel(@AppContext Context context, CountryRepo countryRepo) {
         super(context, countryRepo);
     }
 
+    @Override
     public void onCardClick(View v) {
         navigator.get().startActivity(DetailActivity.class, Parcels.wrap(countryRepo.detach(country)));
     }

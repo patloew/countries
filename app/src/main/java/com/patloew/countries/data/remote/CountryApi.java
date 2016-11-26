@@ -5,7 +5,7 @@ import com.patloew.countries.data.model.Country;
 import java.util.List;
 
 import retrofit2.http.GET;
-import rx.Observable;
+import rx.Single;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -22,5 +22,5 @@ import rx.Observable;
  * limitations under the License. */
 public interface CountryApi {
     @GET("rest/v1/all")
-    Observable<List<Country>> getAllCountries();
+    Single<List<Country>> getAllCountries();
 }

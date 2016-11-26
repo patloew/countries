@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="vm" type="com.patloew.countries.ui.main.recyclerview.CountryViewModel" />
+        <variable name="vm" type="com.patloew.countries.ui.main.recyclerview.CountryMvvm.ViewModel" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="40dp"
                 android:paddingTop="4dp"
-                android:visibility="@{vm.capitalVisibility}"
+                android:visibility="@{vm.capitalVisible}"
                 android:text='@{vm.capital}'
                 style="@style/TextAppearance.AppCompat"
                 tools:text="Capital: City"/>
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="4dp"
-                android:visibility='@{vm.locationVisibility}'
+                android:visibility='@{vm.locationVisible}'
                 android:text='@{vm.location}'
                 style="@style/TextAppearance.AppCompat"
                 tools:text="Location: 12.45, 67.89"/>
@@ -100,7 +100,7 @@
             android:layout_marginTop="50dp"
             android:layout_gravity="right|top"
             android:adjustViewBounds="true"
-            android:visibility='@{vm.mapVisibility}'
+            android:visibility='@{vm.mapVisible}'
             app:srcCompat="@drawable/ic_map_black"
             android:onClick="@{vm::onMapClick}"
             tools:src="@drawable/ic_map_black"

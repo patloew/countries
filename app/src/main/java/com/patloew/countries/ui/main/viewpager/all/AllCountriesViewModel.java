@@ -57,8 +57,6 @@ public class AllCountriesViewModel extends BaseViewModel<CountriesView> implemen
                 countryRepo.getFavoriteChangeObservable()
                     .subscribe(alpha2Code -> adapter.notifyDataSetChanged(), Timber::e)
         );
-
-        reloadData();
     }
 
     @Override
@@ -70,7 +68,7 @@ public class AllCountriesViewModel extends BaseViewModel<CountriesView> implemen
     @Override
     public void reloadData() {
         compositeSubscription.add(countryApi.getAllCountries()
-                .doOnNext(Collections::sort)
+                .doOnSuccess(Collections::sort)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(countries -> {
                     adapter.setCountryList(countries);

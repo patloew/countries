@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Single;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
@@ -65,7 +66,6 @@ public class AllCountriesViewModelUnitTest {
 
         doReturn(Observable.never()).when(countryRepo).getFavoriteChangeObservable();
 
-        doReturn(Observable.never()).when(countryApi).getAllCountries();
         allCountriesViewModel = new AllCountriesViewModel(adapter, countryApi, countryRepo);
         allCountriesViewModel.attachView(countriesView, null);
     }
@@ -75,7 +75,7 @@ public class AllCountriesViewModelUnitTest {
         List<Country> countryList = new ArrayList<>();
         countryList.add(new Country());
 
-        doReturn(Observable.just(countryList)).when(countryApi).getAllCountries();
+        doReturn(Single.just(countryList)).when(countryApi).getAllCountries();
 
         allCountriesViewModel.reloadData();
 
@@ -86,7 +86,7 @@ public class AllCountriesViewModelUnitTest {
 
     @Test
     public void onRefresh_error() {
-        doReturn(Observable.error(new RuntimeException("Error getting countries"))).when(countryApi).getAllCountries();
+        doReturn(Single.error(new RuntimeException("Error getting countries"))).when(countryApi).getAllCountries();
 
         allCountriesViewModel.reloadData();
 

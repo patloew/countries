@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="vm" type="com.patloew.countries.ui.detail.DetailViewModel" />
+        <variable name="vm" type="com.patloew.countries.ui.detail.DetailMvvm.ViewModel" />
         <import type="android.view.View" />
     </data>
 
@@ -14,7 +14,6 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
-            android:elevation="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -33,7 +32,7 @@
             android:layout_gravity="center"
             app:layout_behavior="com.patloew.countries.ui.main.MainContainerBehaviour"
             style="@style/Widget.AppCompat.ProgressBar"
-            android:visibility="@{vm.detailVisibility ? View.GONE : View.VISIBLE}"/>
+            android:visibility="@{!vm.loaded}"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +41,7 @@
             android:orientation="vertical"
             app:layout_behavior="com.patloew.countries.ui.main.MainContainerBehaviour"
             android:foreground="?android:windowContentOverlay"
-            android:visibility="@{vm.detailVisibility ? View.VISIBLE : View.GONE}">
+            android:visibility="@{vm.loaded}">
 
             <TextView
                 android:id="@+id/country_name"
@@ -79,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="40dp"
                 android:paddingTop="4dp"
-                android:visibility="@{vm.capitalVisibility}"
+                android:visibility="@{vm.capitalVisible}"
                 android:text='@{vm.capital}'
                 style="@style/TextAppearance.AppCompat"
                 tools:text="Capital: City"/>
@@ -116,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="4dp"
-                android:visibility='@{vm.locationVisibility}'
+                android:visibility='@{vm.locationVisible}'
                 android:text='@{vm.location}'
                 style="@style/TextAppearance.AppCompat"
                 tools:text="Location: 12.45, 67.89"/>
@@ -126,7 +125,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="4dp"
-                android:visibility="@{vm.borderVisibility}"
                 android:text='@{vm.borders}'
                 style="@style/TextAppearance.AppCompat"
                 tools:text="Borders: Other country"/>
