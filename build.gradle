@@ -11,8 +11,8 @@ buildscript {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.3.1'
-        classpath "io.realm:realm-gradle-plugin:2.0.2"
+        classpath 'me.tatarka:gradle-retrolambda:3.4.0'
+        classpath "io.realm:realm-gradle-plugin:2.2.1"
     }
 }
 
