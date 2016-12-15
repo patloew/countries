@@ -5,7 +5,7 @@ import com.patloew.countries.data.model.Country;
 import java.util.List;
 
 import retrofit2.http.GET;
-import rx.Single;
+import io.reactivex.Single;
 
 /* Copyright 2016 Patrick Löwenstein
  *

@@ -46,9 +46,9 @@ retrolambda {
     javaVersion JavaVersion.VERSION_1_6
 }
 
-ext.supportLibVersion = '25.0.1'
+ext.supportLibVersion = '25.1.0'
 ext.retrofitVersion = '2.1.0'
-ext.okHttpVersion = '3.4.2'
+ext.okHttpVersion = '3.5.0'
 ext.daggerVersion = '2.8'
 ext.parcelerVersion = '1.1.6'
 
@@ -66,13 +66,13 @@ dependencies {
 
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
 
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.11'
 
-    compile 'com.jakewharton.timber:timber:4.3.1'
+    compile 'com.jakewharton.timber:timber:4.4.0'
 
     compile "org.parceler:parceler-api:$parcelerVersion"
     apt "org.parceler:parceler:$parcelerVersion"
@@ -80,8 +80,8 @@ dependencies {
     apt "com.google.dagger:dagger-compiler:$daggerVersion"
     compile "com.google.dagger:dagger:$daggerVersion"
 
-    compile 'io.reactivex:rxjava:1.2.3'
-    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.2'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     compile('com.mikepenz:aboutlibraries:5.8.1@aar') {
         transitive = true
@@ -94,4 +94,5 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4:1.6.5"
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.5"
     testCompile "org.powermock:powermock-api-mockito:1.6.5"
+    testCompile 'io.reactivex:rxjava:1.2.3'
 }

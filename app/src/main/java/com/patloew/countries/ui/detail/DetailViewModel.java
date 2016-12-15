@@ -29,9 +29,9 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
-import rx.Single;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /* Copyright 2016 Patrick Löwenstein
@@ -55,7 +55,7 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
 
     private final CountryApi countryApi;
 
-    private final CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final ObservableField<CharSequence> borders = new ObservableField<>();
     private final ObservableField<CharSequence> currencies = new ObservableField<>();
@@ -85,14 +85,14 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
     @Override
     public void detachView() {
         super.detachView();
-        compositeSubscription.clear();
+        compositeDisposable.clear();
     }
 
     @Override
     public void update(Country country, boolean isLast) {
         super.update(country, isLast);
 
-        compositeSubscription.clear();
+        compositeDisposable.clear();
         loadBorders();
         loadDataForField(nameTranslations, this::calculateNameTranslations);
         loadDataForField(currencies, this::calculateCurrencies);
@@ -100,7 +100,7 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
     }
 
     private <T> void loadDataForField(ObservableField<T> field, Callable<T> producer) {
-        compositeSubscription.add(
+        compositeDisposable.add(
                 Single.fromCallable(producer)
                         .subscribeOn(Schedulers.computation())
                         .subscribe(field::set, throwable -> {
@@ -164,7 +164,7 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
         borders.set(null);
 
         if(country.borders.size() > 0) {
-            compositeSubscription.add(
+            compositeDisposable.add(
                     countryApi.getAllCountries()
                         .subscribe(this::calculateBorders, this::onLoadCountriesError)
             );

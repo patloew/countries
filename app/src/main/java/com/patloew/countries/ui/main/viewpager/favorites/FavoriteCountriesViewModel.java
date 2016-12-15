@@ -15,8 +15,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
 import io.realm.Sort;
-import rx.Subscription;
 import timber.log.Timber;
 
 /* Copyright 2016 Patrick Löwenstein
@@ -38,7 +38,7 @@ public class FavoriteCountriesViewModel extends BaseViewModel<CountriesView> imp
 
     private final CountryAdapter adapter;
     private final CountryRepo countryRepo;
-    private Subscription subscription;
+    private Disposable disposable;
 
     @Inject
     public FavoriteCountriesViewModel(CountryAdapter adapter, CountryRepo countryRepo) {
@@ -50,7 +50,7 @@ public class FavoriteCountriesViewModel extends BaseViewModel<CountriesView> imp
     public void attachView(@NonNull CountriesView view, @Nullable Bundle savedInstanceState) {
         super.attachView(view, savedInstanceState);
 
-        subscription = countryRepo.findAllSortedWithChanges("name", Sort.ASCENDING)
+        disposable = countryRepo.findAllSortedWithChanges("name", Sort.ASCENDING)
                 .subscribe(this::refreshView, Timber::e);
     }
 
@@ -64,9 +64,9 @@ public class FavoriteCountriesViewModel extends BaseViewModel<CountriesView> imp
     public void detachView() {
         super.detachView();
 
-        if(subscription != null) {
-            subscription.unsubscribe();
-            subscription = null;
+        if(disposable != null) {
+            disposable.dispose();
+            disposable = null;
         }
     }
 

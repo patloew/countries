@@ -15,8 +15,8 @@ import java.util.Collections;
 
 import javax.inject.Inject;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 /* Copyright 2016 Patrick Löwenstein
@@ -36,7 +36,7 @@ import timber.log.Timber;
 @PerFragment
 public class AllCountriesViewModel extends BaseViewModel<CountriesView> implements IAllCountriesViewModel {
 
-    private final CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private final CountryAdapter adapter;
     private final CountryApi countryApi;
@@ -53,7 +53,7 @@ public class AllCountriesViewModel extends BaseViewModel<CountriesView> implemen
     public void attachView(@NonNull CountriesView view, @Nullable Bundle savedInstanceState) {
         super.attachView(view, savedInstanceState);
 
-        compositeSubscription.add(
+        compositeDisposable.add(
                 countryRepo.getFavoriteChangeObservable()
                     .subscribe(alpha2Code -> adapter.notifyDataSetChanged(), Timber::e)
         );
@@ -62,12 +62,12 @@ public class AllCountriesViewModel extends BaseViewModel<CountriesView> implemen
     @Override
     public void detachView() {
         super.detachView();
-        compositeSubscription.clear();
+        compositeDisposable.clear();
     }
 
     @Override
     public void reloadData() {
-        compositeSubscription.add(countryApi.getAllCountries()
+        compositeDisposable.add(countryApi.getAllCountries()
                 .doOnSuccess(Collections::sort)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(countries -> {

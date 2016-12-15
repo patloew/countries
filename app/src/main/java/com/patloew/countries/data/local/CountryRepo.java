@@ -7,7 +7,7 @@ import com.patloew.countries.data.model.Country;
 import java.util.List;
 
 import io.realm.Sort;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /* Copyright 2016 Patrick Löwenstein
  *

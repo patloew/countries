@@ -3,6 +3,7 @@ package com.patloew.countries.injection.modules;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.patloew.countries.BuildConfig;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.data.model.RealmString;
@@ -19,9 +20,8 @@ import io.realm.RealmList;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.schedulers.Schedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -73,7 +73,7 @@ public class NetModule {
         return new Retrofit.Builder()
                 .baseUrl("https://restcountries.eu/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .callFactory(httpClientBuilder.build())
                 .build().create(CountryApi.class);
     }

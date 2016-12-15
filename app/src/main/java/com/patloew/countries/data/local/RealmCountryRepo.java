@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.injection.scopes.PerApplication;
+import com.patloew.countries.util.RealmResultsObservable;
 
 import java.util.List;
 
@@ -14,8 +15,8 @@ import javax.inject.Provider;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import rx.Observable;
-import rx.subjects.PublishSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -64,8 +65,7 @@ public class RealmCountryRepo implements CountryRepo {
     @Override
     public Observable<List<Country>> findAllSortedWithChanges(String sortField, Sort sort) {
         try(Realm realm = realmProvider.get()) {
-            return realm.where(Country.class).findAllSortedAsync(sortField, sort)
-                    .asObservable()
+            return RealmResultsObservable.from(realm.where(Country.class).findAllSortedAsync(sortField, sort))
                     .filter(RealmResults::isLoaded)
                     .map(result -> result);
         }
