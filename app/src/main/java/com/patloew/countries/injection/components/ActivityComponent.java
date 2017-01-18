@@ -1,8 +1,14 @@
 package com.patloew.countries.injection.components;
 
+import android.content.Context;
+import android.support.v4.app.FragmentManager;
+
 import com.patloew.countries.injection.modules.ActivityModule;
 import com.patloew.countries.injection.modules.ViewModelModule;
+import com.patloew.countries.injection.qualifier.ActivityContext;
+import com.patloew.countries.injection.qualifier.ActivityFragmentManager;
 import com.patloew.countries.injection.scopes.PerActivity;
+import com.patloew.countries.ui.base.navigator.Navigator;
 import com.patloew.countries.ui.main.MainActivity;
 
 import dagger.Component;
@@ -22,8 +28,14 @@ import dagger.Component;
  * limitations under the License. */
 @PerActivity
 @Component(dependencies = AppComponent.class, modules = {ActivityModule.class, ViewModelModule.class})
-public interface ActivityComponent {
+public interface ActivityComponent extends AppComponent {
+    
+    @ActivityContext Context activityContext();
+    @ActivityFragmentManager FragmentManager defaultFragmentManager();
+    Navigator navigator();
+
     // create inject methods for your Activities here
 
     void inject(MainActivity activity);
+
 }

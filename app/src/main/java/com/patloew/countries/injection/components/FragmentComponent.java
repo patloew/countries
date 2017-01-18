@@ -20,7 +20,7 @@ import dagger.Component;
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 @PerFragment
-@Component(dependencies = AppComponent.class, modules = {FragmentModule.class, ViewModelModule.class})
+@Component(dependencies = ActivityComponent.class, modules = {FragmentModule.class, ViewModelModule.class})
 public interface FragmentComponent {
     // create inject methods for your Fragments here
 

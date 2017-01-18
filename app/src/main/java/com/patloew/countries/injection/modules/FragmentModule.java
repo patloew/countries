@@ -1,15 +1,12 @@
 package com.patloew.countries.injection.modules;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.patloew.countries.injection.qualifier.ActivityContext;
 import com.patloew.countries.injection.qualifier.ChildFragmentManager;
-import com.patloew.countries.injection.qualifier.DefaultFragmentManager;
 import com.patloew.countries.injection.scopes.PerFragment;
+import com.patloew.countries.ui.base.navigator.ChildFragmentNavigator;
 import com.patloew.countries.ui.base.navigator.FragmentNavigator;
-import com.patloew.countries.ui.base.navigator.Navigator;
 
 import dagger.Module;
 import dagger.Provides;
@@ -38,21 +35,11 @@ public class FragmentModule {
 
     @Provides
     @PerFragment
-    @ActivityContext
-    Context provideActivityContext() { return mFragment.getActivity(); }
-
-    @Provides
-    @PerFragment
-    @DefaultFragmentManager
-    FragmentManager provideDefaultFragmentManager() { return mFragment.getFragmentManager(); }
-
-    @Provides
-    @PerFragment
     @ChildFragmentManager
     FragmentManager provideChildFragmentManager() { return mFragment.getChildFragmentManager(); }
 
     @Provides
     @PerFragment
-    Navigator provideNavigator() { return new FragmentNavigator(mFragment); }
+    FragmentNavigator provideFragmentNavigator() { return new ChildFragmentNavigator(mFragment); }
 
 }

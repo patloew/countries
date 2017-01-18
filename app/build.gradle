@@ -6,7 +6,7 @@ apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.patloew.countries"
@@ -66,11 +66,12 @@ dependencies {
 
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    //compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
 
-    compile 'com.jakewharton.timber:timber:4.4.0'
+    compile 'com.jakewharton.timber:timber:4.5.0'
 
     compile "org.parceler:parceler-api:$parcelerVersion"
     apt "org.parceler:parceler:$parcelerVersion"
@@ -78,10 +79,10 @@ dependencies {
     apt "com.google.dagger:dagger-compiler:$daggerVersion"
     compile "com.google.dagger:dagger:$daggerVersion"
 
-    compile 'io.reactivex.rxjava2:rxjava:2.0.2'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.4'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.4.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
