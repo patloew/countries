@@ -4,8 +4,8 @@ import com.patloew.countries.data.model.Country;
 
 import java.util.List;
 
-import retrofit2.http.GET;
 import io.reactivex.Single;
+import retrofit2.http.GET;
 
 /* Copyright 2016 Patrick Löwenstein
  *

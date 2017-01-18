@@ -7,6 +7,7 @@ import com.patloew.countries.injection.components.AppComponent;
 import com.patloew.countries.injection.components.DaggerAppComponent;
 import com.patloew.countries.injection.modules.AppModule;
 
+import io.reactivex.plugins.RxJavaPlugins;
 import io.realm.Realm;
 import timber.log.Timber;
 
@@ -40,6 +41,8 @@ public class CountriesApp extends Application {
                 .build();
 
         if(BuildConfig.DEBUG) { Timber.plant(new Timber.DebugTree()); }
+
+        RxJavaPlugins.setErrorHandler(Timber::e);
     }
 
     public static CountriesApp getInstance() { return sInstance; }

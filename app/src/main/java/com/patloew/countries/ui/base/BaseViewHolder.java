@@ -2,17 +2,16 @@ package com.patloew.countries.ui.base;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.android.annotations.NonNull;
 import com.patloew.countries.BR;
-import com.patloew.countries.CountriesApp;
 import com.patloew.countries.injection.components.DaggerViewHolderComponent;
 import com.patloew.countries.injection.components.ViewHolderComponent;
-import com.patloew.countries.injection.modules.ViewHolderModule;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
+import com.patloew.countries.util.Utils;
 
 import javax.inject.Inject;
 
@@ -60,8 +59,7 @@ public abstract class BaseViewHolder<B extends ViewDataBinding, V extends MvvmVi
     protected final ViewHolderComponent viewHolderComponent() {
         if(viewHolderComponent == null) {
             viewHolderComponent = DaggerViewHolderComponent.builder()
-                    .appComponent(CountriesApp.getAppComponent())
-                    .viewHolderModule(new ViewHolderModule(itemView))
+                    .activityComponent(Utils.<BaseActivity>castActivityFromContext(itemView.getContext()).activityComponent())
                     .build();
 
             itemView = null;

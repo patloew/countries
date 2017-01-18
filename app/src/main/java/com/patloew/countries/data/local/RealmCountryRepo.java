@@ -12,11 +12,11 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import io.reactivex.Observable;
-import io.reactivex.subjects.PublishSubject;
 
 /* Copyright 2016 Patrick Löwenstein
  *

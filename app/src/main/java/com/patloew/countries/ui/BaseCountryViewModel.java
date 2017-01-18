@@ -18,7 +18,6 @@ import com.patloew.countries.R;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.injection.qualifier.AppContext;
-import com.patloew.countries.ui.ICountryViewModel;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.base.viewmodel.BaseViewModel;
 

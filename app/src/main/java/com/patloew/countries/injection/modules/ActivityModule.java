@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.patloew.countries.injection.qualifier.ActivityContext;
+import com.patloew.countries.injection.qualifier.ActivityFragmentManager;
 import com.patloew.countries.injection.scopes.PerActivity;
 import com.patloew.countries.ui.base.navigator.ActivityNavigator;
 import com.patloew.countries.ui.base.navigator.Navigator;
@@ -41,6 +42,7 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
+    @ActivityFragmentManager
     FragmentManager provideFragmentManager() { return mActivity.getSupportFragmentManager(); }
 
     @Provides

@@ -30,7 +30,7 @@ import io.realm.Realm;
 @PerApplication
 @Component(modules={AppModule.class, NetModule.class, DataModule.class})
 public interface AppComponent {
-    @AppContext Context context();
+    @AppContext Context appContext();
     Resources resources();
 
     Realm realm();

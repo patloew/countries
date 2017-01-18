@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.patloew.countries.BR;
-import com.patloew.countries.CountriesApp;
 import com.patloew.countries.injection.components.DaggerFragmentComponent;
 import com.patloew.countries.injection.components.FragmentComponent;
 import com.patloew.countries.injection.modules.FragmentModule;
@@ -60,7 +59,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends MvvmView
     protected final FragmentComponent fragmentComponent() {
         if(mFragmentComponent == null) {
             mFragmentComponent = DaggerFragmentComponent.builder()
-                    .appComponent(CountriesApp.getAppComponent())
+                    .activityComponent(((BaseActivity)getActivity()).activityComponent())
                     .fragmentModule(new FragmentModule(this))
                     .build();
         }

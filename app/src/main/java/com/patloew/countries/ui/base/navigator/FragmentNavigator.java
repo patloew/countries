@@ -1,8 +1,9 @@
 package com.patloew.countries.ui.base.navigator;
 
+import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -17,21 +18,11 @@ import android.support.v4.app.FragmentManager;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-public class FragmentNavigator extends BaseNavigator {
+public interface FragmentNavigator extends Navigator {
 
-    private final Fragment fragment;
+    void replaceChildFragment(@IdRes int containerId, @NonNull Fragment fragment, Bundle args);
+    void replaceChildFragment(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args);
+    void replaceChildFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, Bundle args, String backstackTag);
+    void replaceChildFragmentAndAddToBackStack(@IdRes int containerId, @NonNull Fragment fragment, @NonNull String fragmentTag, Bundle args, String backstackTag);
 
-    public FragmentNavigator(Fragment fragment) {
-        this.fragment = fragment;
-    }
-
-    @Override
-    final FragmentActivity getActivity() {
-        return fragment.getActivity();
-    }
-
-    @Override
-    final FragmentManager getChildFragmentManager() {
-        return fragment.getChildFragmentManager();
-    }
 }

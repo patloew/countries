@@ -21,7 +21,7 @@ import dagger.Component;
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 @PerViewHolder
-@Component(dependencies = AppComponent.class, modules = {ViewHolderModule.class, ViewModelModule.class})
+@Component(dependencies = ActivityComponent.class, modules = {ViewHolderModule.class, ViewModelModule.class})
 public interface ViewHolderComponent {
     void inject(CountryViewHolder viewHolder);
 }

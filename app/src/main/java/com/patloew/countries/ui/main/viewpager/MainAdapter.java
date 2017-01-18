@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.patloew.countries.R;
+import com.patloew.countries.injection.qualifier.ActivityFragmentManager;
 import com.patloew.countries.injection.scopes.PerActivity;
 import com.patloew.countries.ui.main.viewpager.all.AllCountriesFragment;
 import com.patloew.countries.ui.main.viewpager.favorites.FavoriteCountriesFragment;
@@ -32,7 +33,7 @@ public class MainAdapter extends FragmentPagerAdapter {
     private final Resources res;
 
     @Inject
-    public MainAdapter(FragmentManager fm, Resources res) {
+    public MainAdapter(@ActivityFragmentManager FragmentManager fm, Resources res) {
         super(fm);
         this.res = res;
     }

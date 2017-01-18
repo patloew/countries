@@ -6,8 +6,8 @@ import com.patloew.countries.data.model.Country;
 
 import java.util.List;
 
-import io.realm.Sort;
 import io.reactivex.Observable;
+import io.realm.Sort;
 
 /* Copyright 2016 Patrick Löwenstein
  *

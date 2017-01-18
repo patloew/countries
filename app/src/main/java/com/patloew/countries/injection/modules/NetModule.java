@@ -16,12 +16,12 @@ import com.patloew.countries.util.RealmStringMapEntryListTypeAdapter;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.RealmList;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import io.reactivex.schedulers.Schedulers;
 
 /* Copyright 2016 Patrick Löwenstein
  *
