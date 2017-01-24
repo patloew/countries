@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="vm" type="com.patloew.countries.ui.main.MainMvvm.ViewModel" />
+        <variable name="vm" type="com.tailoredapps.template.ui.main.MainMvvm.ViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

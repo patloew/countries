@@ -1,11 +1,17 @@
-Countries
-Copyright 2016 Patrick Löwenstein
+TA App Template
+Copyright 2017 Tailored Media GmbH
 
 ===========================
 Apache License, Version 2.0
 ===========================
 
 The following components are provided under the Apache License, Version 2.0. See project link for details.
+
+-------------------------
+Countries Example Project
+-------------------------
+com.patloew.countries
+https://github.com/patloew/countries
 
 -------------------------
 Android Support Libraries

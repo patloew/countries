@@ -4,22 +4,53 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
 apply plugin: 'com.getkeepsafe.dexcount'
 
+def gitCommitHash() {
+    def commitHash = ""
+    def proc = "git rev-parse --short HEAD".execute()
+    proc.in.eachLine { line -> commitHash = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+    commitHash
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-
+    signingConfigs {
+        release {
+            keyAlias 'mykeyalias'
+            keyPassword 'mykeypassword'
+            storeFile file('../keystore.jks')
+            storePassword 'mykeystorepassword'
+        }
+    }
     defaultConfig {
-        applicationId "com.patloew.countries"
-        minSdkVersion 16
+        applicationId "com.tailoredapps.template"
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+
+        setProperty("archivesBaseName", "TAAppTemplate-v$versionName-b$versionCode-" + gitCommitHash())
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        devBackend {
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "TA Template App Dev"
+            buildConfigField "String", "BASE_URL", "\"https://restcountries.eu/\""
+        }
+        productionBackend {
+            resValue "string", "app_name", "TA Template App"
+            buildConfigField "String", "BASE_URL", "\"https://restcountries.eu/\""
         }
     }
     compileOptions {
@@ -82,6 +113,9 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.0.4'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.4.0'
 
     testCompile 'junit:junit:4.12'
@@ -89,4 +123,19 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4:1.6.5"
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.5"
     testCompile "org.powermock:powermock-api-mockito:1.6.5"
+
+    androidTestCompile "com.android.support:support-annotations:$supportLibVersion"
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
+    androidTestCompile "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    androidTestCompile 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
 }
