@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="vm" type="com.patloew.countries.ui.base.viewmodel.AdapterMvvmViewModel" />
+        <variable name="vm" type="com.tailoredapps.template.ui.base.viewmodel.AdapterMvvmViewModel" />
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout

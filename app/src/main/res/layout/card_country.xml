@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="vm" type="com.patloew.countries.ui.main.recyclerview.CountryMvvm.ViewModel" />
+        <variable name="vm" type="com.tailoredapps.template.ui.main.recyclerview.CountryMvvm.ViewModel" />
     </data>
 
     <android.support.v7.widget.CardView

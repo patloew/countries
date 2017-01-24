@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="vm" type="com.patloew.countries.ui.detail.DetailMvvm.ViewModel" />
+        <variable name="vm" type="com.tailoredapps.template.ui.detail.DetailMvvm.ViewModel" />
         <import type="android.view.View" />
     </data>
 
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:layout_behavior="com.patloew.countries.ui.main.MainContainerBehaviour"
+            app:layout_behavior="com.tailoredapps.template.ui.main.MainContainerBehaviour"
             style="@style/Widget.AppCompat.ProgressBar"
             android:visibility="@{!vm.loaded}"/>
 
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:padding="16dp"
             android:orientation="vertical"
-            app:layout_behavior="com.patloew.countries.ui.main.MainContainerBehaviour"
+            app:layout_behavior="com.tailoredapps.template.ui.main.MainContainerBehaviour"
             android:foreground="?android:windowContentOverlay"
             android:visibility="@{vm.loaded}">
 

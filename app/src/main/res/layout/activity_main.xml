@@ -31,7 +31,7 @@
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="com.patloew.countries.ui.main.MainContainerBehaviour"
+            app:layout_behavior="com.tailoredapps.template.ui.main.MainContainerBehaviour"
             android:foreground="?android:windowContentOverlay" />
 
     </android.support.design.widget.CoordinatorLayout>

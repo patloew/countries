@@ -1,0 +1,33 @@
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  script:
+    - ./gradlew test
+  tags:
+    - android
+
+build-debug:
+  stage: build
+  script:
+    - ./gradlew :app:assembleDebug 
+  tags:
+    - android
+  except:
+    - master
+    - develop
+
+build-release:
+  stage: build
+  script:
+    - ./gradlew :app:assembleRelease
+  tags:
+    - android
+  artifacts:
+    paths:
+      - app/build/outputs/apk/*.apk
+  only:
+    - master
+    - develop
