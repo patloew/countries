@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">Countries</string>
-
     <string name="country_name_translations"><b>Name translations:</b> </string>
     <string name="country_region"><b>Region:</b> </string>
     <string name="country_borders"><b>Borders:</b> </string>

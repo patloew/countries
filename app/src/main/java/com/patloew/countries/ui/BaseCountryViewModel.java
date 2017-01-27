@@ -18,6 +18,7 @@ import com.patloew.countries.R;
 import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.data.model.Country;
 import com.patloew.countries.injection.qualifier.AppContext;
+import com.patloew.countries.ui.base.navigator.Navigator;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.base.viewmodel.BaseViewModel;
 
@@ -36,7 +37,12 @@ import java.util.Locale;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * -------
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH
+ * */
 public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewModel<V> implements ICountryViewModel<V> {
 
     protected static final Locale DISPLAY_LOCALE = new Locale("EN");
@@ -44,14 +50,16 @@ public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewM
 
     protected final Context ctx;
     protected final CountryRepo countryRepo;
+    protected final Navigator navigator;
     protected final boolean mapsAvailable;
 
     protected Country country;
     private boolean isLast = false;
 
-    public BaseCountryViewModel(@AppContext Context context, CountryRepo countryRepo) {
+    public BaseCountryViewModel(@AppContext Context context, CountryRepo countryRepo, Navigator navigator) {
         this.ctx = context.getApplicationContext();
         this.countryRepo = countryRepo;
+        this.navigator = navigator;
 
         boolean mapsAvailable = false;
 
@@ -66,7 +74,7 @@ public abstract class BaseCountryViewModel<V extends MvvmView> extends BaseViewM
     @Override
     public void onMapClick(View view) {
         Uri gmmIntentUri = Uri.parse("geo:"+country.lat+","+country.lng+"?q="+country.name+"&z=2");
-        navigator.get().startActivity(Intent.ACTION_VIEW, gmmIntentUri);
+        navigator.startActivity(Intent.ACTION_VIEW, gmmIntentUri);
     }
 
     @Override

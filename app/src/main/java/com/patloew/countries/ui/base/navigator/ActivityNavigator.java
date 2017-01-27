@@ -12,6 +12,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.patloew.countries.util.PlainConsumer;
+
 /* Copyright 2016 Patrick Löwenstein
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +26,14 @@ import android.support.v4.app.FragmentTransaction;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ *
+ * ------
+ *
+ * FILE CHANGED 2017 Tailored Media GmbH
+ *
+ */
 public class ActivityNavigator implements Navigator {
 
     protected final FragmentActivity activity;
@@ -34,7 +43,7 @@ public class ActivityNavigator implements Navigator {
     }
 
     @Override
-    public final void finishActivity() {
+    public void finishActivity() {
         activity.finish();
     }
 
@@ -55,21 +64,68 @@ public class ActivityNavigator implements Navigator {
 
     @Override
     public final void startActivity(@NonNull Class<? extends Activity> activityClass) {
-        startActivity(activityClass, null);
+        startActivityInternal(activityClass, null, null);
     }
 
     @Override
-    public final void startActivity(@NonNull Class<? extends Activity> activityClass, Bundle args) {
-        Intent intent = new Intent(activity, activityClass);
-        if(args != null) { intent.putExtra(EXTRA_ARGS, args); }
-        activity.startActivity(intent);
+    public void startActivity(@NonNull Class<? extends Activity> activityClass, @NonNull PlainConsumer<Intent> setArgsAction) {
+        startActivityInternal(activityClass, setArgsAction, null);
     }
 
     @Override
-    public final void startActivity(@NonNull Class<? extends Activity> activityClass, Parcelable args) {
+    public void startActivity(@NonNull Class<? extends Activity> activityClass, Bundle args) {
+        startActivityInternal(activityClass, intent -> intent.putExtra(EXTRA_ARG, args), null);
+    }
+
+    @Override
+    public final void startActivity(@NonNull Class<? extends Activity> activityClass, @NonNull Parcelable arg) {
+        startActivityInternal(activityClass, intent -> intent.putExtra(EXTRA_ARG, arg), null);
+    }
+
+    @Override
+    public final void startActivity(@NonNull Class<? extends Activity> activityClass, @NonNull String arg) {
+        startActivityInternal(activityClass, intent -> intent.putExtra(EXTRA_ARG, arg), null);
+    }
+
+    @Override
+    public final void startActivity(@NonNull Class<? extends Activity> activityClass, int arg) {
+        startActivityInternal(activityClass, intent -> intent.putExtra(EXTRA_ARG, arg), null);
+    }
+
+    @Override
+    public final void startActivityForResult(@NonNull Class<? extends Activity> activityClass, int requestCode) {
+        startActivityInternal(activityClass, null, requestCode);
+    }
+
+    @Override
+    public void startActivityForResult(@NonNull Class<? extends Activity> activityClass, @NonNull PlainConsumer<Intent> setArgsAction, int requestCode) {
+        startActivityInternal(activityClass, setArgsAction, requestCode);
+    }
+
+    @Override
+    public final void startActivityForResult(@NonNull Class<? extends Activity> activityClass, @NonNull Parcelable arg, int requestCode) {
+        startActivityInternal(activityClass, intent -> intent.putExtra(EXTRA_ARG, arg), requestCode);
+    }
+
+    @Override
+    public final void startActivityForResult(@NonNull Class<? extends Activity> activityClass, @NonNull String arg, int requestCode) {
+        startActivityInternal(activityClass, intent -> intent.putExtra(EXTRA_ARG, arg), requestCode);
+    }
+
+    @Override
+    public final void startActivityForResult(@NonNull Class<? extends Activity> activityClass, int arg, int requestCode) {
+        startActivityInternal(activityClass, intent -> intent.putExtra(EXTRA_ARG, arg), requestCode);
+    }
+
+    private void startActivityInternal(Class<? extends Activity> activityClass, PlainConsumer<Intent> setArgsAction, Integer requestCode) {
         Intent intent = new Intent(activity, activityClass);
-        if(args != null) { intent.putExtra(EXTRA_ARGS, args); }
-        activity.startActivity(intent);
+        if(setArgsAction != null) { setArgsAction.accept(intent); }
+
+        if(requestCode != null) {
+            activity.startActivityForResult(intent, requestCode);
+        } else {
+            activity.startActivity(intent);
+        }
     }
 
     @Override

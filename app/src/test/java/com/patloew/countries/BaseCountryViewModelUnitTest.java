@@ -25,8 +25,6 @@ import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import javax.inject.Provider;
-
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,22 +41,26 @@ import static org.mockito.Mockito.when;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH */
 
 @RunWith(PowerMockRunner.class)
 @PrepareOnlyThisForTest({Uri.class})
 public class BaseCountryViewModelUnitTest {
 
-    @Rule RxSchedulersOverrideRule rxSchedulersOverrideRule = new RxSchedulersOverrideRule();
+    @Rule
+    RxSchedulersOverrideRule rxSchedulersOverrideRule = new RxSchedulersOverrideRule();
 
     @Mock Context ctx;
     @Mock PackageManager packageManager;
     @Mock CountryRepo countryRepo;
     @Mock View view;
 
-    @Mock MvvmView mvvmView;
-    @Mock Provider<Navigator> navigatorProvider;
-    @Mock Navigator navigator;
+    @Mock
+    MvvmView mvvmView;
+    @Mock
+    Navigator navigator;
     CountryViewModel countryViewModel;
 
 
@@ -68,17 +70,15 @@ public class BaseCountryViewModelUnitTest {
     public void setup() throws PackageManager.NameNotFoundException {
         MockitoAnnotations.initMocks(this);
 
-        when(navigatorProvider.get()).thenReturn(navigator);
         when(ctx.getApplicationContext()).thenReturn(ctx);
         when(ctx.getPackageManager()).thenReturn(packageManager);
         //noinspection WrongConstant
         when(packageManager.getPackageInfo(Matchers.anyString(), Matchers.anyInt())).thenReturn(null);
 
-        countryViewModel = new CountryViewModel(ctx, countryRepo);
+        countryViewModel = new CountryViewModel(ctx, navigator, countryRepo);
         countryViewModel.attachView(mvvmView, null);
 
         Whitebox.setInternalState(countryViewModel, "country", internalCountry);
-        Whitebox.setInternalState(countryViewModel, "navigator", navigatorProvider);
     }
 
     @Test

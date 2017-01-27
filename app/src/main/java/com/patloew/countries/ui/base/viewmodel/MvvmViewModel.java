@@ -18,11 +18,15 @@ import com.patloew.countries.ui.base.view.MvvmView;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * ----------
+ *
+ * FILE CHANGED 2017 Tailored Media GmbH
+ */
 public interface MvvmViewModel<V extends MvvmView> extends Observable {
     void attachView(V view, Bundle savedInstanceState);
     void detachView();
 
     void saveInstanceState(@NonNull Bundle outState);
-    void restoreInstanceState(@NonNull Bundle savedInstanceState);
 }

@@ -4,9 +4,13 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +22,8 @@ import com.patloew.countries.injection.components.FragmentComponent;
 import com.patloew.countries.injection.modules.FragmentModule;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
+import com.patloew.countries.ui.base.viewmodel.NoOpViewModel;
+import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Inject;
 
@@ -33,7 +39,11 @@ import javax.inject.Inject;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * ------
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH */
 
 /* Base class for Fragments when using a view model with data binding.
  * This class provides the binding and the view model to the subclass. The
@@ -54,29 +64,9 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends MvvmView
     protected B binding;
     @Inject protected V viewModel;
 
+    @Inject RefWatcher refWatcher;
+
     private FragmentComponent mFragmentComponent;
-
-    protected final FragmentComponent fragmentComponent() {
-        if(mFragmentComponent == null) {
-            mFragmentComponent = DaggerFragmentComponent.builder()
-                    .activityComponent(((BaseActivity)getActivity()).activityComponent())
-                    .fragmentModule(new FragmentModule(this))
-                    .build();
-        }
-
-        return mFragmentComponent;
-    }
-
-    /* Use this method to inflate the content view for your Fragment. This method also handles
-     * creating the binding, setting the view model on the binding and attaching the view. */
-    protected final View setAndBindContentView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @LayoutRes int layoutResId, Bundle savedInstanceState) {
-        if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via fragmentComponent().inject(this)"); }
-        binding = DataBindingUtil.inflate(inflater, layoutResId, container, false);
-        binding.setVariable(BR.vm, viewModel);
-        //noinspection unchecked
-        viewModel.attachView((MvvmView) this, savedInstanceState);
-        return binding.getRoot();
-    }
 
     @Override
     @CallSuper
@@ -89,7 +79,10 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends MvvmView
     @CallSuper
     public void onDestroyView() {
         super.onDestroyView();
-        if(viewModel != null) { viewModel.detachView(); }
+        if(viewModel != null) {
+            viewModel.detachView();
+            if(refWatcher != null) { refWatcher.watch(viewModel);}
+        }
         binding = null;
         viewModel = null;
     }
@@ -97,7 +90,57 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends MvvmView
     @Override
     @CallSuper
     public void onDestroy() {
-        mFragmentComponent = null;
         super.onDestroy();
+        if(refWatcher != null) {
+            refWatcher.watch(this);
+            refWatcher.watch(mFragmentComponent);
+        }
+        mFragmentComponent = null;
+    }
+
+
+    protected final FragmentComponent fragmentComponent() {
+        if(mFragmentComponent == null) {
+            mFragmentComponent = DaggerFragmentComponent.builder()
+                    .fragmentModule(new FragmentModule(this))
+                    .activityComponent(((BaseActivity) getActivity()).activityComponent())
+                    .build();
+        }
+
+        return mFragmentComponent;
+    }
+
+    /* Sets the content view, creates the binding and attaches the view to the view model */
+    protected final View setAndBindContentView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState, @LayoutRes int layoutResID) {
+        if(viewModel == null) { throw new IllegalStateException("viewModel must already be set via injection"); }
+        binding = DataBindingUtil.inflate(inflater, layoutResID, container, false);
+        binding.setVariable(BR.vm, viewModel);
+
+        try {
+            //noinspection unchecked
+            viewModel.attachView((MvvmView) this, savedInstanceState);
+        } catch(ClassCastException e) {
+            if (!(viewModel instanceof NoOpViewModel)) {
+                throw new RuntimeException(getClass().getSimpleName() + " must implement MvvmView subclass as declared in " + viewModel.getClass().getSimpleName());
+            }
+        }
+
+        return binding.getRoot();
+    }
+
+    public int dimen(@DimenRes int resId) {
+        return (int) getResources().getDimension(resId);
+    }
+
+    public int color(@ColorRes int resId) {
+        return getResources().getColor(resId);
+    }
+
+    public int integer(@IntegerRes int resId) {
+        return getResources().getInteger(resId);
+    }
+
+    public String string(@StringRes int resId) {
+        return getResources().getString(resId);
     }
 }

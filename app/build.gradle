@@ -4,22 +4,36 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
 apply plugin: 'com.getkeepsafe.dexcount'
 
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-
     defaultConfig {
         applicationId "com.patloew.countries"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+
+        setProperty("archivesBaseName", "Countries-v$versionName-b$versionCode")
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        devBackend {
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "Countries Dev"
+            buildConfigField "String", "BASE_URL", "\"https://restcountries.eu/\""
+        }
+        productionBackend {
+            resValue "string", "app_name", "Countries"
+            buildConfigField "String", "BASE_URL", "\"https://restcountries.eu/\""
         }
     }
     compileOptions {
@@ -88,6 +102,9 @@ dependencies {
         transitive = true
     }
 
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.4.0'
 
     testCompile 'junit:junit:4.12'
@@ -96,4 +113,19 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.5"
     testCompile "org.powermock:powermock-api-mockito:1.6.5"
     testCompile 'io.reactivex:rxjava:1.2.3'
+
+    androidTestCompile "com.android.support:support-annotations:$supportLibVersion"
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+    }
+    androidTestCompile "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    androidTestCompile 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
 }

@@ -4,8 +4,12 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 
 import com.patloew.countries.BR;
@@ -15,6 +19,8 @@ import com.patloew.countries.injection.components.DaggerActivityComponent;
 import com.patloew.countries.injection.modules.ActivityModule;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
+import com.patloew.countries.ui.base.viewmodel.NoOpViewModel;
+import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Inject;
 
@@ -32,7 +38,12 @@ import io.realm.Realm;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * -------
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH
+ * */
 
 /* Base class for Activities when using a view model with data binding.
  * This class provides the binding and the view model to the subclass. The
@@ -50,35 +61,18 @@ import io.realm.Realm;
  * view model. */
 public abstract class BaseActivity<B extends ViewDataBinding, V extends MvvmViewModel> extends AppCompatActivity {
 
+
+    // Inject a Realm instance into every Activity, since the instance
+    // is cached and reused for a thread (avoids create/destroy overhead)
+    @Inject protected Realm realm;
+
     protected B binding;
     @Inject protected V viewModel;
 
-    // Always open a Realm in an Activity for avoiding open/close
-    // overhead (a Realm instance is cached for each thread)
-    @Inject Realm realm;
+    @Inject
+    RefWatcher refWatcher;
 
     private ActivityComponent mActivityComponent;
-
-    /* Use this method to set the content view on your Activity. This method also handles
-     * creating the binding, setting the view model on the binding and attaching the view. */
-    protected final void setAndBindContentView(@LayoutRes int layoutResId, @Nullable Bundle savedInstanceState) {
-        if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via activityComponent().inject(this)"); }
-        binding = DataBindingUtil.setContentView(this, layoutResId);
-        binding.setVariable(BR.vm, viewModel);
-        //noinspection unchecked
-        viewModel.attachView((MvvmView) this, savedInstanceState);
-    }
-
-    protected final ActivityComponent activityComponent() {
-        if(mActivityComponent == null) {
-            mActivityComponent = DaggerActivityComponent.builder()
-                    .appComponent(CountriesApp.getAppComponent())
-                    .activityModule(new ActivityModule(this))
-                    .build();
-        }
-
-        return mActivityComponent;
-    }
 
     @Override
     @CallSuper
@@ -91,12 +85,57 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends MvvmView
     @CallSuper
     protected void onDestroy() {
         super.onDestroy();
+        if(refWatcher != null) {
+            refWatcher.watch(mActivityComponent);
+            if(viewModel != null) { refWatcher.watch(viewModel); }
+        }
         if(viewModel != null) { viewModel.detachView(); }
-        if(realm != null) { realm.close(); }
         binding = null;
         viewModel = null;
         mActivityComponent = null;
-        realm = null;
+        if(realm != null) { realm.close(); }
+    }
 
+    protected final ActivityComponent activityComponent() {
+        if (mActivityComponent == null) {
+            mActivityComponent = DaggerActivityComponent.builder()
+                    .activityModule(new ActivityModule(this))
+                    .appComponent(CountriesApp.getAppComponent())
+                    .build();
+        }
+        return mActivityComponent;
+
+    }
+
+    /* Sets the content view, creates the binding and attaches the view to the view model */
+    protected final void setAndBindContentView(@Nullable Bundle savedInstanceState, @LayoutRes int layoutResID) {
+        if(viewModel == null) { throw new IllegalStateException("viewModel must already be set via injection"); }
+        binding = DataBindingUtil.setContentView(this, layoutResID);
+        binding.setVariable(BR.vm, viewModel);
+
+        try {
+            //noinspection unchecked
+            viewModel.attachView((MvvmView) this, savedInstanceState);
+        } catch(ClassCastException e) {
+            if (!(viewModel instanceof NoOpViewModel)) {
+                throw new RuntimeException(getClass().getSimpleName() + " must implement MvvmView subclass as declared in " + viewModel.getClass().getSimpleName());
+            }
+        }
+    }
+
+    public int dimen(@DimenRes int resId) {
+        return (int) getResources().getDimension(resId);
+    }
+
+    public int color(@ColorRes int resId) {
+        return getResources().getColor(resId);
+    }
+
+    public int integer(@IntegerRes int resId) {
+        return getResources().getInteger(resId);
+    }
+
+    public String string(@StringRes int resId) {
+        return getResources().getString(resId);
     }
 }

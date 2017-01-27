@@ -1,5 +1,8 @@
 package com.patloew.countries.ui.base.viewmodel;
 
+import android.databinding.BaseObservable;
+import android.os.Bundle;
+
 import com.patloew.countries.ui.base.view.MvvmView;
 
 import javax.inject.Inject;
@@ -16,9 +19,24 @@ import javax.inject.Inject;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
-public final class NoOpViewModel extends BaseViewModel<MvvmView> {
+ * limitations under the License.
+ *
+ * -------
+ *
+ * FILE CHANGED 2017 Tailored Media GmbH
+ * */
+public final class NoOpViewModel extends BaseObservable implements MvvmViewModel<MvvmView> {
 
     @Inject
     public NoOpViewModel() { }
+
+    @Override
+    public void attachView(MvvmView mvvmView, Bundle savedInstanceState) { }
+
+    @Override
+    public void saveInstanceState(Bundle outState) { }
+
+    @Override
+    public void detachView() { }
+
 }

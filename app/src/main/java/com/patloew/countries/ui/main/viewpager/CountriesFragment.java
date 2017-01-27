@@ -27,7 +27,9 @@ import javax.inject.Inject;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH*/
 public abstract class CountriesFragment<V extends MvvmViewModel> extends BaseFragment<FragmentRecyclerviewBinding, V> implements CountriesView {
 
     @Inject CountryAdapter adapter;
@@ -35,7 +37,7 @@ public abstract class CountriesFragment<V extends MvvmViewModel> extends BaseFra
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return setAndBindContentView(inflater, container, R.layout.fragment_recyclerview, savedInstanceState);
+        return setAndBindContentView(inflater, container, savedInstanceState, R.layout.fragment_recyclerview);
     }
 
     @Override

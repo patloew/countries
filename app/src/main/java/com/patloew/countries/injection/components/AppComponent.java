@@ -10,6 +10,7 @@ import com.patloew.countries.injection.modules.DataModule;
 import com.patloew.countries.injection.modules.NetModule;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerApplication;
+import com.squareup.leakcanary.RefWatcher;
 
 import dagger.Component;
 import io.realm.Realm;
@@ -32,6 +33,7 @@ import io.realm.Realm;
 public interface AppComponent {
     @AppContext Context appContext();
     Resources resources();
+    RefWatcher refWatcher();
 
     Realm realm();
     CountryRepo countryRepo();

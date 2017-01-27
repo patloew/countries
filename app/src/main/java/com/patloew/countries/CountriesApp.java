@@ -40,7 +40,7 @@ public class CountriesApp extends Application {
                 .appModule(new AppModule(this))
                 .build();
 
-        if(BuildConfig.DEBUG) { Timber.plant(new Timber.DebugTree()); }
+        Timber.plant(new Timber.DebugTree());
 
         RxJavaPlugins.setErrorHandler(Timber::e);
     }

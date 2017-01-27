@@ -27,7 +27,9 @@ import javax.inject.Inject;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH */
 public class MainActivity extends BaseActivity<ActivityMainBinding, NoOpViewModel> implements MvvmView {
 
     @Inject MainAdapter adapter;
@@ -37,7 +39,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, NoOpViewMode
         super.onCreate(savedInstanceState);
 
         activityComponent().inject(this);
-        setAndBindContentView(R.layout.activity_main, savedInstanceState);
+        setAndBindContentView(savedInstanceState, R.layout.activity_main);
 
         setSupportActionBar(binding.toolbar);
 

@@ -37,13 +37,13 @@ public class DetailActivity extends BaseActivity<ActivityDetailBinding, DetailMv
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-        setAndBindContentView(R.layout.activity_detail, savedInstanceState);
+        setAndBindContentView(savedInstanceState, R.layout.activity_detail);
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(R.string.toolbar_title_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewModel.update(Parcels.unwrap(getIntent().getParcelableExtra(Navigator.EXTRA_ARGS)), false);
+        viewModel.update(Parcels.unwrap(getIntent().getParcelableExtra(Navigator.EXTRA_ARG)), false);
 
         viewModel.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override

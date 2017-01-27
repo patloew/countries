@@ -2,15 +2,16 @@ package com.patloew.countries.ui.base;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.android.annotations.NonNull;
 import com.patloew.countries.BR;
 import com.patloew.countries.injection.components.DaggerViewHolderComponent;
 import com.patloew.countries.injection.components.ViewHolderComponent;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.base.viewmodel.MvvmViewModel;
+import com.patloew.countries.ui.base.viewmodel.NoOpViewModel;
 import com.patloew.countries.util.Utils;
 
 import javax.inject.Inject;
@@ -27,7 +28,12 @@ import javax.inject.Inject;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * ------
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH
+ */
 
 /* Base class for ViewHolders when using a view model with data binding.
  * This class provides the binding and the view model to the subclass. The
@@ -47,9 +53,9 @@ public abstract class BaseViewHolder<B extends ViewDataBinding, V extends MvvmVi
     protected B binding;
     @Inject protected V viewModel;
 
-    private ViewHolderComponent viewHolderComponent;
+    protected final View itemView;
 
-    private View itemView = null;
+    private ViewHolderComponent viewHolderComponent;
 
     public BaseViewHolder(View itemView) {
         super(itemView);
@@ -59,26 +65,31 @@ public abstract class BaseViewHolder<B extends ViewDataBinding, V extends MvvmVi
     protected final ViewHolderComponent viewHolderComponent() {
         if(viewHolderComponent == null) {
             viewHolderComponent = DaggerViewHolderComponent.builder()
-                    .activityComponent(Utils.<BaseActivity>castActivityFromContext(itemView.getContext()).activityComponent())
+                    .activityComponent(Utils.castActivityFromContext(itemView.getContext(), BaseActivity.class).activityComponent())
                     .build();
-
-            itemView = null;
         }
 
         return viewHolderComponent;
     }
 
-    /* Use this method to create the binding for the ViewHolder. This method also handles
-     * setting the view model on the binding and attaching the view. */
     protected final void bindContentView(@NonNull View view) {
         if(viewModel == null) { throw new IllegalStateException("viewModel must not be null and should be injected via viewHolderComponent().inject(this)"); }
         binding = DataBindingUtil.bind(view);
         binding.setVariable(BR.vm, viewModel);
-        //noinspection unchecked
-        viewModel.attachView((MvvmView) this, null);
+
+        try {
+            //noinspection unchecked
+            viewModel.attachView((MvvmView) this, null);
+        } catch(ClassCastException e) {
+            if (!(viewModel instanceof NoOpViewModel)) {
+                throw new RuntimeException(getClass().getSimpleName() + " must implement MvvmView subclass as declared in " + viewModel.getClass().getSimpleName());
+            }
+        }
     }
 
-    public final V viewModel() { return viewModel; }
+    public final V viewModel() {
+        return viewModel;
+    }
 
     public final void executePendingBindings() {
         if(binding != null) { binding.executePendingBindings(); }

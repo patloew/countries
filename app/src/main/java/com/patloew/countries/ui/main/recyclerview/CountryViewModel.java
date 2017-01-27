@@ -7,6 +7,7 @@ import com.patloew.countries.data.local.CountryRepo;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerViewHolder;
 import com.patloew.countries.ui.BaseCountryViewModel;
+import com.patloew.countries.ui.base.navigator.Navigator;
 import com.patloew.countries.ui.base.view.MvvmView;
 import com.patloew.countries.ui.detail.DetailActivity;
 
@@ -26,19 +27,23 @@ import javax.inject.Inject;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * -------
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH */
 
 @PerViewHolder
 public class CountryViewModel extends BaseCountryViewModel<MvvmView> implements CountryMvvm.ViewModel {
 
     @Inject
-    public CountryViewModel(@AppContext Context context, CountryRepo countryRepo) {
-        super(context, countryRepo);
+    public CountryViewModel(@AppContext Context context, Navigator navigator, CountryRepo countryRepo) {
+        super(context, countryRepo, navigator);
     }
 
     @Override
     public void onCardClick(View v) {
-        navigator.get().startActivity(DetailActivity.class, Parcels.wrap(countryRepo.detach(country)));
+        navigator.startActivity(DetailActivity.class, Parcels.wrap(countryRepo.detach(country)));
     }
 
 }

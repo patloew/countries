@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import com.patloew.countries.BuildConfig;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerApplication;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,7 +27,11 @@ import io.realm.RealmConfiguration;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * ------
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH */
 @Module
 public class AppModule {
 
@@ -46,6 +52,13 @@ public class AppModule {
     @PerApplication
     Resources provideResources() {
         return mApp.getResources();
+    }
+
+
+    @Provides
+    @PerApplication
+    RefWatcher provideRefWatcher() {
+        return LeakCanary.install(mApp);
     }
 
     @Provides

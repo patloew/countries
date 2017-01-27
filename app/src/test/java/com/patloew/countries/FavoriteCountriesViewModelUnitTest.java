@@ -22,9 +22,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.realm.RealmResults;
 import io.realm.Sort;
-import io.reactivex.Observable;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;

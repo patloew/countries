@@ -19,6 +19,7 @@ import com.patloew.countries.data.remote.CountryApi;
 import com.patloew.countries.injection.qualifier.AppContext;
 import com.patloew.countries.injection.scopes.PerActivity;
 import com.patloew.countries.ui.BaseCountryViewModel;
+import com.patloew.countries.ui.base.navigator.Navigator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +47,9 @@ import timber.log.Timber;
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH */
 
 @PerActivity
 public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> implements DetailMvvm.ViewModel {
@@ -65,8 +68,8 @@ public class DetailViewModel extends BaseCountryViewModel<DetailMvvm.View> imple
     private final ObservableBoolean loaded = new ObservableBoolean();
 
     @Inject
-    public DetailViewModel(@AppContext Context context, CountryRepo countryRepo, CountryApi countryApi) {
-        super(context, countryRepo);
+    public DetailViewModel(@AppContext Context context, CountryRepo countryRepo, CountryApi countryApi, Navigator navigator) {
+        super(context, countryRepo, navigator);
         this.countryApi = countryApi;
     }
 
