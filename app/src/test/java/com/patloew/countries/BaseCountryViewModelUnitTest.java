@@ -20,6 +20,8 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -49,20 +51,16 @@ import static org.mockito.Mockito.when;
 @PrepareOnlyThisForTest({Uri.class})
 public class BaseCountryViewModelUnitTest {
 
-    @Rule
-    RxSchedulersOverrideRule rxSchedulersOverrideRule = new RxSchedulersOverrideRule();
+    @Rule RxSchedulersOverrideRule rxSchedulersOverrideRule = new RxSchedulersOverrideRule();
 
     @Mock Context ctx;
     @Mock PackageManager packageManager;
     @Mock CountryRepo countryRepo;
     @Mock View view;
 
-    @Mock
-    MvvmView mvvmView;
-    @Mock
-    Navigator navigator;
+    @Mock MvvmView mvvmView;
+    @Mock Navigator navigator;
     CountryViewModel countryViewModel;
-
 
     Country internalCountry = new Country();
 
@@ -83,8 +81,13 @@ public class BaseCountryViewModelUnitTest {
 
     @Test
     public void onMapClick_startActivity() {
-        Uri uri = Mockito.mock(Uri.class);
-        PowerMockito.mockStatic(Uri.class, invocation -> uri);
+        final Uri uri = Mockito.mock(Uri.class);
+        PowerMockito.mockStatic(Uri.class, new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                return uri;
+            }
+        });
         countryViewModel.onMapClick(view);
         verify(navigator).startActivity(Matchers.eq(Intent.ACTION_VIEW), Matchers.eq(uri));
     }
@@ -93,6 +96,7 @@ public class BaseCountryViewModelUnitTest {
     public void onBookmarkClick_wasBookmarked() {
         Country country = new Country();
         doReturn(country).when(countryRepo).getByField(Matchers.anyString(), Matchers.anyString(), Matchers.anyBoolean());
+        doReturn(country).when(countryRepo).detach(country);
 
         countryViewModel.onBookmarkClick(view);
         verify(countryRepo).delete(country);

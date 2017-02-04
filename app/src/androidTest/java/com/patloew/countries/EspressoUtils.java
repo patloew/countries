@@ -85,7 +85,7 @@ public class EspressoUtils {
         };
     }
 
-    public static ViewAssertion recyclerViewItemCount(int count) {
+    public static ViewAssertion recyclerViewItemCount(final int count) {
         return new ViewAssertion() {
             @Override
             public void check(View view, NoMatchingViewException noViewFoundException) {

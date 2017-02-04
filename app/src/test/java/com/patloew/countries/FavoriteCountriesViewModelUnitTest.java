@@ -15,6 +15,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -46,7 +48,7 @@ import static org.mockito.Mockito.verify;
  * limitations under the License. */
 
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({ RealmResults.class, RecyclerView.Adapter.class })
+@PrepareOnlyThisForTest({ RealmResults.class, CountryAdapter.class, RecyclerView.Adapter.class })
 public class FavoriteCountriesViewModelUnitTest {
 
     @Rule
@@ -63,7 +65,12 @@ public class FavoriteCountriesViewModelUnitTest {
         MockitoAnnotations.initMocks(this);
 
         adapter = PowerMockito.mock(CountryAdapter.class);
-        PowerMockito.doAnswer(invocation -> null).when((RecyclerView.Adapter)adapter).notifyDataSetChanged();
+        PowerMockito.doAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                return null;
+            }
+        }).when((RecyclerView.Adapter)adapter).notifyDataSetChanged();
 
         favoriteCountriesViewModel = new FavoriteCountriesViewModel(adapter, countryRepo);
     }
