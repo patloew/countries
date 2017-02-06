@@ -6,6 +6,7 @@ The basic app structure is taken from the [Countries Example app](https://github
 
 ## Technologies used
 
+* Kotlin
 * Dagger 2 for dependency injection
 * Retrofit/OkHttp/Gson for networking
 * Realm for local data storage
@@ -31,9 +32,9 @@ The basic app structure is taken from the [Countries Example app](https://github
 * Base classes for views
     * These classes provide a binding and viewModel field. The viewModel gets injected, the binding has to be set manually.
     * Detaching of the view model is handled by the base classes.
-    * Activities should extend `BaseActivity<Binding, ViewModel>`. You should use `setAndBindContentView(savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view. Don’t forget to inject the viewModel via `activityComponent().inject(this)` before setting the content view.
-    * Fragments should extend `BaseFragment<Binding, ViewModel>`. You should use `setAndBindContentView(inflater, container, savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view. Don’t forget to inject the viewModel via `fragmentComponent().inject(this)` before setting the content view.
-    * ViewHolders should extend BaseViewHolder<Binding, ViewModel>. You should use `bindContentView(view)`, which creates the binding and attaches the view. Don't forget to inject the viewModel via `viewHolderComponent().inject(this)` before binding the view.
+    * Activities should extend `BaseActivity<Binding, View, ViewModel>`. You should use `setAndBindContentView(savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view. Don’t forget to inject the viewModel via `activityComponent.inject(this)` before setting the content view.
+    * Fragments should extend `BaseFragment<Binding, View, ViewModel>`. You should use `setAndBindContentView(inflater, container, savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view. Don’t forget to inject the viewModel via `fragmentComponent.inject(this)` before setting the content view.
+    * ViewHolders should extend BaseViewHolder<Binding, View, ViewModel>. You should use `bindContentView(view)`, which creates the binding and attaches the view. Don't forget to inject the viewModel via `viewHolderComponent.inject(this)` before binding the view.
 
 ## Testing
 
