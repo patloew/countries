@@ -1,17 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
 apply plugin: 'com.getkeepsafe.dexcount'
-
-def gitCommitHash() {
-    def commitHash = ""
-    def proc = "git rev-parse --short HEAD".execute()
-    proc.in.eachLine { line -> commitHash = line }
-    proc.err.eachLine { line -> println line }
-    proc.waitFor()
-    commitHash
-}
 
 android {
     compileSdkVersion 25
@@ -32,7 +22,7 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
 
-        setProperty("archivesBaseName", "TAAppTemplate-v$versionName-b$versionCode-" + gitCommitHash())
+        setProperty("archivesBaseName", "TAAppTemplate-v$versionName-b$versionCode")
     }
     buildTypes {
         release {
@@ -77,10 +67,10 @@ retrolambda {
     javaVersion JavaVersion.VERSION_1_6
 }
 
-ext.supportLibVersion = '25.1.0'
+ext.supportLibVersion = '25.1.1'
 ext.retrofitVersion = '2.1.0'
-ext.okHttpVersion = '3.5.0'
-ext.daggerVersion = '2.8'
+ext.okHttpVersion = '3.6.0'
+ext.daggerVersion = '2.9'
 ext.parcelerVersion = '1.1.6'
 
 dependencies {
@@ -102,15 +92,15 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
 
-    compile 'com.jakewharton.timber:timber:4.5.0'
+    compile 'com.jakewharton.timber:timber:4.5.1'
 
     compile "org.parceler:parceler-api:$parcelerVersion"
-    apt "org.parceler:parceler:$parcelerVersion"
+    annotationProcessor "org.parceler:parceler:$parcelerVersion"
 
-    apt "com.google.dagger:dagger-compiler:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     compile "com.google.dagger:dagger:$daggerVersion"
 
-    compile 'io.reactivex.rxjava2:rxjava:2.0.4'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.5'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
