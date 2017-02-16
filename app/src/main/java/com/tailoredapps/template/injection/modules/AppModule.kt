@@ -3,13 +3,11 @@ package com.tailoredapps.template.injection.modules
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
-
+import com.squareup.leakcanary.LeakCanary
+import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.template.BuildConfig
 import com.tailoredapps.template.injection.qualifier.AppContext
 import com.tailoredapps.template.injection.scopes.PerApplication
-import com.squareup.leakcanary.LeakCanary
-import com.squareup.leakcanary.RefWatcher
-
 import dagger.Module
 import dagger.Provides
 import io.realm.Realm

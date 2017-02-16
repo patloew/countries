@@ -5,6 +5,7 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.*
 import android.support.v7.app.AppCompatActivity
+import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.template.BR
 import com.tailoredapps.template.MyApp
 import com.tailoredapps.template.injection.components.ActivityComponent
@@ -13,7 +14,6 @@ import com.tailoredapps.template.injection.modules.ActivityModule
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
-import com.squareup.leakcanary.RefWatcher
 import io.realm.Realm
 import javax.inject.Inject
 

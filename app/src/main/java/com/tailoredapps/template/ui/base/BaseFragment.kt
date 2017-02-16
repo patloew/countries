@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.template.BR
 import com.tailoredapps.template.injection.components.DaggerFragmentComponent
 import com.tailoredapps.template.injection.components.FragmentComponent
@@ -17,7 +18,6 @@ import com.tailoredapps.template.injection.scopes.PerFragment
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
-import com.squareup.leakcanary.RefWatcher
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein

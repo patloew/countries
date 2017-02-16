@@ -2,15 +2,14 @@ package com.tailoredapps.template.injection.components
 
 import android.content.Context
 import android.support.v4.app.FragmentManager
-
 import com.tailoredapps.template.injection.modules.ActivityModule
 import com.tailoredapps.template.injection.modules.ViewModelModule
 import com.tailoredapps.template.injection.qualifier.ActivityContext
 import com.tailoredapps.template.injection.qualifier.ActivityFragmentManager
 import com.tailoredapps.template.injection.scopes.PerActivity
+import com.tailoredapps.template.ui.base.ProgressManager
 import com.tailoredapps.template.ui.base.navigator.Navigator
 import com.tailoredapps.template.ui.main.MainActivity
-
 import dagger.Component
 
 /* Copyright 2016 Patrick Löwenstein
@@ -33,6 +32,7 @@ interface ActivityComponent : AppComponent {
     @ActivityContext fun activityContext(): Context
     @ActivityFragmentManager fun defaultFragmentManager(): FragmentManager
     fun navigator(): Navigator
+    fun progressManager(): ProgressManager
 
     // create inject methods for your Activities here
 

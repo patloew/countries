@@ -2,7 +2,7 @@ package com.tailoredapps.template.injection.components
 
 import android.content.Context
 import android.content.res.Resources
-
+import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.template.data.local.MyRepo
 import com.tailoredapps.template.data.remote.MyApi
 import com.tailoredapps.template.injection.modules.AppModule
@@ -10,8 +10,6 @@ import com.tailoredapps.template.injection.modules.DataModule
 import com.tailoredapps.template.injection.modules.NetModule
 import com.tailoredapps.template.injection.qualifier.AppContext
 import com.tailoredapps.template.injection.scopes.PerApplication
-import com.squareup.leakcanary.RefWatcher
-
 import dagger.Component
 import io.realm.Realm
 
