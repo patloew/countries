@@ -3,8 +3,8 @@ apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
     ext.kotlinVersion = '1.0.6'
-    ext.realmVersion = '2.3.1'
-    ext.gradlePluginVersion = '2.3.0-beta4'
+    ext.realmVersion = '2.3.2'
+    ext.gradlePluginVersion = '2.3.0-rc1'
 
     repositories {
         jcenter()

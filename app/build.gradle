@@ -67,8 +67,8 @@ repositories {
     mavenCentral()
 }
 
-ext.supportLibVersion = '25.1.1'
-ext.retrofitVersion = '2.1.0'
+ext.supportLibVersion = '25.2.0'
+ext.retrofitVersion = '2.2.0'
 ext.okHttpVersion = '3.6.0'
 ext.daggerVersion = '2.9'
 ext.paperParcelVersion = '2.0.0'
@@ -89,8 +89,7 @@ dependencies {
 
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    //compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
-    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
 
@@ -119,6 +118,7 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4:1.6.5"
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.5"
     testCompile "org.powermock:powermock-api-mockito:1.6.5"
+    testCompile 'io.reactivex:rxjava:1.2.7'
 
     androidTestCompile "com.android.support:support-annotations:$supportLibVersion"
     androidTestCompile 'com.android.support.test:runner:0.5'
