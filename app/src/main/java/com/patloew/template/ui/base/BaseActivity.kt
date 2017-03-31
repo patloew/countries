@@ -73,11 +73,12 @@ abstract class BaseActivity<B : ViewDataBinding, V : MvvmView, VM : MvvmViewMode
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         activityComponent = DaggerActivityComponent.builder()
                 .activityModule(ActivityModule(this))
                 .appComponent(MyApp.appComponent)
                 .build()
+
+        super.onCreate(savedInstanceState)
     }
 
     @CallSuper

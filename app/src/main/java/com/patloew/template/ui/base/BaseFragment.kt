@@ -85,11 +85,12 @@ abstract class BaseFragment<B : ViewDataBinding, V : MvvmView, VM : MvvmViewMode
     }
 
     override fun onAttach(context: Context?) {
-        super.onAttach(context)
         fragmentComponent = DaggerFragmentComponent.builder()
                 .fragmentModule(FragmentModule(this))
                 .activityComponent((activity as BaseActivity<*, *, *>).activityComponent)
                 .build()
+
+        super.onAttach(context)
     }
 
     /* Sets the content view, creates the binding and attaches the view to the view model */
