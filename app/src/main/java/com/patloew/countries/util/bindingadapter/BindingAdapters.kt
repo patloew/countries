@@ -1,4 +1,4 @@
-package com.patloew.countries.util
+package com.patloew.countries.util.bindingadapter
 
 import android.databinding.BindingAdapter
 import android.view.View

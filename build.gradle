@@ -2,17 +2,19 @@
 apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
-    ext.kotlinVersion = '1.0.6'
-    ext.realmVersion = '2.3.0'
+
+    ext.kotlinVersion = '1.1.1'
+    ext.realmVersion = '3.0.0'
+    ext.gradlePluginVersion = '2.3.0'
 
     repositories {
         jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.2'
+        classpath "com.android.tools.build:gradle:$gradlePluginVersion"
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.3'
         classpath "io.realm:realm-gradle-plugin:$realmVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
