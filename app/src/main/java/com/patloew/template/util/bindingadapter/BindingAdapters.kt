@@ -1,4 +1,4 @@
-package com.patloew.template.util
+package com.patloew.template.util.bindingadapter
 
 import android.databinding.BindingAdapter
 import android.view.View
