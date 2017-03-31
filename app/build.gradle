@@ -1,9 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
 apply plugin: 'com.getkeepsafe.dexcount'
-
 
 android {
     compileSdkVersion 25
@@ -60,10 +58,10 @@ retrolambda {
     javaVersion JavaVersion.VERSION_1_6
 }
 
-ext.supportLibVersion = '25.1.0'
-ext.retrofitVersion = '2.1.0'
-ext.okHttpVersion = '3.5.0'
-ext.daggerVersion = '2.8'
+ext.supportLibVersion = '25.3.1'
+ext.retrofitVersion = '2.2.0'
+ext.okHttpVersion = '3.6.0'
+ext.daggerVersion = '2.10'
 ext.parcelerVersion = '1.1.6'
 
 dependencies {
@@ -80,22 +78,21 @@ dependencies {
 
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    //compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
-    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
 
     compile 'com.simplecityapps:recyclerview-fastscroll:1.0.11'
 
-    compile 'com.jakewharton.timber:timber:4.5.0'
+    compile 'com.jakewharton.timber:timber:4.5.1'
 
     compile "org.parceler:parceler-api:$parcelerVersion"
-    apt "org.parceler:parceler:$parcelerVersion"
+    annotationProcessor "org.parceler:parceler:$parcelerVersion"
 
-    apt "com.google.dagger:dagger-compiler:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     compile "com.google.dagger:dagger:$daggerVersion"
 
-    compile 'io.reactivex.rxjava2:rxjava:2.0.4'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     compile('com.mikepenz:aboutlibraries:5.8.1@aar') {
@@ -105,14 +102,14 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.4.0'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.5.1'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
     testCompile "org.powermock:powermock-module-junit4:1.6.5"
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.5"
     testCompile "org.powermock:powermock-api-mockito:1.6.5"
-    testCompile 'io.reactivex:rxjava:1.2.3'
+    testCompile 'io.reactivex:rxjava:1.2.9'
 
     androidTestCompile "com.android.support:support-annotations:$supportLibVersion"
     androidTestCompile 'com.android.support.test:runner:0.5'

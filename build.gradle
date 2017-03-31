@@ -6,13 +6,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0'
 
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.4.0'
-        classpath "io.realm:realm-gradle-plugin:2.2.2"
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.3'
+        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath "io.realm:realm-gradle-plugin:3.0.0"
     }
 }
 
