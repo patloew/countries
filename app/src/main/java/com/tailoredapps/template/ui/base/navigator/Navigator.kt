@@ -40,7 +40,7 @@ interface Navigator {
     fun startActivity(activityClass: Class<out Activity>)
     fun startActivity(activityClass: Class<out Activity>, setArgsAction: (Intent) -> Unit)
     fun startActivity(activityClass: Class<out Activity>, args: Bundle)
-    fun startActivity(activityClass: Class<out Activity>, args: Parcelable)
+    fun startActivity(activityClass: Class<out Activity>, arg: Parcelable)
     fun startActivity(activityClass: Class<out Activity>, arg: String)
     fun startActivity(activityClass: Class<out Activity>, arg: Int)
 

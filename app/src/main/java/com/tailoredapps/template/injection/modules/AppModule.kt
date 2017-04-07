@@ -54,18 +54,8 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    @PerApplication
-    internal fun provideRealmConfiguration(): RealmConfiguration {
-        var builder = RealmConfiguration.Builder()
-        if (BuildConfig.DEBUG) {
-            builder = builder.deleteRealmIfMigrationNeeded()
-        }
-        return builder.build()
-    }
-
-    @Provides
-    internal fun provideRealm(realmConfiguration: RealmConfiguration): Realm {
-        return Realm.getInstance(realmConfiguration)
+    internal fun provideRealm(): Realm {
+        return Realm.getDefaultInstance()
     }
 
 }

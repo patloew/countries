@@ -42,13 +42,14 @@ class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Realm.init(this)
+        Timber.plant(Timber.DebugTree())
+
         instance = this
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
 
-        Timber.plant(Timber.DebugTree())
+        appComponent.encryptionKeyManager().initEncryptedRealm()
 
         RxJavaPlugins.setErrorHandler({ Timber.e(it) })
     }

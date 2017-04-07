@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.template.data.local.MyRepo
+import com.tailoredapps.template.data.local.encryption.EncryptionKeyManager
 import com.tailoredapps.template.data.remote.MyApi
 import com.tailoredapps.template.injection.modules.AppModule
 import com.tailoredapps.template.injection.modules.DataModule
@@ -32,6 +33,8 @@ interface AppComponent {
     @AppContext fun appContext(): Context
     fun resources(): Resources
     fun refWatcher(): RefWatcher
+
+    fun encryptionKeyManager(): EncryptionKeyManager
 
     fun realm(): Realm
     fun myRepo(): MyRepo
