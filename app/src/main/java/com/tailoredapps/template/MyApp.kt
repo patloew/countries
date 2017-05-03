@@ -2,6 +2,7 @@ package com.tailoredapps.template
 
 import android.app.Application
 import android.content.res.Resources
+import com.squareup.leakcanary.LeakCanary
 import com.tailoredapps.template.injection.components.AppComponent
 import com.tailoredapps.template.injection.components.DaggerAppComponent
 import com.tailoredapps.template.injection.modules.AppModule
@@ -41,6 +42,7 @@ class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        if (LeakCanary.isInAnalyzerProcess(this)) return
 
         Timber.plant(Timber.DebugTree())
 
