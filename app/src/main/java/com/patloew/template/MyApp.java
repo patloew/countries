@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import com.patloew.template.injection.components.AppComponent;
 import com.patloew.template.injection.components.DaggerAppComponent;
 import com.patloew.template.injection.modules.AppModule;
+import com.squareup.leakcanary.LeakCanary;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import io.realm.Realm;
@@ -33,6 +34,7 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if(LeakCanary.isInAnalyzerProcess(this)) return;
 
         Realm.init(this);
         sInstance = this;
