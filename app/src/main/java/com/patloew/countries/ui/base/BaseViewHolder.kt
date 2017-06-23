@@ -47,14 +47,14 @@ import javax.inject.Inject
  *
  * Your subclass must implement the MvvmView implementation that you use in your
  * view model. */
-abstract class BaseViewHolder<B : ViewDataBinding, V : MvvmView, VM : MvvmViewModel<V>>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class BaseViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>>(itemView: View) : RecyclerView.ViewHolder(itemView), MvvmView {
 
     protected lateinit var binding: B
     @Inject lateinit var viewModel: VM
         protected set
 
     protected val viewHolderComponent: ViewHolderComponent = DaggerViewHolderComponent.builder()
-            .activityComponent(itemView.context.castWithUnwrap<BaseActivity<*,*,*>>()?.activityComponent)
+            .activityComponent(itemView.context.castWithUnwrap<BaseActivity<*, *>>()?.activityComponent)
             .build()
 
     protected fun bindContentView(view: View) {
@@ -62,8 +62,7 @@ abstract class BaseViewHolder<B : ViewDataBinding, V : MvvmView, VM : MvvmViewMo
         binding.setVariable(BR.vm, viewModel)
 
         try {
-            @Suppress("UNCHECKED_CAST")
-            viewModel.attachView(this as V, null)
+            (viewModel as MvvmViewModel<MvvmView>).attachView(this, null)
         } catch (e: ClassCastException) {
             if (viewModel !is NoOpViewModel<*>) {
                 throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)

@@ -6,6 +6,7 @@ import com.patloew.countries.injection.components.AppComponent
 import com.patloew.countries.injection.components.DaggerAppComponent
 import com.patloew.countries.injection.modules.AppModule
 import com.patloew.countries.util.*
+import com.squareup.leakcanary.LeakCanary
 import io.reactivex.plugins.RxJavaPlugins
 import io.realm.Realm
 import paperparcel.Adapter
@@ -41,14 +42,16 @@ class CountriesApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        if (LeakCanary.isInAnalyzerProcess(this)) return
 
-        Realm.init(this)
+        Timber.plant(Timber.DebugTree())
+
         instance = this
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
 
-        Timber.plant(Timber.DebugTree())
+        appComponent.encryptionKeyManager().initEncryptedRealm()
 
         RxJavaPlugins.setErrorHandler({ Timber.e(it) })
     }

@@ -50,7 +50,7 @@ import javax.inject.Inject
  *
  * Your subclass must implement the MvvmView implementation that you use in your
  * view model. */
-abstract class BaseActivity<B : ViewDataBinding, V : MvvmView, VM : MvvmViewModel<V>> : AppCompatActivity() {
+abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCompatActivity(), MvvmView {
 
 
     // Inject a Realm INSTANCE into every Activity, since the INSTANCE
@@ -96,8 +96,7 @@ abstract class BaseActivity<B : ViewDataBinding, V : MvvmView, VM : MvvmViewMode
         binding.setVariable(BR.vm, viewModel)
 
         try {
-            @Suppress("UNCHECKED_CAST")
-            viewModel.attachView(this as V, savedInstanceState)
+            (viewModel as MvvmViewModel<MvvmView>).attachView(this, savedInstanceState)
         } catch (e: ClassCastException) {
             if (viewModel !is NoOpViewModel<*>) {
                 throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)

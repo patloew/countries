@@ -1,12 +1,6 @@
-package com.patloew.countries.ui.main.recyclerview
+package com.patloew.countries.data.local
 
-import android.view.View
-
-import com.patloew.countries.databinding.CardCountryBinding
-import com.patloew.countries.ui.base.BaseViewHolder
-import com.patloew.countries.ui.base.view.MvvmView
-
-/* Copyright 2016 Patrick Löwenstein
+/* Copyright 2017 Tailored Media GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +13,6 @@ import com.patloew.countries.ui.base.view.MvvmView
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-class CountryViewHolder(v: View) : BaseViewHolder<CardCountryBinding, CountryMvvm.ViewModel>(v), MvvmView {
-
-    init {
-        viewHolderComponent.inject(this)
-        bindContentView(v)
-    }
+interface PrefRepo {
+    var realmEncryptionKey: ByteArray?
 }

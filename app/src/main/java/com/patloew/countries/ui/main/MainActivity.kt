@@ -30,7 +30,7 @@ import javax.inject.Inject
  * limitations under the License.
  *
  * FILE MODIFIED 2017 Tailored Media GmbH */
- class MainActivity : BaseActivity<ActivityMainBinding, MvvmView, NoOpViewModel<MvvmView>>(), MvvmView {
+ class MainActivity : BaseActivity<ActivityMainBinding, NoOpViewModel<MvvmView>>(), MvvmView {
 
     @Inject lateinit var adapter: MainAdapter
 

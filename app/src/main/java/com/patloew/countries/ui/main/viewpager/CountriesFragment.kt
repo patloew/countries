@@ -29,7 +29,7 @@ import javax.inject.Inject
  * limitations under the License.
  *
  * FILE MODIFIED 2017 Tailored Media GmbH*/
-abstract class CountriesFragment<V : MvvmViewModel<CountriesView>> : BaseFragment<FragmentRecyclerviewBinding, CountriesView, V>(), CountriesView {
+abstract class CountriesFragment<V : MvvmViewModel<CountriesView>> : BaseFragment<FragmentRecyclerviewBinding, V>(), CountriesView {
 
     @Inject protected lateinit var adapter: CountryAdapter
 

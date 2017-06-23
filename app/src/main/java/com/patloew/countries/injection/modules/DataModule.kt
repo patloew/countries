@@ -1,8 +1,9 @@
 package com.patloew.countries.injection.modules
 
 import com.patloew.countries.data.local.CountryRepo
+import com.patloew.countries.data.local.PrefRepo
 import com.patloew.countries.data.local.RealmCountryRepo
-
+import com.patloew.countries.data.local.SharedPrefRepo
 import dagger.Binds
 import dagger.Module
 
@@ -24,5 +25,8 @@ abstract class DataModule {
 
     @Binds
     internal abstract fun bindCountryRepo(realmCountryRepo: RealmCountryRepo): CountryRepo
+
+    @Binds
+    internal abstract fun bindPrefRepo(repo: SharedPrefRepo): PrefRepo
 
 }
