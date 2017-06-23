@@ -119,6 +119,7 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4-rule:$powerMockVersion"
     testCompile "org.powermock:powermock-api-mockito2:$powerMockVersion"
     testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    testCompile "com.nhaarman:mockito-kotlin-kt1.1:1.5.0"
     testCompile 'io.reactivex:rxjava:1.3.0'
 
     androidTestCompile "com.android.support:support-annotations:$supportLibVersion"
