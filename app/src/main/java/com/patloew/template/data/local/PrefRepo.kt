@@ -1,13 +1,6 @@
-package com.patloew.template.injection.modules
+package com.patloew.template.data.local
 
-import com.patloew.template.data.local.MyRepo
-import com.patloew.template.data.local.MyRepoImpl
-import com.patloew.template.data.local.PrefRepo
-import com.patloew.template.data.local.SharedPrefRepo
-import dagger.Binds
-import dagger.Module
-
-/* Copyright 2016 Patrick Löwenstein
+/* Copyright 2017 Tailored Media GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +13,6 @@ import dagger.Module
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-@Module
-abstract class DataModule {
-
-    @Binds
-    internal abstract fun bindMyRepo(repo: MyRepoImpl): MyRepo
-
-    @Binds
-    internal abstract fun bindPrefRepo(repo: SharedPrefRepo): PrefRepo
-
+interface PrefRepo {
+    var realmEncryptionKey: ByteArray?
 }

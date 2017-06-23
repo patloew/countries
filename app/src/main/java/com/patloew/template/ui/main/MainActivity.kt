@@ -18,7 +18,7 @@ import com.patloew.template.ui.base.BaseActivity
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-class MainActivity : BaseActivity<ActivityMainBinding, MainMvvm.View, MainMvvm.ViewModel>(), MainMvvm.View {
+class MainActivity : BaseActivity<ActivityMainBinding, MainMvvm.ViewModel>(), MainMvvm.View {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

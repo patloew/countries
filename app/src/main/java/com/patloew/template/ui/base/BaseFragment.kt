@@ -52,7 +52,7 @@ import javax.inject.Inject
  *
  * Your subclass must implement the MvvmView implementation that you use in your
  * view model. */
-abstract class BaseFragment<B : ViewDataBinding, V : MvvmView, VM : MvvmViewModel<V>> : Fragment() {
+abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragment(), MvvmView {
 
     protected lateinit var binding: B
     @Inject protected lateinit var viewModel: VM
@@ -87,7 +87,7 @@ abstract class BaseFragment<B : ViewDataBinding, V : MvvmView, VM : MvvmViewMode
     override fun onAttach(context: Context?) {
         fragmentComponent = DaggerFragmentComponent.builder()
                 .fragmentModule(FragmentModule(this))
-                .activityComponent((activity as BaseActivity<*, *, *>).activityComponent)
+                .activityComponent((activity as BaseActivity<*, *>).activityComponent)
                 .build()
 
         super.onAttach(context)
@@ -99,8 +99,7 @@ abstract class BaseFragment<B : ViewDataBinding, V : MvvmView, VM : MvvmViewMode
         binding.setVariable(BR.vm, viewModel)
 
         try {
-            @Suppress("UNCHECKED_CAST")
-            viewModel.attachView(this as V, savedInstanceState)
+            (viewModel as MvvmViewModel<MvvmView>).attachView(this, savedInstanceState)
         } catch (e: ClassCastException) {
             if (viewModel !is NoOpViewModel<*>) {
                 throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)

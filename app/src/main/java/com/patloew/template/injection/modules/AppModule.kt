@@ -3,17 +3,13 @@ package com.patloew.template.injection.modules
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
-
-import com.patloew.template.BuildConfig
 import com.patloew.template.injection.qualifier.AppContext
 import com.patloew.template.injection.scopes.PerApplication
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
-
 import dagger.Module
 import dagger.Provides
 import io.realm.Realm
-import io.realm.RealmConfiguration
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -56,18 +52,8 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    @PerApplication
-    internal fun provideRealmConfiguration(): RealmConfiguration {
-        var builder = RealmConfiguration.Builder()
-        if (BuildConfig.DEBUG) {
-            builder = builder.deleteRealmIfMigrationNeeded()
-        }
-        return builder.build()
-    }
-
-    @Provides
-    internal fun provideRealm(realmConfiguration: RealmConfiguration): Realm {
-        return Realm.getInstance(realmConfiguration)
+    internal fun provideRealm(): Realm {
+        return Realm.getDefaultInstance()
     }
 
 }
