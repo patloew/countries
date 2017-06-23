@@ -2,7 +2,7 @@
 apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
-    ext.kotlinVersion = '1.1.2-3'
+    ext.kotlinVersion = '1.1.2-5'
     ext.realmVersion = '3.3.2'
     ext.gradlePluginVersion = '2.3.3'
 
