@@ -67,11 +67,7 @@ repositories {
     mavenCentral()
 }
 
-ext.supportLibVersion = '25.4.0'
-ext.retrofitVersion = '2.3.0'
-ext.okHttpVersion = '3.8.0'
-ext.daggerVersion = '2.11'
-ext.paperParcelVersion = '2.0.1'
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -105,7 +101,7 @@ dependencies {
     kapt "io.realm:realm-annotations-processor:$realmVersion"
     kapt "io.realm:realm-annotations:$realmVersion"
 
-    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
