@@ -38,7 +38,9 @@ import javax.inject.Inject
  */
 abstract class BaseStateViewModel<V : MvvmView, S : Parcelable> : BaseObservable(), MvvmViewModel<V> {
 
-    private val KEY_STATE = "state"
+    companion object {
+        private const val KEY_STATE = "state"
+    }
 
     var view: V? = null
         private set

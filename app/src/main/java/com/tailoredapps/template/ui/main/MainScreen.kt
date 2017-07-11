@@ -1,10 +1,3 @@
-package com.tailoredapps.template.ui.main
-
-import android.os.Bundle
-import com.tailoredapps.template.R
-import com.tailoredapps.template.databinding.ActivityMainBinding
-import com.tailoredapps.template.ui.base.BaseActivity
-
 /* Copyright 2016 Patrick Löwenstein
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +11,28 @@ import com.tailoredapps.template.ui.base.BaseActivity
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
+
+package com.tailoredapps.template.ui.main
+
+import android.os.Bundle
+import com.tailoredapps.template.R
+import com.tailoredapps.template.databinding.ActivityMainBinding
+import com.tailoredapps.template.injection.scopes.PerActivity
+import com.tailoredapps.template.ui.base.BaseActivity
+import com.tailoredapps.template.ui.base.view.MvvmView
+import com.tailoredapps.template.ui.base.viewmodel.BaseViewModel
+import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
+import javax.inject.Inject
+
+
+interface MainMvvm {
+
+    interface View : MvvmView
+
+    interface ViewModel : MvvmViewModel<View>
+}
+
+
 class MainActivity : BaseActivity<ActivityMainBinding, MainMvvm.ViewModel>(), MainMvvm.View {
 
 
@@ -31,3 +46,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainMvvm.ViewModel>(), Ma
     }
 
 }
+
+
+@PerActivity
+class MainViewModel
+@Inject
+constructor() : BaseViewModel<MainMvvm.View>(), MainMvvm.ViewModel
+
