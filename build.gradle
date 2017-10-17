@@ -2,15 +2,16 @@
 apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
-    ext.kotlinVersion = '1.1.3-2'
-    ext.realmVersion = '3.5.0'
+    ext.kotlinVersion = '1.1.51'
+    ext.realmVersion = '4.0.0'
     ext.gradlePluginVersion = '2.3.3'
-    ext.powerMockVersion = '1.7.0'
-    ext.supportLibVersion = '26.0.0'
+    ext.mockitoVersion = '2.11.0'
+    ext.powerMockVersion = '2.0.0-beta.5'
+    ext.supportLibVersion = '26.1.0'
     ext.retrofitVersion = '2.3.0'
-    ext.okHttpVersion = '3.8.1'
-    ext.daggerVersion = '2.11'
-    ext.paperParcelVersion = '2.0.1'
+    ext.okHttpVersion = '3.9.0'
+    ext.daggerVersion = '2.12'
+    ext.paperParcelVersion = '2.0.4'
 
     repositories {
         jcenter()
