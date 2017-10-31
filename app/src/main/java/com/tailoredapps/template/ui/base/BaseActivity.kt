@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.*
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.template.BR
@@ -13,7 +14,7 @@ import com.tailoredapps.template.injection.components.DaggerActivityComponent
 import com.tailoredapps.template.injection.modules.ActivityModule
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
-import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
+import com.tailoredapps.template.util.extensions.attachViewOrThrow
 import io.realm.Realm
 import javax.inject.Inject
 
@@ -94,30 +95,11 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
     protected fun setAndBindContentView(savedInstanceState: Bundle?, @LayoutRes layoutResID: Int) {
         binding = DataBindingUtil.setContentView<B>(this, layoutResID)
         binding.setVariable(BR.vm, viewModel)
-
-        try {
-            (viewModel as MvvmViewModel<MvvmView>).attachView(this, savedInstanceState)
-        } catch (e: ClassCastException) {
-            if (viewModel !is NoOpViewModel<*>) {
-                throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)
-            }
-        }
-
+        viewModel.attachViewOrThrow(this, savedInstanceState)
     }
 
-    fun dimen(@DimenRes resId: Int): Int {
-        return resources.getDimension(resId).toInt()
-    }
-
-    fun color(@ColorRes resId: Int): Int {
-        return resources.getColor(resId)
-    }
-
-    fun integer(@IntegerRes resId: Int): Int {
-        return resources.getInteger(resId)
-    }
-
-    fun string(@StringRes resId: Int): String {
-        return resources.getString(resId)
-    }
+    fun dimen(@DimenRes resId: Int): Int = resources.getDimension(resId).toInt()
+    fun color(@ColorRes resId: Int): Int = ContextCompat.getColor(this, resId)
+    fun integer(@IntegerRes resId: Int): Int = resources.getInteger(resId)
+    fun string(@StringRes resId: Int): String = resources.getString(resId)
 }

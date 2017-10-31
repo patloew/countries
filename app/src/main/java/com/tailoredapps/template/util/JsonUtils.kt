@@ -20,62 +20,50 @@ import java.io.IOException
  * limitations under the License. */
 object JsonUtils {
     @Throws(IOException::class)
-    fun readNullSafeString(reader: JsonReader): String? {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull()
-            return null
-        } else {
-            return reader.nextString()
-        }
+    fun readNullSafeString(reader: JsonReader): String? = if (reader.peek() == JsonToken.NULL) {
+        reader.nextNull()
+        null
+    } else {
+        reader.nextString()
     }
 
     @Throws(IOException::class)
-    fun readNullSafeLong(reader: JsonReader): Long? {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull()
-            return null
-        } else {
-            return reader.nextLong()
-        }
+    fun readNullSafeLong(reader: JsonReader): Long? = if (reader.peek() == JsonToken.NULL) {
+        reader.nextNull()
+        null
+    } else {
+        reader.nextLong()
     }
 
     @Throws(IOException::class)
-    fun readNullSafeInteger(reader: JsonReader): Int? {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull()
-            return null
-        } else {
-            return reader.nextInt()
-        }
+    fun readNullSafeInteger(reader: JsonReader): Int? = if (reader.peek() == JsonToken.NULL) {
+        reader.nextNull()
+        null
+    } else {
+        reader.nextInt()
     }
 
     @Throws(IOException::class)
-    fun readNullSafeDouble(reader: JsonReader): Double? {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull()
-            return null
-        } else {
-            return reader.nextDouble()
-        }
+    fun readNullSafeDouble(reader: JsonReader): Double? = if (reader.peek() == JsonToken.NULL) {
+        reader.nextNull()
+        null
+    } else {
+        reader.nextDouble()
     }
 
     @Throws(IOException::class)
-    fun readNullSafeFloat(reader: JsonReader): Float? {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull()
-            return null
-        } else {
-            return reader.nextDouble().toFloat()
-        }
+    fun readNullSafeFloat(reader: JsonReader): Float? = if (reader.peek() == JsonToken.NULL) {
+        reader.nextNull()
+        null
+    } else {
+        reader.nextDouble().toFloat()
     }
 
     @Throws(IOException::class)
-    fun readNullSafeBoolean(reader: JsonReader): Boolean? {
-        if (reader.peek() == JsonToken.NULL) {
-            reader.nextNull()
-            return null
-        } else {
-            return reader.nextBoolean()
-        }
+    fun readNullSafeBoolean(reader: JsonReader): Boolean? = if (reader.peek() == JsonToken.NULL) {
+        reader.nextNull()
+        null
+    } else {
+        reader.nextBoolean()
     }
 }

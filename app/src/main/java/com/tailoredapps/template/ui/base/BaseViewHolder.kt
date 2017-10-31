@@ -2,6 +2,11 @@ package com.tailoredapps.template.ui.base
 
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
+import android.support.annotation.ColorRes
+import android.support.annotation.DimenRes
+import android.support.annotation.IntegerRes
+import android.support.annotation.StringRes
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 
@@ -10,8 +15,8 @@ import com.tailoredapps.template.injection.components.DaggerViewHolderComponent
 import com.tailoredapps.template.injection.components.ViewHolderComponent
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
-import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
-import com.tailoredapps.template.util.castWithUnwrap
+import com.tailoredapps.template.util.extensions.attachViewOrThrow
+import com.tailoredapps.template.util.extensions.castWithUnwrap
 
 import javax.inject.Inject
 
@@ -60,18 +65,15 @@ abstract class BaseViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>>(itemVi
     protected fun bindContentView(view: View) {
         binding = DataBindingUtil.bind(view)
         binding.setVariable(BR.vm, viewModel)
-
-        try {
-            (viewModel as MvvmViewModel<MvvmView>).attachView(this, null)
-        } catch (e: ClassCastException) {
-            if (viewModel !is NoOpViewModel<*>) {
-                throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)
-            }
-        }
-
+        viewModel.attachViewOrThrow(this, null)
     }
 
     fun executePendingBindings() {
         binding.executePendingBindings()
     }
+
+    fun dimen(@DimenRes resId: Int): Int = itemView.context.resources.getDimension(resId).toInt()
+    fun color(@ColorRes resId: Int): Int = ContextCompat.getColor(itemView.context, resId)
+    fun integer(@IntegerRes resId: Int): Int = itemView.context.resources.getInteger(resId)
+    fun string(@StringRes resId: Int): String = itemView.context.resources.getString(resId)
 }

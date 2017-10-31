@@ -21,7 +21,7 @@ import android.support.annotation.CallSuper
 
 import com.tailoredapps.template.ui.base.MvvmViewNotAttachedException
 import com.tailoredapps.template.ui.base.view.MvvmView
-import com.tailoredapps.template.util.getParcelable
+import com.tailoredapps.template.util.extensions.getParcelable
 
 import javax.inject.Inject
 
