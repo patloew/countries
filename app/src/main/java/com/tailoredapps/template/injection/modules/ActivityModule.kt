@@ -3,10 +3,15 @@ package com.tailoredapps.template.injection.modules
 import android.content.Context
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
+import com.tailoredapps.template.R
 
 import com.tailoredapps.template.injection.qualifier.ActivityContext
 import com.tailoredapps.template.injection.qualifier.ActivityFragmentManager
 import com.tailoredapps.template.injection.scopes.PerActivity
+import com.tailoredapps.template.ui.base.feedback.ActivitySnacker
+import com.tailoredapps.template.ui.base.feedback.ActivityToaster
+import com.tailoredapps.template.ui.base.feedback.Snacker
+import com.tailoredapps.template.ui.base.feedback.Toaster
 import com.tailoredapps.template.ui.base.navigator.ActivityNavigator
 import com.tailoredapps.template.ui.base.navigator.Navigator
 
@@ -32,21 +37,22 @@ class ActivityModule(private val activity: AppCompatActivity) {
     @Provides
     @PerActivity
     @ActivityContext
-    internal fun provideActivityContext(): Context {
-        return activity
-    }
+    internal fun provideActivityContext(): Context = activity
 
     @Provides
     @PerActivity
     @ActivityFragmentManager
-    internal fun provideFragmentManager(): FragmentManager {
-        return activity.supportFragmentManager
-    }
+    internal fun provideFragmentManager(): FragmentManager = activity.supportFragmentManager
 
     @Provides
     @PerActivity
-    internal fun provideNavigator(): Navigator {
-        return ActivityNavigator(activity)
-    }
+    internal fun provideNavigator(): Navigator = ActivityNavigator(activity)
 
+    @Provides
+    @PerActivity
+    internal fun provideSnacker(): Snacker = ActivitySnacker(activity, activity.getString(R.string.default_snackbar_action_text))
+
+    @Provides
+    @PerActivity
+    internal fun provideToaster(): Toaster = ActivityToaster(activity)
 }

@@ -7,7 +7,8 @@ import com.tailoredapps.template.injection.modules.ViewModelModule
 import com.tailoredapps.template.injection.qualifier.ActivityContext
 import com.tailoredapps.template.injection.qualifier.ActivityFragmentManager
 import com.tailoredapps.template.injection.scopes.PerActivity
-import com.tailoredapps.template.ui.base.ProgressManager
+import com.tailoredapps.template.ui.base.feedback.Snacker
+import com.tailoredapps.template.ui.base.feedback.Toaster
 import com.tailoredapps.template.ui.base.navigator.Navigator
 import com.tailoredapps.template.ui.main.MainActivity
 import dagger.Component
@@ -31,8 +32,10 @@ interface ActivityComponent : AppComponent {
 
     @ActivityContext fun activityContext(): Context
     @ActivityFragmentManager fun defaultFragmentManager(): FragmentManager
+
     fun navigator(): Navigator
-    fun progressManager(): ProgressManager
+    fun snacker(): Snacker
+    fun toaster(): Toaster
 
     // create inject methods for your Activities here
 

@@ -1,14 +1,4 @@
-package com.tailoredapps.template.injection.modules
-
-import com.tailoredapps.template.data.local.MyRepo
-import com.tailoredapps.template.data.local.MyRepoImpl
-import com.tailoredapps.template.data.local.PrefRepo
-import com.tailoredapps.template.data.local.SharedPrefRepo
-
-import dagger.Binds
-import dagger.Module
-
-/* Copyright 2016 Patrick Löwenstein
+/* Copyright 2017 Tailored Media GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +11,15 @@ import dagger.Module
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-@Module
-abstract class DataModule {
 
-    @Binds
-    internal abstract fun bindMyRepo(repo: MyRepoImpl): MyRepo
+package com.tailoredapps.template.util.extensions
 
-    @Binds
-    internal abstract fun bindPrefRepo(repo: SharedPrefRepo): PrefRepo
+import android.os.Bundle
+import android.os.Parcelable
 
+
+fun <T : Parcelable> Bundle.getParcelable(key: String, defaultObject: T): T = if (containsKey(key)) {
+    getParcelable(key)
+} else {
+    defaultObject
 }
