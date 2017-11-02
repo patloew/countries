@@ -1,6 +1,5 @@
 package com.tailoredapps.template.ui.base
 
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -59,8 +58,12 @@ abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragme
     @Inject protected lateinit var refWatcher: RefWatcher
 
 
-    protected lateinit var fragmentComponent : FragmentComponent
-        private set
+    internal val fragmentComponent : FragmentComponent by lazy {
+        DaggerFragmentComponent.builder()
+                .fragmentModule(FragmentModule(this))
+                .activityComponent((activity as BaseActivity<*, *>).activityComponent)
+                .build()
+    }
 
     @CallSuper
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -84,14 +87,6 @@ abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragme
         refWatcher.watch(fragmentComponent)
     }
 
-    override fun onAttach(context: Context?) {
-        fragmentComponent = DaggerFragmentComponent.builder()
-                .fragmentModule(FragmentModule(this))
-                .activityComponent((activity as BaseActivity<*, *>).activityComponent)
-                .build()
-
-        super.onAttach(context)
-    }
 
     /* Sets the content view, creates the binding and attaches the view to the view model */
     protected fun setAndBindContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, @LayoutRes layoutResID: Int): View {

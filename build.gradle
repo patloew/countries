@@ -1,10 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
     ext.kotlinVersion = '1.1.51'
     ext.realmVersion = '4.0.0'
-    ext.gradlePluginVersion = '2.3.3'
+    ext.gradlePluginVersion = '3.0.0'
     ext.mockitoVersion = '2.11.0'
     ext.powerMockVersion = '2.0.0-beta.5'
     ext.supportLibVersion = '26.1.0'
@@ -15,13 +14,12 @@ buildscript {
 
     repositories {
         jcenter()
-        mavenCentral()
+        google()
     }
 
     dependencies {
         classpath "com.android.tools.build:gradle:$gradlePluginVersion"
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.7.3'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.1'
         classpath "io.realm:realm-gradle-plugin:$realmVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
@@ -30,7 +28,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven { url "https://maven.google.com" }
+        google()
     }
 }
 

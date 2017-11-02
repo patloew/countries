@@ -6,7 +6,7 @@ import com.tailoredapps.template.injection.scopes.PerViewHolder
 
 import dagger.Component
 
-/* Copyright 2016 Patrick Löwenstein
+/* Copyright 2017 Tailored Media GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,6 @@ import dagger.Component
  * limitations under the License. */
 @PerViewHolder
 @Component(dependencies = arrayOf(ActivityComponent::class), modules = arrayOf(ViewHolderModule::class, ViewModelModule::class))
-interface ViewHolderComponent {
+interface ActivityViewHolderComponent {
 
 }

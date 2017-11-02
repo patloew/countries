@@ -4,15 +4,13 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 import android.view.View
-
 import com.tailoredapps.template.BR
-import com.tailoredapps.template.injection.components.DaggerViewHolderComponent
-import com.tailoredapps.template.injection.components.ViewHolderComponent
+import com.tailoredapps.template.injection.components.ActivityViewHolderComponent
+import com.tailoredapps.template.injection.components.DaggerActivityViewHolderComponent
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
 import com.tailoredapps.template.util.castWithUnwrap
-
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein
@@ -34,7 +32,7 @@ import javax.inject.Inject
  * FILE MODIFIED 2017 Tailored Media GmbH
  */
 
-/* Base class for ViewHolders when using a view model with data binding.
+/* Base class for ViewHolders when using a view model in an Activity with data binding.
  * This class provides the binding and the view model to the subclass. The
  * view model is injected and the binding is created when the content view is bound.
  * Each subclass therefore has to call the following code in the constructor:
@@ -47,15 +45,17 @@ import javax.inject.Inject
  *
  * Your subclass must implement the MvvmView implementation that you use in your
  * view model. */
-abstract class BaseViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>>(itemView: View) : RecyclerView.ViewHolder(itemView), MvvmView {
+abstract class BaseActivityViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>>(itemView: View) : RecyclerView.ViewHolder(itemView), MvvmView {
 
     protected lateinit var binding: B
     @Inject lateinit var viewModel: VM
         protected set
 
-    protected val viewHolderComponent: ViewHolderComponent = DaggerViewHolderComponent.builder()
-            .activityComponent(itemView.context.castWithUnwrap<BaseActivity<*, *>>()?.activityComponent)
-            .build()
+    protected val viewHolderComponent: ActivityViewHolderComponent by lazy {
+        DaggerActivityViewHolderComponent.builder()
+                .activityComponent(itemView.context.castWithUnwrap<BaseActivity<*, *>>()?.activityComponent)
+                .build()
+    }
 
     protected fun bindContentView(view: View) {
         binding = DataBindingUtil.bind(view)
