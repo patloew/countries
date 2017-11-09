@@ -20,7 +20,7 @@ import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
 
 
-fun <V : MvvmView> MvvmViewModel<V>.attachViewOrThrow(view: MvvmView, savedInstanceState: Bundle?) {
+fun <V : MvvmView> MvvmViewModel<V>.attachViewOrThrowRuntimeException(view: MvvmView, savedInstanceState: Bundle?) {
     try {
         @Suppress("UNCHECKED_CAST")
         this.attachView(view as V, savedInstanceState)

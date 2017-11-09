@@ -1,6 +1,7 @@
 package com.tailoredapps.template.ui.base.navigator
 
 import android.app.Activity
+import android.app.DialogFragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -55,4 +56,5 @@ interface Navigator {
     fun replaceFragmentAndAddToBackStack(@IdRes containerId: Int, fragment: Fragment, args: Bundle, backstackTag: String)
     fun replaceFragmentAndAddToBackStack(@IdRes containerId: Int, fragment: Fragment, fragmentTag: String, args: Bundle, backstackTag: String)
 
+    fun <T : DialogFragment> showDialogFragment(dialog: T)
 }

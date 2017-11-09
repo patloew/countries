@@ -50,7 +50,7 @@ class ActivityModule(private val activity: AppCompatActivity) {
 
     @Provides
     @PerActivity
-    internal fun provideSnacker(): Snacker = ActivitySnacker(activity, activity.getString(R.string.default_snackbar_action_text))
+    internal fun provideSnacker(): Snacker = ActivitySnacker(activity)
 
     @Provides
     @PerActivity

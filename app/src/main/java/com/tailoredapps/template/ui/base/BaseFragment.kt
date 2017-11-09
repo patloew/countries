@@ -18,7 +18,7 @@ import com.tailoredapps.template.injection.modules.FragmentModule
 import com.tailoredapps.template.injection.scopes.PerFragment
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
-import com.tailoredapps.template.util.extensions.attachViewOrThrow
+import com.tailoredapps.template.util.extensions.attachViewOrThrowRuntimeException
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein
@@ -98,7 +98,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragme
     protected fun setAndBindContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, @LayoutRes layoutResID: Int): View {
         binding = DataBindingUtil.inflate<B>(inflater, layoutResID, container, false)
         binding.setVariable(BR.vm, viewModel)
-        viewModel.attachViewOrThrow(this, savedInstanceState)
+        viewModel.attachViewOrThrowRuntimeException(this, savedInstanceState)
         return binding.root
     }
 

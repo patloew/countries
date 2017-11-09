@@ -15,7 +15,7 @@ import com.tailoredapps.template.injection.components.DaggerViewHolderComponent
 import com.tailoredapps.template.injection.components.ViewHolderComponent
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
-import com.tailoredapps.template.util.extensions.attachViewOrThrow
+import com.tailoredapps.template.util.extensions.attachViewOrThrowRuntimeException
 import com.tailoredapps.template.util.extensions.castWithUnwrap
 
 import javax.inject.Inject
@@ -65,7 +65,7 @@ abstract class BaseViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>>(itemVi
     protected fun bindContentView(view: View) {
         binding = DataBindingUtil.bind(view)
         binding.setVariable(BR.vm, viewModel)
-        viewModel.attachViewOrThrow(this, null)
+        viewModel.attachViewOrThrowRuntimeException(this, null)
     }
 
     fun executePendingBindings() {

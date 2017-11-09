@@ -20,23 +20,21 @@ import android.widget.Toast
 
 
 class ActivityToaster(override val activity: FragmentActivity) : Toaster {
+
     private var toast: Toast? = null
 
-    override fun show(title: String) {
-        showInternal(title)
+    override fun show(title: String, duration: Int) {
+        showInternal(title, duration)
     }
 
-    override fun show(@StringRes titleRes: Int) {
-        showInternal(activity.getString(titleRes))
+    override fun show(@StringRes titleRes: Int, duration: Int) {
+        showInternal(activity.getString(titleRes), duration)
     }
 
-    private fun showInternal(title: String) {
-        toast = Toast.makeText(activity, title, Toast.LENGTH_LONG)
-        toast?.show()
-    }
-
-    override fun hide() {
+    private fun showInternal(title: String, duration: Int) {
         toast?.cancel()
         toast = null
+        toast = Toast.makeText(activity, title, if (duration != Toast.LENGTH_LONG || duration != Toast.LENGTH_SHORT) duration else Toast.LENGTH_SHORT)
+        toast?.show()
     }
 }

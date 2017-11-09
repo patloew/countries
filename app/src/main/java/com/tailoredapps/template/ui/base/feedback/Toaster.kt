@@ -16,13 +16,12 @@ package com.tailoredapps.template.ui.base.feedback
 
 import android.app.Activity
 import android.support.annotation.StringRes
+import android.widget.Toast
 
 
 interface Toaster {
     val activity: Activity
 
-    fun show(title: String)
-    fun show(@StringRes titleRes: Int)
-
-    fun hide()
+    fun show(title: String, duration: Int = Toast.LENGTH_LONG)
+    fun show(@StringRes titleRes: Int, duration: Int = Toast.LENGTH_LONG)
 }

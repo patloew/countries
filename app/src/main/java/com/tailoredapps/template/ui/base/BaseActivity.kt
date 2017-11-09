@@ -14,7 +14,7 @@ import com.tailoredapps.template.injection.components.DaggerActivityComponent
 import com.tailoredapps.template.injection.modules.ActivityModule
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
-import com.tailoredapps.template.util.extensions.attachViewOrThrow
+import com.tailoredapps.template.util.extensions.attachViewOrThrowRuntimeException
 import io.realm.Realm
 import javax.inject.Inject
 
@@ -95,7 +95,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
     protected fun setAndBindContentView(savedInstanceState: Bundle?, @LayoutRes layoutResID: Int) {
         binding = DataBindingUtil.setContentView<B>(this, layoutResID)
         binding.setVariable(BR.vm, viewModel)
-        viewModel.attachViewOrThrow(this, savedInstanceState)
+        viewModel.attachViewOrThrowRuntimeException(this, savedInstanceState)
     }
 
     fun dimen(@DimenRes resId: Int): Int = resources.getDimension(resId).toInt()

@@ -20,14 +20,14 @@ import android.support.annotation.StringRes
 
 interface Snacker {
     val activity: Activity
-    val defaultActionText: CharSequence
 
-    fun show(title: CharSequence, action: (() -> Unit)? = null, actionText: CharSequence? = null)
-    fun show(title: CharSequence, action: (() -> Unit)? = null, @StringRes actionText: Int? = null)
+    fun show(title: CharSequence)
+    fun show(@StringRes titleRes: Int)
 
-    fun show(@StringRes titleRes: Int, action: (() -> Unit)? = null, actionText: CharSequence? = null)
-    fun show(@StringRes titleRes: Int, action: (() -> Unit)? = null, @StringRes actionText: Int? = null)
+    fun show(title: CharSequence, action: (() -> Unit), @StringRes actionTextRes: Int)
+    fun show(title: CharSequence, action: (() -> Unit), actionText: CharSequence)
+    fun show(@StringRes titleRes: Int, action: (() -> Unit), @StringRes actionTextRes: Int)
+    fun show(@StringRes titleRes: Int, action: (() -> Unit), actionText: CharSequence)
 
-    fun hideActionSnack()
     fun hideSnack()
 }
