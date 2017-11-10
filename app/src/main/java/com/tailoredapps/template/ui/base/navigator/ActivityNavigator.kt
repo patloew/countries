@@ -37,6 +37,10 @@ open class ActivityNavigator(protected val activity: FragmentActivity) : Navigat
         activity.finish()
     }
 
+    override fun finishAffinity() {
+        activity.finishAffinity()
+    }
+
     override fun startActivity(intent: Intent) {
         activity.startActivity(intent)
     }
@@ -131,7 +135,7 @@ open class ActivityNavigator(protected val activity: FragmentActivity) : Navigat
         }
     }
 
-    override fun <T : DialogFragment> showDialogFragment(dialog: T) {
-        dialog.show(activity.fragmentManager, dialog.javaClass.name)
+    override fun <T : DialogFragment> showDialogFragment(dialog: T, fragmentTag: String) {
+        dialog.show(activity.fragmentManager, fragmentTag)
     }
 }

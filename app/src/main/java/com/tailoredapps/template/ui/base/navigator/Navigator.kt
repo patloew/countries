@@ -35,6 +35,8 @@ interface Navigator {
     }
 
     fun finishActivity()
+    fun finishAffinity()
+
     fun startActivity(intent: Intent)
     fun startActivity(action: String)
     fun startActivity(action: String, uri: Uri)
@@ -56,5 +58,5 @@ interface Navigator {
     fun replaceFragmentAndAddToBackStack(@IdRes containerId: Int, fragment: Fragment, args: Bundle, backstackTag: String)
     fun replaceFragmentAndAddToBackStack(@IdRes containerId: Int, fragment: Fragment, fragmentTag: String, args: Bundle, backstackTag: String)
 
-    fun <T : DialogFragment> showDialogFragment(dialog: T)
+    fun <T : DialogFragment> showDialogFragment(dialog: T, fragmentTag: String = dialog.javaClass.name)
 }
