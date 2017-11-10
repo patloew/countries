@@ -64,22 +64,17 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
     @Inject
     protected lateinit var refWatcher: RefWatcher
 
-    internal lateinit var activityComponent: ActivityComponent
-        private set
+    internal val activityComponent: ActivityComponent by lazy {
+        DaggerActivityComponent.builder()
+                .activityModule(ActivityModule(this))
+                .appComponent(MyApp.appComponent)
+                .build()
+    }
 
     @CallSuper
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewModel.saveInstanceState(outState)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        activityComponent = DaggerActivityComponent.builder()
-                .activityModule(ActivityModule(this))
-                .appComponent(MyApp.appComponent)
-                .build()
-
-        super.onCreate(savedInstanceState)
     }
 
     @CallSuper

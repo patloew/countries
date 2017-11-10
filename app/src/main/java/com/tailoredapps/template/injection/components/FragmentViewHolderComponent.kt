@@ -1,12 +1,11 @@
 package com.tailoredapps.template.injection.components
 
-import com.tailoredapps.template.injection.modules.FragmentModule
+import com.tailoredapps.template.injection.modules.ViewHolderModule
 import com.tailoredapps.template.injection.modules.ViewModelModule
-import com.tailoredapps.template.injection.scopes.PerFragment
-
+import com.tailoredapps.template.injection.scopes.PerViewHolder
 import dagger.Component
 
-/* Copyright 2016 Patrick Löwenstein
+/* Copyright 2017 Tailored Media GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +17,9 @@ import dagger.Component
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * ------
- *
- * FILE MODIFIED 2017 Tailored Media GmbH */
-@PerFragment
-@Component(dependencies = arrayOf(ActivityComponent::class), modules = arrayOf(FragmentModule::class, ViewModelModule::class))
-interface FragmentComponent : FragmentComponentProvides {
-    // create inject methods for your Fragments here
-
-}
-
-interface FragmentComponentProvides : ActivityComponentProvides {
+ * limitations under the License. */
+@PerViewHolder
+@Component(dependencies = arrayOf(FragmentComponent::class), modules = arrayOf(ViewHolderModule::class, ViewModelModule::class))
+interface FragmentViewHolderComponent {
 
 }
