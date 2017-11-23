@@ -19,7 +19,7 @@ import android.support.v4.app.FragmentActivity
 import android.widget.Toast
 
 
-class ActivityToaster(override val activity: FragmentActivity) : Toaster {
+class ActivityToaster(val activity: FragmentActivity) : Toaster {
 
     private var toast: Toast? = null
 
@@ -35,6 +35,6 @@ class ActivityToaster(override val activity: FragmentActivity) : Toaster {
         toast?.cancel()
         toast = null
         toast = Toast.makeText(activity, title, if (duration != Toast.LENGTH_LONG || duration != Toast.LENGTH_SHORT) duration else Toast.LENGTH_SHORT)
-        toast?.show()
+                .apply { show() }
     }
 }

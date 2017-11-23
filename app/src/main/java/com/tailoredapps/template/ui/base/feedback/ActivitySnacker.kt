@@ -23,7 +23,7 @@ import javax.inject.Inject
 @PerActivity
 open class ActivitySnacker
 @Inject
-constructor(override val activity: FragmentActivity) : Snacker {
+constructor(val activity: FragmentActivity) : Snacker {
 
     private var actionSnackbar: Snackbar? = null
     private var snackbar: Snackbar? = null
@@ -31,19 +31,20 @@ constructor(override val activity: FragmentActivity) : Snacker {
     override fun show(title: CharSequence) = showInternal(title, null, null)
     override fun show(@StringRes titleRes: Int) = showInternal(activity.getString(titleRes), null, null)
 
-    override fun show(title: CharSequence, action: () -> Unit, actionTextRes: Int) = showInternal(title, action, activity.getString(actionTextRes))
-    override fun show(title: CharSequence, action: () -> Unit, actionText: CharSequence) = showInternal(title, action, actionText)
-    override fun show(titleRes: Int, action: () -> Unit, actionTextRes: Int) = showInternal(activity.getString(titleRes), action, activity.getString(actionTextRes))
-    override fun show(titleRes: Int, action: () -> Unit, actionText: CharSequence) = showInternal(activity.getString(titleRes), action, actionText)
+    override fun show(title: CharSequence, actionTextRes: Int, action: () -> Unit) = showInternal(title, action, activity.getString(actionTextRes))
+    override fun show(title: CharSequence, actionText: CharSequence, action: () -> Unit) = showInternal(title, action, actionText)
+    override fun show(titleRes: Int, actionTextRes: Int, action: () -> Unit) = showInternal(activity.getString(titleRes), action, activity.getString(actionTextRes))
+    override fun show(titleRes: Int, actionText: CharSequence, action: () -> Unit) = showInternal(activity.getString(titleRes), action, actionText)
 
     private fun showInternal(title: CharSequence, action: (() -> Unit)?, actionText: CharSequence?) {
         hideSnack()
         if (action != null && actionText != null) {
-            actionSnackbar = Snackbar.make(activity.findViewById(android.R.id.content), title, Snackbar.LENGTH_INDEFINITE).setAction(actionText) { action() }
-            actionSnackbar?.show()
+            actionSnackbar = Snackbar.make(activity.findViewById(android.R.id.content), title, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(actionText) { action() }
+                    .apply { show() }
         } else {
             snackbar = Snackbar.make(activity.findViewById(android.R.id.content), title, Snackbar.LENGTH_LONG)
-            snackbar?.show()
+                    .apply { show() }
         }
     }
 

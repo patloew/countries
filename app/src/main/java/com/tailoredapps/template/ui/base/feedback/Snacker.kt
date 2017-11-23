@@ -14,20 +14,19 @@
 
 package com.tailoredapps.template.ui.base.feedback
 
-import android.app.Activity
 import android.support.annotation.StringRes
 
 
 interface Snacker {
-    val activity: Activity
 
     fun show(title: CharSequence)
     fun show(@StringRes titleRes: Int)
 
-    fun show(title: CharSequence, action: (() -> Unit), @StringRes actionTextRes: Int)
-    fun show(title: CharSequence, action: (() -> Unit), actionText: CharSequence)
-    fun show(@StringRes titleRes: Int, action: (() -> Unit), @StringRes actionTextRes: Int)
-    fun show(@StringRes titleRes: Int, action: (() -> Unit), actionText: CharSequence)
+    fun show(title: CharSequence, @StringRes actionTextRes: Int, action: (() -> Unit))
+    fun show(title: CharSequence, actionText: CharSequence, action: (() -> Unit))
+    fun show(@StringRes titleRes: Int, @StringRes actionTextRes: Int, action: (() -> Unit))
+    fun show(@StringRes titleRes: Int, actionText: CharSequence, action: (() -> Unit))
 
     fun hideSnack()
+
 }
