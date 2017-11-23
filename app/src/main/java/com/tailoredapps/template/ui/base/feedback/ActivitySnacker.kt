@@ -20,10 +20,7 @@ import android.support.v4.app.FragmentActivity
 import com.tailoredapps.template.injection.scopes.PerActivity
 import javax.inject.Inject
 
-@PerActivity
-open class ActivitySnacker
-@Inject
-constructor(val activity: FragmentActivity) : Snacker {
+open class ActivitySnacker(val activity: FragmentActivity) : Snacker {
 
     private var actionSnackbar: Snackbar? = null
     private var snackbar: Snackbar? = null

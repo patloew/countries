@@ -18,8 +18,7 @@ import android.support.annotation.StringRes
 import android.support.v4.app.FragmentActivity
 import android.widget.Toast
 
-
-class ActivityToaster(val activity: FragmentActivity) : Toaster {
+open class ActivityToaster(val activity: FragmentActivity) : Toaster {
 
     private var toast: Toast? = null
 
