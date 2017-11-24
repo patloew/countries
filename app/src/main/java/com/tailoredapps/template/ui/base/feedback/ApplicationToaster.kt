@@ -14,11 +14,11 @@
 
 package com.tailoredapps.template.ui.base.feedback
 
+import android.content.Context
 import android.support.annotation.StringRes
-import android.support.v4.app.FragmentActivity
 import android.widget.Toast
 
-open class ActivityToaster(val activity: FragmentActivity) : Toaster {
+open class ApplicationToaster(val context: Context) : Toaster {
 
     private var toast: Toast? = null
 
@@ -27,13 +27,13 @@ open class ActivityToaster(val activity: FragmentActivity) : Toaster {
     }
 
     override fun show(@StringRes titleRes: Int, duration: Int) {
-        showInternal(activity.getString(titleRes), duration)
+        showInternal(context.getString(titleRes), duration)
     }
 
     private fun showInternal(title: String, duration: Int) {
         toast?.cancel()
         toast = null
-        toast = Toast.makeText(activity, title, if (duration != Toast.LENGTH_LONG || duration != Toast.LENGTH_SHORT) duration else Toast.LENGTH_SHORT)
+        toast = Toast.makeText(context, title, if (duration != Toast.LENGTH_LONG || duration != Toast.LENGTH_SHORT) duration else Toast.LENGTH_SHORT)
                 .apply { show() }
     }
 }

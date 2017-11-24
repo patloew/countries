@@ -11,6 +11,7 @@ import com.tailoredapps.template.injection.modules.DataModule
 import com.tailoredapps.template.injection.modules.NetModule
 import com.tailoredapps.template.injection.qualifier.AppContext
 import com.tailoredapps.template.injection.scopes.PerApplication
+import com.tailoredapps.template.ui.base.feedback.Toaster
 import dagger.Component
 import io.realm.Realm
 
@@ -47,4 +48,6 @@ interface AppComponentProvides {
     fun realm(): Realm
     fun myRepo(): MyRepo
     fun myApi(): MyApi
+
+    fun toaster(): Toaster
 }

@@ -3,15 +3,12 @@ package com.tailoredapps.template.injection.modules
 import android.content.Context
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
-import com.tailoredapps.template.R
 
 import com.tailoredapps.template.injection.qualifier.ActivityContext
 import com.tailoredapps.template.injection.qualifier.ActivityFragmentManager
 import com.tailoredapps.template.injection.scopes.PerActivity
 import com.tailoredapps.template.ui.base.feedback.ActivitySnacker
-import com.tailoredapps.template.ui.base.feedback.ActivityToaster
 import com.tailoredapps.template.ui.base.feedback.Snacker
-import com.tailoredapps.template.ui.base.feedback.Toaster
 import com.tailoredapps.template.ui.base.navigator.ActivityNavigator
 import com.tailoredapps.template.ui.base.navigator.Navigator
 
@@ -51,8 +48,4 @@ class ActivityModule(private val activity: AppCompatActivity) {
     @Provides
     @PerActivity
     internal fun provideSnacker(): Snacker = ActivitySnacker(activity)
-
-    @Provides
-    @PerActivity
-    internal fun provideToaster(): Toaster = ActivityToaster(activity)
 }
