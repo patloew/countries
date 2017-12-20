@@ -8,22 +8,23 @@ import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.tailoredapps.template.BR
+import com.tailoredapps.template.injection.components.ActivityViewHolderComponent
 import com.tailoredapps.template.injection.components.DaggerFragmentViewHolderComponent
 import com.tailoredapps.template.injection.components.FragmentViewHolderComponent
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
-import com.tailoredapps.template.util.castWithUnwrap
+import com.tailoredapps.template.util.kotlin.castWithUnwrap
+import timber.log.Timber
 import javax.inject.Inject
 
 /* Base class for ViewHolders when using a view model in a Fragment with data binding.
  * This class provides the binding and the view model to the subclass. The
  * view model is injected and the binding is created when the content view is bound.
  * Each subclass therefore has to call the following code in the constructor:
- *    getViewHolderComponent().inject(this);
- *    bindContentView(view);
+ *    bindContentView(view)
  *
- * After calling these methods, the binding and the view model is initialized.
+ * After calling this method, the binding and the view model is initialized.
  * saveInstanceState() and restoreInstanceState() are not called/used for ViewHolder
  * view models.
  *
@@ -41,6 +42,14 @@ abstract class BaseFragmentViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>
         DaggerFragmentViewHolderComponent.builder()
                 .fragmentComponent(itemView.context.getFragment<BaseFragment<*,*>>(fragmentContainerId)!!.fragmentComponent)
                 .build()
+    }
+
+    init {
+        try {
+            FragmentViewHolderComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(viewHolderComponent, this)
+        } catch(e: NoSuchMethodException) {
+            Timber.e(e, "You forgot to add \"fun inject(viewHolder: ${this::class.java.simpleName})\" in FragmentViewHolderComponent")
+        }
     }
 
     protected fun bindContentView(view: View) {

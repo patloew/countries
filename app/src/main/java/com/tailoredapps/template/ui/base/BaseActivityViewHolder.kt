@@ -7,10 +7,12 @@ import android.view.View
 import com.tailoredapps.template.BR
 import com.tailoredapps.template.injection.components.ActivityViewHolderComponent
 import com.tailoredapps.template.injection.components.DaggerActivityViewHolderComponent
+import com.tailoredapps.template.injection.components.FragmentComponent
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
-import com.tailoredapps.template.util.castWithUnwrap
+import com.tailoredapps.template.util.kotlin.castWithUnwrap
+import timber.log.Timber
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein
@@ -36,10 +38,9 @@ import javax.inject.Inject
  * This class provides the binding and the view model to the subclass. The
  * view model is injected and the binding is created when the content view is bound.
  * Each subclass therefore has to call the following code in the constructor:
- *    getViewHolderComponent().inject(this);
- *    bindContentView(view);
+ *    bindContentView(view)
  *
- * After calling these methods, the binding and the view model is initialized.
+ * After calling this method, the binding and the view model is initialized.
  * saveInstanceState() and restoreInstanceState() are not called/used for ViewHolder
  * view models.
  *
@@ -55,6 +56,14 @@ abstract class BaseActivityViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>
         DaggerActivityViewHolderComponent.builder()
                 .activityComponent(itemView.context.castWithUnwrap<BaseActivity<*, *>>()?.activityComponent)
                 .build()
+    }
+
+    init {
+        try {
+            ActivityViewHolderComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(viewHolderComponent, this)
+        } catch(e: NoSuchMethodException) {
+            Timber.e(e, "You forgot to add \"fun inject(viewHolder: ${this::class.java.simpleName})\" in ActivityViewHolderComponent")
+        }
     }
 
     protected fun bindContentView(view: View) {

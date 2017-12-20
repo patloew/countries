@@ -1,6 +1,5 @@
 package com.tailoredapps.template.ui.base.navigator
 
-import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 
@@ -16,22 +15,24 @@ import android.support.v4.app.Fragment
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * --------------
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH */
 class ChildFragmentNavigator(private val fragment: Fragment) : ActivityNavigator(fragment.activity), FragmentNavigator {
 
-    override fun replaceChildFragment(@IdRes containerId: Int, fragment: Fragment, args: Bundle) {
-        replaceFragmentInternal(this.fragment.childFragmentManager, containerId, fragment, null, args, false, null)
+    override fun replaceChildFragment(@IdRes containerId: Int, fragment: Fragment, fragmentTag: String?) {
+        replaceFragmentInternal(fragment.childFragmentManager, containerId, fragment, fragmentTag, false, null)
     }
 
-    override fun replaceChildFragment(@IdRes containerId: Int, fragment: Fragment, fragmentTag: String, args: Bundle) {
-        replaceFragmentInternal(this.fragment.childFragmentManager, containerId, fragment, fragmentTag, args, false, null)
+    override fun replaceChildFragmentAndAddToBackStack(@IdRes containerId: Int, fragment: Fragment, fragmentTag: String?, backstackTag: String?) {
+        replaceFragmentInternal(fragment.childFragmentManager, containerId, fragment, fragmentTag, true, backstackTag)
     }
 
-    override fun replaceChildFragmentAndAddToBackStack(@IdRes containerId: Int, fragment: Fragment, args: Bundle, backstackTag: String) {
-        replaceFragmentInternal(this.fragment.childFragmentManager, containerId, fragment, null, args, true, backstackTag)
+    override fun popChildFragmentBackstackImmediate() {
+        fragment.childFragmentManager.popBackStackImmediate()
     }
 
-    override fun replaceChildFragmentAndAddToBackStack(@IdRes containerId: Int, fragment: Fragment, fragmentTag: String, args: Bundle, backstackTag: String) {
-        replaceFragmentInternal(this.fragment.childFragmentManager, containerId, fragment, fragmentTag, args, true, backstackTag)
-    }
 }
+

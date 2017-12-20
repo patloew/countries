@@ -38,8 +38,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainMvvm.ViewModel>(), Ma
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        activityComponent.inject(this)
         setAndBindContentView(savedInstanceState, R.layout.activity_main)
 
         setSupportActionBar(binding.toolbar)

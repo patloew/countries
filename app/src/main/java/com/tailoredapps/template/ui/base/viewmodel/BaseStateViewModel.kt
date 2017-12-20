@@ -19,9 +19,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.support.annotation.CallSuper
 
-import com.tailoredapps.template.ui.base.MvvmViewNotAttachedException
 import com.tailoredapps.template.ui.base.view.MvvmView
-import com.tailoredapps.template.util.getParcelable
+import com.tailoredapps.template.util.kotlin.getParcelable
 
 import javax.inject.Inject
 
@@ -59,8 +58,8 @@ abstract class BaseStateViewModel<V : MvvmView, S : Parcelable> : BaseObservable
     }
 
     @CallSuper
-    override fun saveInstanceState(outState: Bundle?) {
-        outState?.putParcelable(KEY_STATE, state)
+    override fun saveInstanceState(outState: Bundle) {
+        outState.putParcelable(KEY_STATE, state)
     }
 
     @CallSuper
@@ -68,13 +67,6 @@ abstract class BaseStateViewModel<V : MvvmView, S : Parcelable> : BaseObservable
         if (savedInstanceState.containsKey(KEY_STATE)) {
             state = savedInstanceState.getParcelable(KEY_STATE, state)
         }
-    }
-
-    val isViewAttached: Boolean
-        get() = view != null
-
-    fun checkViewAttached() {
-        if (!isViewAttached) throw MvvmViewNotAttachedException()
     }
 }
 

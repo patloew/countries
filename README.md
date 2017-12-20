@@ -32,9 +32,10 @@ The basic app structure is taken from the [Countries Example app](https://github
 * Base classes for views
     * These classes provide a binding and viewModel field. The viewModel gets injected, the binding has to be set manually.
     * Detaching of the view model is handled by the base classes.
-    * Activities should extend `BaseActivity<Binding, View, ViewModel>`. You should use `setAndBindContentView(savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view. Don’t forget to inject the viewModel via `activityComponent.inject(this)` before setting the content view.
-    * Fragments should extend `BaseFragment<Binding, View, ViewModel>`. You should use `setAndBindContentView(inflater, container, savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view. Don’t forget to inject the viewModel via `fragmentComponent.inject(this)` before setting the content view.
-    * ViewHolders should extend BaseActivity/FragmentViewHolder<Binding, View, ViewModel>. You should use `bindContentView(view)`, which creates the binding and attaches the view. Don't forget to inject the viewModel via `viewHolderComponent.inject(this)` before binding the view.
+    * Don't forget to create a  `inject()` method in the Dagger component for each Activity/Fragment/ViewHolder.
+    * Activities should extend `BaseActivity<Binding, View, ViewModel>`. You should use `setAndBindContentView(savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view.
+    * Fragments should extend `BaseFragment<Binding, View, ViewModel>`. You should use `setAndBindContentView(inflater, container, savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view.
+    * ViewHolders should extend BaseActivity/FragmentViewHolder<Binding, View, ViewModel>. You should use `bindContentView(view)`, which creates the binding and attaches the view.
 
 ## Testing
 

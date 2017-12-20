@@ -15,6 +15,7 @@ import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
 import io.realm.Realm
+import timber.log.Timber
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein
@@ -40,10 +41,9 @@ import javax.inject.Inject
  * This class provides the binding and the view model to the subclass. The
  * view model is injected and the binding is created when the content view is set.
  * Each subclass therefore has to call the following code in onCreate():
- *    activityComponent().inject(this);
- *    setAndBindContentView(R.layout.my_activity_layout, savedInstanceState);
+ *    setAndBindContentView(savedInstanceState, R.layout.my_activity_layout)
  *
- * After calling these methods, the binding and the view model is initialized.
+ * After calling this method, the binding and the view model is initialized.
  * saveInstanceState() and restoreInstanceState() methods of the view model
  * are automatically called in the appropriate lifecycle events when above calls
  * are made.
@@ -74,6 +74,17 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewModel.saveInstanceState(outState)
+    }
+
+    @CallSuper
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        try {
+            ActivityComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(activityComponent, this)
+        } catch(e: NoSuchMethodException) {
+            Timber.e(e, "You forgot to add \"fun inject(activity: ${this::class.java.simpleName})\" in ActivityComponent")
+        }
     }
 
     @CallSuper

@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
-apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.2"
     signingConfigs {
         release {
             keyAlias 'mykeyalias'
@@ -18,11 +17,10 @@ android {
     defaultConfig {
         applicationId "com.tailoredapps.template"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         vectorDrawables.useSupportLibrary = true
-
         setProperty("archivesBaseName", "TAAppTemplate-v$versionName-b$versionCode")
     }
     buildTypes {
@@ -59,6 +57,7 @@ android {
     packagingOptions {
         // Remove unneeded Realm native libs (nearly no devices use these)
         exclude 'lib/mips/librealm-jni.so'
+        exclude 'lib/x86/librealm-jni.so'
         exclude 'lib/x86_64/librealm-jni.so'
     }
     sourceSets {
@@ -67,4 +66,3 @@ android {
 }
 
 apply from: "dependencies.gradle"
-
