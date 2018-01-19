@@ -19,7 +19,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.support.annotation.CallSuper
 
-import com.tailoredapps.template.ui.base.MvvmViewNotAttachedException
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.util.extensions.getParcelable
 
@@ -70,11 +69,5 @@ abstract class BaseStateViewModel<V : MvvmView, S : Parcelable> : BaseObservable
         }
     }
 
-    val isViewAttached: Boolean
-        get() = view != null
-
-    fun checkViewAttached() {
-        if (!isViewAttached) throw MvvmViewNotAttachedException()
-    }
 }
 

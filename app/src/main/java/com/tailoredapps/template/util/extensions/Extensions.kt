@@ -15,10 +15,22 @@
 package com.tailoredapps.template.util.extensions
 
 import android.os.Bundle
+import android.os.Parcelable
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
 
+
+//Bundle
+
+fun <T : Parcelable> Bundle.getParcelable(key: String, defaultObject: T): T = if (containsKey(key)) {
+    getParcelable(key)
+} else {
+    defaultObject
+}
+
+
+//ViewModel
 
 fun <V : MvvmView> MvvmViewModel<V>.attachViewOrThrowRuntimeException(view: MvvmView, savedInstanceState: Bundle?) {
     try {

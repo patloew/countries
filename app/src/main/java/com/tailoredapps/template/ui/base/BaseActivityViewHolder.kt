@@ -2,11 +2,6 @@ package com.tailoredapps.template.ui.base
 
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
-import android.support.annotation.ColorRes
-import android.support.annotation.DimenRes
-import android.support.annotation.IntegerRes
-import android.support.annotation.StringRes
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.tailoredapps.template.BR
@@ -17,7 +12,6 @@ import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.util.extensions.attachViewOrThrowRuntimeException
 import com.tailoredapps.template.util.extensions.castWithUnwrap
 
-import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein
@@ -74,8 +68,4 @@ abstract class BaseActivityViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>
         binding.executePendingBindings()
     }
 
-    fun dimen(@DimenRes resId: Int): Int = itemView.context.resources.getDimension(resId).toInt()
-    fun color(@ColorRes resId: Int): Int = ContextCompat.getColor(itemView.context, resId)
-    fun integer(@IntegerRes resId: Int): Int = itemView.context.resources.getInteger(resId)
-    fun string(@StringRes resId: Int): String = itemView.context.resources.getString(resId)
 }

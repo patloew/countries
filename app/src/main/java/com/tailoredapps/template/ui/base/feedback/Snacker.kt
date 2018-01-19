@@ -22,10 +22,8 @@ interface Snacker {
     fun show(title: CharSequence)
     fun show(@StringRes titleRes: Int)
 
-    fun show(title: CharSequence, @StringRes actionTextRes: Int, action: (() -> Unit))
     fun show(title: CharSequence, actionText: CharSequence, action: (() -> Unit))
     fun show(@StringRes titleRes: Int, @StringRes actionTextRes: Int, action: (() -> Unit))
-    fun show(@StringRes titleRes: Int, actionText: CharSequence, action: (() -> Unit))
 
     fun hideSnack()
 

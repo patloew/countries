@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.*
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.template.BR
@@ -93,8 +92,4 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
         viewModel.attachViewOrThrowRuntimeException(this, savedInstanceState)
     }
 
-    fun dimen(@DimenRes resId: Int): Int = resources.getDimension(resId).toInt()
-    fun color(@ColorRes resId: Int): Int = ContextCompat.getColor(this, resId)
-    fun integer(@IntegerRes resId: Int): Int = resources.getInteger(resId)
-    fun string(@StringRes resId: Int): String = resources.getString(resId)
 }
