@@ -13,7 +13,7 @@ import com.tailoredapps.template.injection.components.FragmentViewHolderComponen
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
-import com.tailoredapps.template.util.castWithUnwrap
+import com.tailoredapps.template.util.extensions.castWithUnwrap
 import javax.inject.Inject
 
 /* Base class for ViewHolders when using a view model in a Fragment with data binding.

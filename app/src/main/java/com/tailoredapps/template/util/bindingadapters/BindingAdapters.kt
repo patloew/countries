@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-package com.tailoredapps.template.util.bindingadapter
+package com.tailoredapps.template.util.bindingadapters
 
 import android.databinding.BindingAdapter
 import android.view.View
@@ -33,7 +33,7 @@ object BindingAdapters {
         layoutParams.bottomMargin = bottomMargin
     }
 
-    @BindingAdapter("onClick")
+    @BindingAdapter("android:onClick")
     @JvmStatic
     fun setOnClickListener(v: View, runnable: Runnable) {
         v.setOnClickListener { runnable.run() }

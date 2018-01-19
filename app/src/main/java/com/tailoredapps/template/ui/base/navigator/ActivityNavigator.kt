@@ -1,6 +1,7 @@
 package com.tailoredapps.template.ui.base.navigator
 
 import android.app.Activity
+import android.app.DialogFragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -34,6 +35,10 @@ open class ActivityNavigator(protected val activity: FragmentActivity) : Navigat
 
     override fun finishActivity() {
         activity.finish()
+    }
+
+    override fun finishAffinity() {
+        activity.finishAffinity()
     }
 
     override fun startActivity(intent: Intent) {
@@ -128,5 +133,9 @@ open class ActivityNavigator(protected val activity: FragmentActivity) : Navigat
         } else {
             ft.commitNow()
         }
+    }
+
+    override fun <T : DialogFragment> showDialogFragment(dialog: T, fragmentTag: String) {
+        dialog.show(activity.fragmentManager, fragmentTag)
     }
 }

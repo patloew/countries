@@ -16,7 +16,7 @@ import com.tailoredapps.template.injection.modules.FragmentModule
 import com.tailoredapps.template.injection.scopes.PerFragment
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
-import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
+import com.tailoredapps.template.util.extensions.attachViewOrThrowRuntimeException
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein
@@ -75,7 +75,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragme
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.detachView()
-        if(!viewModel.javaClass.isAnnotationPresent(PerFragment::class.java)) {
+        if (!viewModel.javaClass.isAnnotationPresent(PerFragment::class.java)) {
             refWatcher.watch(viewModel)
         }
     }
@@ -92,31 +92,8 @@ abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragme
     protected fun setAndBindContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, @LayoutRes layoutResID: Int): View {
         binding = DataBindingUtil.inflate<B>(inflater, layoutResID, container, false)
         binding.setVariable(BR.vm, viewModel)
-
-        try {
-            (viewModel as MvvmViewModel<MvvmView>).attachView(this, savedInstanceState)
-        } catch (e: ClassCastException) {
-            if (viewModel !is NoOpViewModel<*>) {
-                throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)
-            }
-        }
-
+        viewModel.attachViewOrThrowRuntimeException(this, savedInstanceState)
         return binding.root
     }
 
-    fun dimen(@DimenRes resId: Int): Int {
-        return resources.getDimension(resId).toInt()
-    }
-
-    fun color(@ColorRes resId: Int): Int {
-        return resources.getColor(resId)
-    }
-
-    fun integer(@IntegerRes resId: Int): Int {
-        return resources.getInteger(resId)
-    }
-
-    fun string(@StringRes resId: Int): String {
-        return resources.getString(resId)
-    }
 }

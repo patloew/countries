@@ -10,8 +10,17 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.*/
 
-package com.tailoredapps.template.ui.base
+package com.tailoredapps.template.ui.base.feedback
 
-class MvvmViewNotAttachedException : RuntimeException("Please call ViewModel.attachView(MvvmView) before requesting data to the ViewModel")
+import android.support.annotation.StringRes
+import android.widget.Toast
+
+
+interface Toaster {
+
+    fun show(title: String, duration: Int = Toast.LENGTH_LONG)
+    fun show(@StringRes titleRes: Int, duration: Int = Toast.LENGTH_LONG)
+
+}

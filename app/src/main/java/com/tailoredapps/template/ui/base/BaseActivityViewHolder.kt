@@ -9,8 +9,9 @@ import com.tailoredapps.template.injection.components.ActivityViewHolderComponen
 import com.tailoredapps.template.injection.components.DaggerActivityViewHolderComponent
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
-import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
-import com.tailoredapps.template.util.castWithUnwrap
+import com.tailoredapps.template.util.extensions.attachViewOrThrowRuntimeException
+import com.tailoredapps.template.util.extensions.castWithUnwrap
+
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein
@@ -60,18 +61,11 @@ abstract class BaseActivityViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>
     protected fun bindContentView(view: View) {
         binding = DataBindingUtil.bind(view)
         binding.setVariable(BR.vm, viewModel)
-
-        try {
-            (viewModel as MvvmViewModel<MvvmView>).attachView(this, null)
-        } catch (e: ClassCastException) {
-            if (viewModel !is NoOpViewModel<*>) {
-                throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)
-            }
-        }
-
+        viewModel.attachViewOrThrowRuntimeException(this, null)
     }
 
     fun executePendingBindings() {
         binding.executePendingBindings()
     }
+
 }

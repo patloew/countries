@@ -7,6 +7,8 @@ import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import com.tailoredapps.template.injection.qualifier.AppContext
 import com.tailoredapps.template.injection.scopes.PerApplication
+import com.tailoredapps.template.ui.base.feedback.ApplicationToaster
+import com.tailoredapps.template.ui.base.feedback.Toaster
 import dagger.Module
 import dagger.Provides
 import io.realm.Realm
@@ -34,26 +36,22 @@ class AppModule(private val app: Application) {
     @Provides
     @PerApplication
     @AppContext
-    internal fun provideAppContext(): Context {
-        return app
-    }
+    internal fun provideAppContext(): Context = app
 
     @Provides
     @PerApplication
-    internal fun provideResources(): Resources {
-        return app.resources
-    }
+    internal fun provideResources(): Resources = app.resources
 
 
     @Provides
     @PerApplication
-    internal fun provideRefWatcher(): RefWatcher {
-        return LeakCanary.install(app)
-    }
+    internal fun provideRefWatcher(): RefWatcher = LeakCanary.install(app)
 
     @Provides
-    internal fun provideRealm(): Realm {
-        return Realm.getDefaultInstance()
-    }
+    internal fun provideRealm(): Realm = Realm.getDefaultInstance()
 
+
+    @Provides
+    @PerApplication
+    internal fun provideToaster(): Toaster = ApplicationToaster(app)
 }
