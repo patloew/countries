@@ -49,6 +49,6 @@ abstract class BaseViewModel<V : MvvmView> : BaseObservable(), MvvmViewModel<V> 
 
     protected open fun restoreInstanceState(savedInstanceState: Bundle) { }
 
-    override fun saveInstanceState(outState: Bundle?) { }
+    override fun saveInstanceState(outState: Bundle) { }
 
 }

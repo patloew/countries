@@ -31,7 +31,7 @@ constructor() : BaseObservable(), MvvmViewModel<V> {
 
     override fun attachView(view: V, savedInstanceState: Bundle?) {}
 
-    override fun saveInstanceState(outState: Bundle?) {}
+    override fun saveInstanceState(outState: Bundle) {}
 
     override fun detachView() {}
 

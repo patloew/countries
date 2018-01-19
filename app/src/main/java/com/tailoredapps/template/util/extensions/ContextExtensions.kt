@@ -17,9 +17,7 @@ package com.tailoredapps.template.util.extensions
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Build
-import java.io.Closeable
 import java.util.*
-import javax.inject.Provider
 
 
 fun Context.getCurrentLocale(): Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

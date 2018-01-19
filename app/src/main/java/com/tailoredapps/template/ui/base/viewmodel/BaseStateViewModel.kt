@@ -21,7 +21,6 @@ import android.support.annotation.CallSuper
 
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.util.extensions.getParcelable
-
 import javax.inject.Inject
 
 /**
@@ -58,8 +57,8 @@ abstract class BaseStateViewModel<V : MvvmView, S : Parcelable> : BaseObservable
     }
 
     @CallSuper
-    override fun saveInstanceState(outState: Bundle?) {
-        outState?.putParcelable(KEY_STATE, state)
+    override fun saveInstanceState(outState: Bundle) {
+        outState.putParcelable(KEY_STATE, state)
     }
 
     @CallSuper

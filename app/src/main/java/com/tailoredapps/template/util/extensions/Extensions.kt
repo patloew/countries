@@ -16,12 +16,13 @@ package com.tailoredapps.template.util.extensions
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.v4.app.Fragment
 import com.tailoredapps.template.ui.base.view.MvvmView
 import com.tailoredapps.template.ui.base.viewmodel.MvvmViewModel
 import com.tailoredapps.template.ui.base.viewmodel.NoOpViewModel
 
 
-//Bundle
+// Bundle
 
 fun <T : Parcelable> Bundle.getParcelable(key: String, defaultObject: T): T = if (containsKey(key)) {
     getParcelable(key)
@@ -30,7 +31,7 @@ fun <T : Parcelable> Bundle.getParcelable(key: String, defaultObject: T): T = if
 }
 
 
-//ViewModel
+// ViewModel
 
 fun <V : MvvmView> MvvmViewModel<V>.attachViewOrThrowRuntimeException(view: MvvmView, savedInstanceState: Bundle?) {
     try {
@@ -42,3 +43,7 @@ fun <V : MvvmView> MvvmViewModel<V>.attachViewOrThrowRuntimeException(view: Mvvm
         }
     }
 }
+
+// Fragment
+
+inline fun Fragment.withArgs(argsFun: Bundle.() -> Unit) = apply { arguments = Bundle().apply(argsFun) }

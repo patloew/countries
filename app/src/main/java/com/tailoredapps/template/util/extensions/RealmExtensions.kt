@@ -15,7 +15,6 @@
 package com.tailoredapps.template.util.extensions
 
 import io.realm.Realm
-import io.realm.RealmList
 import io.realm.RealmModel
 import timber.log.Timber
 import java.io.Closeable

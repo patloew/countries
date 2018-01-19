@@ -19,8 +19,6 @@ import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.Snackbar
 import android.support.v4.app.FragmentActivity
 import android.view.ViewGroup
-import com.tailoredapps.template.injection.scopes.PerActivity
-import javax.inject.Inject
 
 open class ActivitySnacker(val activity: FragmentActivity) : Snacker {
 
