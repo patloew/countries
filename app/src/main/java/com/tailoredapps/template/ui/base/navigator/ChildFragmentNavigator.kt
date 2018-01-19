@@ -20,7 +20,7 @@ import android.support.v4.app.Fragment
  * --------------
  *
  * FILE MODIFIED 2017 Tailored Media GmbH */
-class ChildFragmentNavigator(private val fragment: Fragment) : ActivityNavigator(fragment.activity), FragmentNavigator {
+class ChildFragmentNavigator(private val fragment: Fragment) : ActivityNavigator(fragment.activity!!), FragmentNavigator {
 
     override fun replaceChildFragment(@IdRes containerId: Int, fragment: Fragment, fragmentTag: String?) {
         replaceFragmentInternal(fragment.childFragmentManager, containerId, fragment, fragmentTag, false, null)

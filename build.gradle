@@ -1,15 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlinVersion = '1.2.10'
-    ext.realmVersion = '4.3.1'
-    ext.gradlePluginVersion = '3.0.0'
-    ext.mockitoVersion = '2.11.0'
+    ext.kotlinVersion = '1.2.20'
+    ext.realmVersion = '4.3.2'
+    ext.gradlePluginVersion = '3.0.1'
+    ext.mockitoVersion = '2.13.0'
     ext.powerMockVersion = '2.0.0-beta.5'
-    ext.supportLibVersion = '26.1.0'
+    ext.supportLibVersion = '27.0.2'
     ext.retrofitVersion = '2.3.0'
     ext.okHttpVersion = '3.9.0'
-    ext.daggerVersion = '2.12'
+    ext.daggerVersion = '2.14.1'
     ext.paperParcelVersion = '2.0.4'
 
     repositories {
