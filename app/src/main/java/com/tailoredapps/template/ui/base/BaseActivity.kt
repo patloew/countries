@@ -84,7 +84,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
         try {
             ActivityComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(activityComponent, this)
         } catch(e: NoSuchMethodException) {
-            Timber.e(e, "You forgot to add \"fun inject(activity: ${this::class.java.simpleName})\" in ActivityComponent")
+            throw RtfmException("You forgot to add \"fun inject(activity: ${this::class.java.simpleName})\" in ActivityComponent")
         }
     }
 
