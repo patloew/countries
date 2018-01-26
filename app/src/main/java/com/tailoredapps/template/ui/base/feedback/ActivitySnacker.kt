@@ -36,7 +36,7 @@ open class ActivitySnacker(val activity: FragmentActivity) : Snacker {
         hideSnack()
 
         val coordinator = activity.findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
-        val attachView = if (coordinator != null && coordinator is CoordinatorLayout) coordinator else activity.findViewById(android.R.id.content)
+        val attachView = if (coordinator != null && coordinator is CoordinatorLayout) coordinator else activity.findViewById<ViewGroup>(android.R.id.content)
 
         if (action != null && actionText != null) {
             actionSnackbar = Snackbar.make(attachView, title, Snackbar.LENGTH_INDEFINITE)
