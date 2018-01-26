@@ -36,6 +36,7 @@ The basic app structure is taken from the [Countries Example app](https://github
     * Activities should extend `BaseActivity<Binding, View, ViewModel>`. You should use `setAndBindContentView(savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view.
     * Fragments should extend `BaseFragment<Binding, View, ViewModel>`. You should use `setAndBindContentView(inflater, container, savedInstanceState, layoutResId)`, which sets the content view, creates the binding and attaches the view.
     * ViewHolders should extend BaseActivity/FragmentViewHolder<Binding, View, ViewModel>. You should use `bindContentView(view)`, which creates the binding and attaches the view.
+* The `template_version` property in `.template_plugin_config.json` is increased each time classes under the `.ui.base` package change.
 
 ## Testing
 

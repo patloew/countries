@@ -47,7 +47,7 @@ abstract class BaseFragmentViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>
         try {
             FragmentViewHolderComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(viewHolderComponent, this)
         } catch(e: NoSuchMethodException) {
-            Timber.e(e, "You forgot to add \"fun inject(viewHolder: ${this::class.java.simpleName})\" in FragmentViewHolderComponent")
+            throw RtfmException("You forgot to add \"fun inject(viewHolder: ${this::class.java.simpleName})\" in FragmentViewHolderComponent")
         }
     }
 

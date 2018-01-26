@@ -79,7 +79,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragme
         try {
             FragmentComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(fragmentComponent, this)
         } catch(e: NoSuchMethodException) {
-            Timber.e(e, "You forgot to add \"fun inject(fragment: ${this::class.java.simpleName})\" in FragmentComponent")
+            throw RtfmException("You forgot to add \"fun inject(fragment: ${this::class.java.simpleName})\" in FragmentComponent")
         }
     }
 
