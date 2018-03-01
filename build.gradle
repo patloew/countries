@@ -1,14 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
-    ext.kotlinVersion = '1.2.20'
-    ext.realmVersion = '4.3.2'
+    ext.kotlinVersion = '1.2.30'
+    ext.realmVersion = '4.3.4'
     ext.gradlePluginVersion = '3.0.1'
-    ext.mockitoVersion = '2.13.0'
+    ext.mockitoVersion = '2.15.0'
     ext.powerMockVersion = '2.0.0-beta.5'
-    ext.supportLibVersion = '27.0.2'
+    ext.supportLibVersion = '27.1.0'
     ext.retrofitVersion = '2.3.0'
-    ext.okHttpVersion = '3.9.0'
+    ext.okHttpVersion = '3.10.0'
     ext.daggerVersion = '2.14.1'
     ext.paperParcelVersion = '2.0.4'
 
@@ -21,6 +22,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:$gradlePluginVersion"
         classpath "io.realm:realm-gradle-plugin:$realmVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
     }
 }
 
