@@ -27,5 +27,5 @@ interface MvvmViewModel<V : MvvmView> : Observable {
     fun attachView(view: V, savedInstanceState: Bundle?)
     fun detachView()
 
-    fun saveInstanceState(outState: Bundle?)
+    fun saveInstanceState(outState: Bundle)
 }

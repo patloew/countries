@@ -18,9 +18,18 @@ import dagger.Component
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * ------
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH */
 @PerFragment
 @Component(dependencies = arrayOf(ActivityComponent::class), modules = arrayOf(FragmentModule::class, ViewModelModule::class))
-interface FragmentComponent {
+interface FragmentComponent : FragmentComponentProvides {
+    // create inject methods for your Fragments here
+
+}
+
+interface FragmentComponentProvides : ActivityComponentProvides {
 
 }

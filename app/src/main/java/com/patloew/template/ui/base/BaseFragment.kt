@@ -1,10 +1,10 @@
 package com.patloew.template.ui.base
 
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
-import android.support.annotation.*
+import android.support.annotation.CallSuper
+import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ import com.patloew.template.injection.modules.FragmentModule
 import com.patloew.template.injection.scopes.PerFragment
 import com.patloew.template.ui.base.view.MvvmView
 import com.patloew.template.ui.base.viewmodel.MvvmViewModel
-import com.patloew.template.ui.base.viewmodel.NoOpViewModel
+import com.patloew.template.util.extensions.attachViewOrThrowRuntimeException
 import com.squareup.leakcanary.RefWatcher
 import javax.inject.Inject
 
@@ -42,10 +42,9 @@ import javax.inject.Inject
  * This class provides the binding and the view model to the subclass. The
  * view model is injected and the binding is created when the content view is set.
  * Each subclass therefore has to call the following code in onCreateView():
- *    if(viewModel == null) { getFragmentComponent().inject(this); }
- *    return setAndBindContentView(inflater, container, R.layout.my_fragment_layout, savedInstanceState);
+ *    return setAndBindContentView(inflater, container, savedInstanceState, R.layout.my_fragment_layout)
  *
- * After calling these methods, the binding and the view model is initialized.
+ * After calling this method, the binding and the view model is initialized.
  * saveInstanceState() and restoreInstanceState() methods of the view model
  * are automatically called in the appropriate lifecycle events when above calls
  * are made.
@@ -59,20 +58,35 @@ abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragme
     @Inject protected lateinit var refWatcher: RefWatcher
 
 
-    protected lateinit var fragmentComponent : FragmentComponent
-        private set
+    internal val fragmentComponent : FragmentComponent by lazy {
+        DaggerFragmentComponent.builder()
+                .fragmentModule(FragmentModule(this))
+                .activityComponent((activity as BaseActivity<*, *>).activityComponent)
+                .build()
+    }
 
     @CallSuper
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewModel.saveInstanceState(outState)
+    }
+
+    @CallSuper
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        try {
+            FragmentComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(fragmentComponent, this)
+        } catch(e: NoSuchMethodException) {
+            throw RtfmException("You forgot to add \"fun inject(fragment: ${this::class.java.simpleName})\" in FragmentComponent")
+        }
     }
 
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.detachView()
-        if(!viewModel.javaClass.isAnnotationPresent(PerFragment::class.java)) {
+        if (!viewModel.javaClass.isAnnotationPresent(PerFragment::class.java)) {
             refWatcher.watch(viewModel)
         }
     }
@@ -84,44 +98,13 @@ abstract class BaseFragment<B : ViewDataBinding, VM : MvvmViewModel<*>> : Fragme
         refWatcher.watch(fragmentComponent)
     }
 
-    override fun onAttach(context: Context?) {
-        fragmentComponent = DaggerFragmentComponent.builder()
-                .fragmentModule(FragmentModule(this))
-                .activityComponent((activity as BaseActivity<*, *>).activityComponent)
-                .build()
-
-        super.onAttach(context)
-    }
 
     /* Sets the content view, creates the binding and attaches the view to the view model */
     protected fun setAndBindContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?, @LayoutRes layoutResID: Int): View {
         binding = DataBindingUtil.inflate<B>(inflater, layoutResID, container, false)
         binding.setVariable(BR.vm, viewModel)
-
-        try {
-            (viewModel as MvvmViewModel<MvvmView>).attachView(this, savedInstanceState)
-        } catch (e: ClassCastException) {
-            if (viewModel !is NoOpViewModel<*>) {
-                throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)
-            }
-        }
-
+        viewModel.attachViewOrThrowRuntimeException(this, savedInstanceState)
         return binding.root
     }
 
-    fun dimen(@DimenRes resId: Int): Int {
-        return resources.getDimension(resId).toInt()
-    }
-
-    fun color(@ColorRes resId: Int): Int {
-        return resources.getColor(resId)
-    }
-
-    fun integer(@IntegerRes resId: Int): Int {
-        return resources.getInteger(resId)
-    }
-
-    fun string(@StringRes resId: Int): String {
-        return resources.getString(resId)
-    }
 }

@@ -1,3 +1,11 @@
+package com.patloew.template.injection.components
+
+import com.patloew.template.injection.modules.ViewHolderModule
+import com.patloew.template.injection.modules.ViewModelModule
+import com.patloew.template.injection.scopes.PerViewHolder
+
+import dagger.Component
+
 /* Copyright 2017 Tailored Media GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,19 +19,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
+@PerViewHolder
+@Component(dependencies = arrayOf(ActivityComponent::class), modules = arrayOf(ViewHolderModule::class, ViewModelModule::class))
+interface ActivityViewHolderComponent {
 
-package com.patloew.template.ui.base.viewmodel
-
-import android.os.Parcelable
-import com.patloew.template.ui.base.view.MvvmView
-import io.reactivex.disposables.CompositeDisposable
-
-abstract class RxBaseStateViewModel<T : MvvmView, S : Parcelable> : BaseStateViewModel<T, S>() {
-
-    protected val disposable = CompositeDisposable()
-
-    override fun detachView() {
-        super.detachView()
-        disposable.clear()
-    }
 }

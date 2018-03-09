@@ -4,7 +4,6 @@ import android.databinding.BaseObservable
 import android.os.Bundle
 import android.support.annotation.CallSuper
 
-import com.patloew.template.ui.base.MvvmViewNotAttachedException
 import com.patloew.template.ui.base.view.MvvmView
 
 /* Copyright 2016 Patrick Löwenstein
@@ -50,12 +49,6 @@ abstract class BaseViewModel<V : MvvmView> : BaseObservable(), MvvmViewModel<V> 
 
     protected open fun restoreInstanceState(savedInstanceState: Bundle) { }
 
-    override fun saveInstanceState(outState: Bundle?) { }
+    override fun saveInstanceState(outState: Bundle) { }
 
-    val isViewAttached: Boolean
-        get() = view != null
-
-    fun checkViewAttached() {
-        if (!isViewAttached) throw MvvmViewNotAttachedException()
-    }
 }

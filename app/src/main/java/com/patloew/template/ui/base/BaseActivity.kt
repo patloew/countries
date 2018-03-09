@@ -3,7 +3,8 @@ package com.patloew.template.ui.base
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
-import android.support.annotation.*
+import android.support.annotation.CallSuper
+import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
 import com.patloew.template.BR
 import com.patloew.template.MyApp
@@ -12,7 +13,7 @@ import com.patloew.template.injection.components.DaggerActivityComponent
 import com.patloew.template.injection.modules.ActivityModule
 import com.patloew.template.ui.base.view.MvvmView
 import com.patloew.template.ui.base.viewmodel.MvvmViewModel
-import com.patloew.template.ui.base.viewmodel.NoOpViewModel
+import com.patloew.template.util.extensions.attachViewOrThrowRuntimeException
 import com.squareup.leakcanary.RefWatcher
 import io.realm.Realm
 import javax.inject.Inject
@@ -40,10 +41,9 @@ import javax.inject.Inject
  * This class provides the binding and the view model to the subclass. The
  * view model is injected and the binding is created when the content view is set.
  * Each subclass therefore has to call the following code in onCreate():
- *    activityComponent().inject(this);
- *    setAndBindContentView(R.layout.my_activity_layout, savedInstanceState);
+ *    setAndBindContentView(savedInstanceState, R.layout.my_activity_layout)
  *
- * After calling these methods, the binding and the view model is initialized.
+ * After calling this method, the binding and the view model is initialized.
  * saveInstanceState() and restoreInstanceState() methods of the view model
  * are automatically called in the appropriate lifecycle events when above calls
  * are made.
@@ -63,8 +63,12 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
     @Inject
     protected lateinit var refWatcher: RefWatcher
 
-    internal lateinit var activityComponent: ActivityComponent
-        private set
+    internal val activityComponent: ActivityComponent by lazy {
+        DaggerActivityComponent.builder()
+                .activityModule(ActivityModule(this))
+                .appComponent(MyApp.appComponent)
+                .build()
+    }
 
     @CallSuper
     override fun onSaveInstanceState(outState: Bundle) {
@@ -72,13 +76,15 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
         viewModel.saveInstanceState(outState)
     }
 
+    @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
-        activityComponent = DaggerActivityComponent.builder()
-                .activityModule(ActivityModule(this))
-                .appComponent(MyApp.appComponent)
-                .build()
-
         super.onCreate(savedInstanceState)
+
+        try {
+            ActivityComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(activityComponent, this)
+        } catch(e: NoSuchMethodException) {
+            throw RtfmException("You forgot to add \"fun inject(activity: ${this::class.java.simpleName})\" in ActivityComponent")
+        }
     }
 
     @CallSuper
@@ -94,30 +100,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : MvvmViewModel<*>> : AppCom
     protected fun setAndBindContentView(savedInstanceState: Bundle?, @LayoutRes layoutResID: Int) {
         binding = DataBindingUtil.setContentView<B>(this, layoutResID)
         binding.setVariable(BR.vm, viewModel)
-
-        try {
-            (viewModel as MvvmViewModel<MvvmView>).attachView(this, savedInstanceState)
-        } catch (e: ClassCastException) {
-            if (viewModel !is NoOpViewModel<*>) {
-                throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)
-            }
-        }
-
+        viewModel.attachViewOrThrowRuntimeException(this, savedInstanceState)
     }
 
-    fun dimen(@DimenRes resId: Int): Int {
-        return resources.getDimension(resId).toInt()
-    }
-
-    fun color(@ColorRes resId: Int): Int {
-        return resources.getColor(resId)
-    }
-
-    fun integer(@IntegerRes resId: Int): Int {
-        return resources.getInteger(resId)
-    }
-
-    fun string(@StringRes resId: Int): String {
-        return resources.getString(resId)
-    }
 }

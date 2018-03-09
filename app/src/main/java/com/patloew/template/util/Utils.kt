@@ -1,9 +1,5 @@
 package com.patloew.template.util
 
-import android.content.Context
-import android.content.ContextWrapper
-import android.os.Bundle
-import android.os.Parcelable
 import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -36,22 +32,3 @@ object Utils {
     }
 
 }
-
-fun <T : Parcelable> Bundle.getParcelable(key: String, defaultObject: T) : T {
-    if (containsKey(key)) {
-        return getParcelable(key)
-    } else {
-        return defaultObject
-    }
-}
-
-inline fun <reified T> Context.castWithUnwrap(): T? {
-    if (this is T) { return this }
-    var context = this
-    while(context is ContextWrapper) {
-        context = context.baseContext
-        if(context is T) {  return context }
-    }
-    return null
-}
-

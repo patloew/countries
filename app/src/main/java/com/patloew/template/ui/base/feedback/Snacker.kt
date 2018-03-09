@@ -10,20 +10,21 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.*/
 
-package com.patloew.template.ui.base.viewmodel
+package com.patloew.template.ui.base.feedback
 
-import com.patloew.template.ui.base.view.MvvmView
+import android.support.annotation.StringRes
 
-import io.reactivex.disposables.CompositeDisposable
 
-abstract class RxBaseViewModel<T : MvvmView> : BaseViewModel<T>() {
+interface Snacker {
 
-    protected val disposable = CompositeDisposable()
+    fun show(title: CharSequence)
+    fun show(@StringRes titleRes: Int)
 
-    override fun detachView() {
-        super.detachView()
-        disposable.clear()
-    }
+    fun show(title: CharSequence, actionText: CharSequence, action: (() -> Unit))
+    fun show(@StringRes titleRes: Int, @StringRes actionTextRes: Int, action: (() -> Unit))
+
+    fun hideSnack()
+
 }
