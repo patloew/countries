@@ -1,6 +1,6 @@
 # Countries
 
-[![Build Status](https://travis-ci.org/patloew/countries.svg?branch=master)](https://travis-ci.org/patloew/countries)
+[![Build Status](https://travis-ci.org/patloew/countries.svg?branch=kotlin)](https://travis-ci.org/patloew/countries)
 
 A sample Android app written in Kotlin, which lists all countries with some additional information (currencies, languages, …). The app uses the MVVM pattern with the [Android data binding lib](http://developer.android.com/tools/data-binding/guide.html). Countries can be bookmarked and are then stored locally with [Realm](https://github.com/realm/realm-java). [Retrofit](https://github.com/square/retrofit) is used to fetch the country information from the free [REST Countries](http://restcountries.eu) service. For JSON parsing, custom [Gson](https://github.com/google/gson) TypeAdapters are used. [PaperParcel](https://github.com/grandstaish/paperparcel) is used to make the Country objects Parcelable. Also, [Dagger 2](https://github.com/google/dagger) is used for dependency injection.
 

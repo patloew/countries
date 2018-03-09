@@ -27,6 +27,8 @@ import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -88,17 +90,17 @@ public class BaseCountryViewModelUnitTest {
                 return uri;
             }
         });
-        countryViewModel.onMapClick(view);
+        countryViewModel.onMapClick();
         verify(navigator).startActivity(Matchers.eq(Intent.ACTION_VIEW), Matchers.eq(uri));
     }
 
     @Test
     public void onBookmarkClick_wasBookmarked() {
         Country country = new Country();
-        doReturn(country).when(countryRepo).getByField(Matchers.anyString(), Matchers.anyString(), Matchers.anyBoolean());
+        doReturn(country).when(countryRepo).getByField(Matchers.anyString(), nullable(String.class), Matchers.anyBoolean());
         doReturn(country).when(countryRepo).detach(country);
 
-        countryViewModel.onBookmarkClick(view);
+        countryViewModel.onBookmarkClick();
         verify(countryRepo).delete(country);
     }
 
@@ -106,7 +108,7 @@ public class BaseCountryViewModelUnitTest {
     public void onBookmarkClick_wasNotBookmarked() {
         doReturn(null).when(countryRepo).getByField(Matchers.anyString(), Matchers.anyString(), Matchers.anyBoolean());
 
-        countryViewModel.onBookmarkClick(view);
+        countryViewModel.onBookmarkClick();
         verify(countryRepo).save(internalCountry);
     }
 }

@@ -1,8 +1,6 @@
 package com.patloew.countries.ui.main.recyclerview
 
 import android.content.Context
-import android.view.View
-
 import com.patloew.countries.data.local.CountryRepo
 import com.patloew.countries.injection.qualifier.AppContext
 import com.patloew.countries.injection.scopes.PerViewHolder
@@ -10,7 +8,6 @@ import com.patloew.countries.ui.BaseCountryViewModel
 import com.patloew.countries.ui.base.navigator.Navigator
 import com.patloew.countries.ui.base.view.MvvmView
 import com.patloew.countries.ui.detail.DetailActivity
-
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein
@@ -36,8 +33,8 @@ class CountryViewModel
 @Inject
 constructor(@AppContext context: Context, navigator: Navigator, countryRepo: CountryRepo) : BaseCountryViewModel<MvvmView>(context, countryRepo, navigator), CountryMvvm.ViewModel {
 
-    override fun onCardClick(v: View) {
-        navigator.startActivity(DetailActivity::class.java, countryRepo.detach(country))
+    override fun onCardClick() {
+        navigator.startActivity(DetailActivity::class.java) { putExtra(Navigator.EXTRA_ARG, countryRepo.detach(country)) }
     }
 
 }

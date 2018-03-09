@@ -1,22 +1,22 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
-apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.patloew.countries"
-        minSdkVersion 19
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         vectorDrawables.useSupportLibrary = true
 
         setProperty("archivesBaseName", "Countries-v$versionName-b$versionCode")
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -24,15 +24,18 @@ android {
             proguardFiles 'proguard-rules.pro'
         }
     }
+    flavorDimensions "backend"
     productFlavors {
         devBackend {
             applicationIdSuffix ".dev"
             resValue "string", "app_name", "Countries Dev"
             buildConfigField "String", "BASE_URL", "\"https://restcountries.eu/\""
+            dimension "backend"
         }
         productionBackend {
             resValue "string", "app_name", "Countries"
             buildConfigField "String", "BASE_URL", "\"https://restcountries.eu/\""
+            dimension "backend"
         }
     }
     dataBinding {
@@ -54,82 +57,4 @@ android {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
-ext.supportLibVersion = '25.4.0'
-ext.retrofitVersion = '2.3.0'
-ext.okHttpVersion = '3.8.0'
-ext.daggerVersion = '2.11'
-ext.paperParcelVersion = '2.0.1'
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    compile "com.android.support:support-fragment:$supportLibVersion"
-    compile "com.android.support:support-core-ui:$supportLibVersion"
-    compile "com.android.support:appcompat-v7:$supportLibVersion"
-    compile "com.android.support:cardview-v7:$supportLibVersion"
-    compile "com.android.support:recyclerview-v7:$supportLibVersion"
-    compile "com.android.support:design:$supportLibVersion"
-
-    kapt "com.android.databinding:compiler:$gradlePluginVersion"
-
-    compile 'com.google.code.gson:gson:2.8.1'
-
-    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
-    compile "com.squareup.okhttp3:okhttp:$okHttpVersion"
-    compile "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
-
-    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.14'
-
-    compile 'com.jakewharton.timber:timber:4.5.1'
-
-    compile "nz.bradcampbell:paperparcel:$paperParcelVersion"
-    compile "nz.bradcampbell:paperparcel-kotlin:$paperParcelVersion"
-    kapt "nz.bradcampbell:paperparcel-compiler:$paperParcelVersion"
-
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    compile "com.google.dagger:dagger:$daggerVersion"
-
-    kapt "io.realm:realm-annotations-processor:$realmVersion"
-    kapt "io.realm:realm-annotations:$realmVersion"
-
-    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
-    compile('com.mikepenz:aboutlibraries:5.9.4@aar') {
-        transitive = true
-    }
-
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile "org.powermock:powermock-module-junit4:1.6.5"
-    testCompile "org.powermock:powermock-module-junit4-rule:1.6.5"
-    testCompile "org.powermock:powermock-api-mockito:1.6.5"
-    testCompile 'io.reactivex:rxjava:1.3.0'
-
-    androidTestCompile "com.android.support:support-annotations:$supportLibVersion"
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
-    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
-        exclude group: 'com.android.support', module: 'appcompat'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude group: 'com.android.support', module: 'appcompat-v7'
-        exclude group: 'com.android.support', module: 'design'
-        exclude group: 'com.android.support', module: 'recyclerview-v7'
-    }
-    androidTestCompile "com.squareup.okhttp3:okhttp:$okHttpVersion"
-    androidTestCompile 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
-}
-
+apply from: "dependencies.gradle"

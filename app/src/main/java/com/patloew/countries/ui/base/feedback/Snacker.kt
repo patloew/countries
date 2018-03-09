@@ -10,8 +10,21 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.*/
 
-package com.patloew.countries.ui.base
+package com.patloew.countries.ui.base.feedback
 
-class MvvmViewNotAttachedException : RuntimeException("Please call ViewModel.attachView(MvvmView) before requesting data to the ViewModel")
+import android.support.annotation.StringRes
+
+
+interface Snacker {
+
+    fun show(title: CharSequence)
+    fun show(@StringRes titleRes: Int)
+
+    fun show(title: CharSequence, actionText: CharSequence, action: (() -> Unit))
+    fun show(@StringRes titleRes: Int, @StringRes actionTextRes: Int, action: (() -> Unit))
+
+    fun hideSnack()
+
+}

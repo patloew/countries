@@ -24,6 +24,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -79,7 +80,7 @@ public class FavoriteCountriesViewModelUnitTest {
     public void onRealmChangeListener_threeTimes() {
         List<Country> countryList = new ArrayList<>(0);
 
-        doReturn(Observable.just(countryList, countryList, countryList)).when(countryRepo).findAllSortedWithChanges(Matchers.anyString(), Matchers.any(Sort.class));
+        doReturn(Flowable.just(countryList, countryList, countryList)).when(countryRepo).findAllSortedWithChanges(Matchers.anyString(), Matchers.any(Sort.class));
 
         favoriteCountriesViewModel.attachView(mainActivityView, null);
 
@@ -94,7 +95,7 @@ public class FavoriteCountriesViewModelUnitTest {
     public void onRealmChangeListener_never() {
         List<Country> countryList = new ArrayList<>(0);
 
-        doReturn(Observable.empty()).when(countryRepo).findAllSortedWithChanges(Matchers.anyString(), Matchers.any(Sort.class));
+        doReturn(Flowable.empty()).when(countryRepo).findAllSortedWithChanges(Matchers.anyString(), Matchers.any(Sort.class));
 
         favoriteCountriesViewModel.attachView(mainActivityView, null);
 

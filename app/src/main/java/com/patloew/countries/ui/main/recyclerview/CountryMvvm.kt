@@ -1,7 +1,5 @@
 package com.patloew.countries.ui.main.recyclerview
 
-import android.view.View
-
 import com.patloew.countries.ui.ICountryViewModel
 import com.patloew.countries.ui.base.view.MvvmView
 
@@ -21,6 +19,6 @@ import com.patloew.countries.ui.base.view.MvvmView
 interface CountryMvvm {
 
     interface ViewModel : ICountryViewModel<MvvmView> {
-        fun onCardClick(v: View)
+        fun onCardClick()
     }
 }

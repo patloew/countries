@@ -2,7 +2,7 @@ package com.patloew.countries.data.local
 
 import com.patloew.countries.data.model.Country
 import com.patloew.countries.injection.scopes.PerApplication
-import com.patloew.countries.util.RealmResultsObservable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import io.realm.Realm
@@ -44,11 +44,11 @@ constructor(private val realmProvider: Provider<Realm>) : CountryRepo {
         }
     }
 
-    override fun findAllSortedWithChanges(sortField: String?, sort: Sort): Observable<List<Country>> {
+    override fun findAllSortedWithChanges(sortField: String?, sort: Sort): Flowable<List<Country>> {
         realmProvider.get().use { realm ->
-            return RealmResultsObservable.from(realm.where(Country::class.java).findAllSortedAsync(sortField, sort))
-                    .filter({ it.isLoaded })
-                    .map({ it })
+            return realm.where(Country::class.java).findAllSortedAsync(sortField, sort).asFlowable()
+                    .filter{ it.isLoaded }
+                    .map { it }
         }
     }
 
@@ -65,7 +65,7 @@ constructor(private val realmProvider: Provider<Realm>) : CountryRepo {
     override fun save(country: Country) {
         realmProvider.get().use { realm ->
             realm.executeTransaction { r -> r.copyToRealmOrUpdate(country) }
-            favoriteChangeSubject.onNext(country.alpha2Code)
+            favoriteChangeSubject.onNext(country.alpha2Code!!)
         }
     }
 
@@ -82,7 +82,7 @@ constructor(private val realmProvider: Provider<Realm>) : CountryRepo {
                     realmCountry.deleteFromRealm()
                 }
 
-                favoriteChangeSubject.onNext(alpha2Code)
+                favoriteChangeSubject.onNext(alpha2Code!!)
             }
         }
     }

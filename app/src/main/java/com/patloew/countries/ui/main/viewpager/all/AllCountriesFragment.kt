@@ -2,10 +2,7 @@ package com.patloew.countries.ui.main.viewpager.all
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-
 import com.patloew.countries.R
 import com.patloew.countries.ui.main.viewpager.CountriesFragment
 import com.patloew.countries.ui.main.viewpager.CountriesView
@@ -25,12 +22,7 @@ import com.patloew.countries.ui.main.viewpager.CountriesView
  * limitations under the License. */
 class AllCountriesFragment : CountriesFragment<IAllCountriesViewModel>(), CountriesView {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentComponent.inject(this)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.reloadData() }
@@ -46,7 +38,7 @@ class AllCountriesFragment : CountriesFragment<IAllCountriesViewModel>(), Countr
 
         if (!success) {
             Snackbar.make(binding.recyclerView, "Could not load countries", Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.snackbar_action_retry) { v -> viewModel.reloadData() }
+                    .setAction(R.string.snackbar_action_retry) { viewModel.reloadData() }
                     .show()
         }
     }

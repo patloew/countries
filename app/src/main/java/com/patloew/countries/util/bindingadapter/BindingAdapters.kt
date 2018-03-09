@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter
 import android.view.View
 import android.view.ViewGroup
 
+
 object BindingAdapters {
 
     @BindingAdapter("android:visibility")
@@ -17,5 +18,11 @@ object BindingAdapters {
     fun setLayoutMarginBottom(v: View, bottomMargin: Int) {
         val layoutParams = v.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.bottomMargin = bottomMargin
+    }
+
+    @BindingAdapter("android:onClick")
+    @JvmStatic
+    fun setOnClickListener(v: View, runnable: Runnable) {
+        v.setOnClickListener { runnable.run() }
     }
 }

@@ -4,15 +4,13 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 import android.view.View
-
 import com.patloew.countries.BR
-import com.patloew.countries.injection.components.DaggerViewHolderComponent
-import com.patloew.countries.injection.components.ViewHolderComponent
+import com.patloew.countries.injection.components.ActivityViewHolderComponent
+import com.patloew.countries.injection.components.DaggerActivityViewHolderComponent
 import com.patloew.countries.ui.base.view.MvvmView
 import com.patloew.countries.ui.base.viewmodel.MvvmViewModel
-import com.patloew.countries.ui.base.viewmodel.NoOpViewModel
-import com.patloew.countries.util.castWithUnwrap
-
+import com.patloew.countries.util.extensions.attachViewOrThrowRuntimeException
+import com.patloew.countries.util.extensions.castWithUnwrap
 import javax.inject.Inject
 
 /* Copyright 2016 Patrick Löwenstein
@@ -34,44 +32,44 @@ import javax.inject.Inject
  * FILE MODIFIED 2017 Tailored Media GmbH
  */
 
-/* Base class for ViewHolders when using a view model with data binding.
+/* Base class for ViewHolders when using a view model in an Activity with data binding.
  * This class provides the binding and the view model to the subclass. The
  * view model is injected and the binding is created when the content view is bound.
  * Each subclass therefore has to call the following code in the constructor:
- *    getViewHolderComponent().inject(this);
- *    bindContentView(view);
+ *    bindContentView(view)
  *
- * After calling these methods, the binding and the view model is initialized.
+ * After calling this method, the binding and the view model is initialized.
  * saveInstanceState() and restoreInstanceState() are not called/used for ViewHolder
  * view models.
  *
  * Your subclass must implement the MvvmView implementation that you use in your
  * view model. */
-abstract class BaseViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>>(itemView: View) : RecyclerView.ViewHolder(itemView), MvvmView {
+abstract class BaseActivityViewHolder<B : ViewDataBinding, VM : MvvmViewModel<*>>(itemView: View) : RecyclerView.ViewHolder(itemView), MvvmView {
 
     protected lateinit var binding: B
     @Inject lateinit var viewModel: VM
         protected set
 
-    protected val viewHolderComponent: ViewHolderComponent = DaggerViewHolderComponent.builder()
-            .activityComponent(itemView.context.castWithUnwrap<BaseActivity<*, *>>()?.activityComponent)
-            .build()
+    protected val viewHolderComponent: ActivityViewHolderComponent by lazy {
+        DaggerActivityViewHolderComponent.builder()
+                .activityComponent(itemView.context.castWithUnwrap<BaseActivity<*, *>>()?.activityComponent)
+                .build()
+    }
 
     protected fun bindContentView(view: View) {
-        binding = DataBindingUtil.bind(view)
-        binding.setVariable(BR.vm, viewModel)
-
         try {
-            (viewModel as MvvmViewModel<MvvmView>).attachView(this, null)
-        } catch (e: ClassCastException) {
-            if (viewModel !is NoOpViewModel<*>) {
-                throw RuntimeException(javaClass.simpleName + " must implement MvvmView subclass as declared in " + viewModel.javaClass.simpleName)
-            }
+            ActivityViewHolderComponent::class.java.getDeclaredMethod("inject", this::class.java).invoke(viewHolderComponent, this)
+        } catch(e: NoSuchMethodException) {
+            throw RtfmException("You forgot to add \"fun inject(viewHolder: ${this::class.java.simpleName})\" in ActivityViewHolderComponent")
         }
 
+        binding = DataBindingUtil.bind(view)
+        binding.setVariable(BR.vm, viewModel)
+        viewModel.attachViewOrThrowRuntimeException(this, null)
     }
 
     fun executePendingBindings() {
         binding.executePendingBindings()
     }
+
 }

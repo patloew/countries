@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:layout_behavior="com.patloew.countries.ui.main.MainContainerBehaviour"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             style="@style/Widget.AppCompat.ProgressBar"
             android:visibility="@{!vm.loaded}"/>
 
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:padding="16dp"
             android:orientation="vertical"
-            app:layout_behavior="com.patloew.countries.ui.main.MainContainerBehaviour"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:foreground="?android:windowContentOverlay"
             android:visibility="@{vm.loaded}">
 

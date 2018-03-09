@@ -4,7 +4,6 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
-import com.patloew.countries.data.model.RealmString
 import io.realm.RealmList
 import java.io.IOException
 
@@ -21,26 +20,22 @@ import java.io.IOException
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-class RealmStringListTypeAdapter private constructor() : TypeAdapter<RealmList<RealmString>>() {
+class RealmStringListTypeAdapter private constructor() : TypeAdapter<RealmList<String>>() {
 
     companion object {
         val INSTANCE = RealmStringListTypeAdapter().nullSafe()
     }
 
     @Throws(IOException::class)
-    override fun write(writer: JsonWriter, src: RealmList<RealmString>) {
+    override fun write(writer: JsonWriter, src: RealmList<String>) {
         writer.beginArray()
-
-        for (realmString in src) {
-            writer.value(realmString.value)
-        }
-
+        for (realmString in src) { writer.value(realmString) }
         writer.endArray()
     }
 
     @Throws(IOException::class)
-    override fun read(reader: JsonReader): RealmList<RealmString> {
-        val realmStrings = RealmList<RealmString>()
+    override fun read(reader: JsonReader): RealmList<String> {
+        val realmStrings = RealmList<String>()
 
         reader.beginArray()
 
@@ -48,9 +43,7 @@ class RealmStringListTypeAdapter private constructor() : TypeAdapter<RealmList<R
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull()
             } else {
-                val realmString = RealmString()
-                realmString.value = reader.nextString()
-                realmStrings.add(realmString)
+                realmStrings.add(reader.nextString())
             }
         }
 

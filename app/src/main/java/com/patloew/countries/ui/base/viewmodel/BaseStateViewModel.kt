@@ -19,10 +19,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.support.annotation.CallSuper
 
-import com.patloew.countries.ui.base.MvvmViewNotAttachedException
 import com.patloew.countries.ui.base.view.MvvmView
-import com.patloew.countries.util.getParcelable
-
+import com.patloew.countries.util.extensions.getParcelable
 import javax.inject.Inject
 
 /**
@@ -38,7 +36,9 @@ import javax.inject.Inject
  */
 abstract class BaseStateViewModel<V : MvvmView, S : Parcelable> : BaseObservable(), MvvmViewModel<V> {
 
-    private val KEY_STATE = "state"
+    companion object {
+        private const val KEY_STATE = "state"
+    }
 
     var view: V? = null
         private set
@@ -56,21 +56,17 @@ abstract class BaseStateViewModel<V : MvvmView, S : Parcelable> : BaseObservable
         view = null
     }
 
-    override fun saveInstanceState(outState: Bundle?) {
-        outState?.putParcelable(KEY_STATE, state)
+    @CallSuper
+    override fun saveInstanceState(outState: Bundle) {
+        outState.putParcelable(KEY_STATE, state)
     }
 
-    protected fun restoreInstanceState(savedInstanceState: Bundle) {
+    @CallSuper
+    protected open fun restoreInstanceState(savedInstanceState: Bundle) {
         if (savedInstanceState.containsKey(KEY_STATE)) {
             state = savedInstanceState.getParcelable(KEY_STATE, state)
         }
     }
 
-    val isViewAttached: Boolean
-        get() = view != null
-
-    fun checkViewAttached() {
-        if (!isViewAttached) throw MvvmViewNotAttachedException()
-    }
 }
 

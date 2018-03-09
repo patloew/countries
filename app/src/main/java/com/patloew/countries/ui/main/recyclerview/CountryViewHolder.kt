@@ -3,7 +3,7 @@ package com.patloew.countries.ui.main.recyclerview
 import android.view.View
 
 import com.patloew.countries.databinding.CardCountryBinding
-import com.patloew.countries.ui.base.BaseViewHolder
+import com.patloew.countries.ui.base.BaseActivityViewHolder
 import com.patloew.countries.ui.base.view.MvvmView
 
 /* Copyright 2016 Patrick Löwenstein
@@ -19,10 +19,9 @@ import com.patloew.countries.ui.base.view.MvvmView
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-class CountryViewHolder(v: View) : BaseViewHolder<CardCountryBinding, CountryMvvm.ViewModel>(v), MvvmView {
+class CountryViewHolder(v: View) : BaseActivityViewHolder<CardCountryBinding, CountryMvvm.ViewModel>(v), MvvmView {
 
     init {
-        viewHolderComponent.inject(this)
         bindContentView(v)
     }
 }

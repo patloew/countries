@@ -33,11 +33,11 @@ abstract class CountriesFragment<V : MvvmViewModel<CountriesView>> : BaseFragmen
 
     @Inject protected lateinit var adapter: CountryAdapter
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return setAndBindContentView(inflater, container, savedInstanceState, R.layout.fragment_recyclerview)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.setHasFixedSize(true)

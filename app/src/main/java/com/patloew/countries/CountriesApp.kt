@@ -9,6 +9,7 @@ import com.patloew.countries.util.*
 import com.squareup.leakcanary.LeakCanary
 import io.reactivex.plugins.RxJavaPlugins
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import paperparcel.Adapter
 import paperparcel.ProcessorConfig
 import timber.log.Timber
@@ -46,12 +47,13 @@ class CountriesApp : Application() {
 
         Timber.plant(Timber.DebugTree())
 
+        Realm.init(this)
+        Realm.setDefaultConfiguration(RealmConfiguration.Builder().build())
+
         instance = this
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
-
-        appComponent.encryptionKeyManager().initEncryptedRealm()
 
         RxJavaPlugins.setErrorHandler({ Timber.e(it) })
     }

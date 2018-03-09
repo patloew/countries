@@ -1,4 +1,5 @@
 <resources>
+
     <string name="country_name_translations"><b>Name translations:</b> </string>
     <string name="country_region"><b>Region:</b> </string>
     <string name="country_borders"><b>Borders:</b> </string>
@@ -14,4 +15,5 @@
     <string name="menu_item_favorite">Favorite</string>
     <string name="menu_item_maps">Show on map</string>
     <string name="toolbar_title_detail">Country Detail</string>
+
 </resources>

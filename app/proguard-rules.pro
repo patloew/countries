@@ -64,8 +64,8 @@
 
 
 # Change this to your app's final package name
--keep class patloew.template.** { *; }
--dontwarn patloew.template.**
+-keep class com.patloew.countries.** { *; }
+-dontwarn com.patloew.countries.**
 -keep class android.support.design.widget.AppBarLayout$Behavior { *; }
 
 # Okio
@@ -74,6 +74,15 @@
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
+
+# OkHttp
+
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 
 # com.squareup.retrofit:retrofit
 

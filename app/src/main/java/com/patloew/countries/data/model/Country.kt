@@ -33,9 +33,9 @@ open class Country : RealmObject(), Comparable<Country>, PaperParcelable {
     open var nativeName: String? = null
     open var region: String? = null
     open var capital: String? = null
-    open var currencies: RealmList<RealmString>? = null
-    open var borders: RealmList<RealmString>? = null
-    open var languages: RealmList<RealmString>? = null
+    open var currencies: RealmList<String>? = null
+    open var borders: RealmList<String>? = null
+    open var languages: RealmList<String>? = null
     open var translations: RealmList<RealmStringMapEntry>? = null
     open var population: Int? = null
     open var lat: Float? = null

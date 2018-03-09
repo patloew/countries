@@ -30,7 +30,6 @@ class DetailActivity : BaseActivity<ActivityDetailBinding, DetailMvvm.ViewModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityComponent.inject(this)
         setAndBindContentView(savedInstanceState, R.layout.activity_detail)
 
         setSupportActionBar(binding.toolbar)
@@ -64,8 +63,8 @@ class DetailActivity : BaseActivity<ActivityDetailBinding, DetailMvvm.ViewModel>
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> { finish() }
-            R.id.menu_item_favorite -> { viewModel.onBookmarkClick(null) }
-            R.id.menu_item_maps -> { viewModel.onMapClick(null) }
+            R.id.menu_item_favorite -> { viewModel.onBookmarkClick() }
+            R.id.menu_item_maps -> { viewModel.onMapClick() }
         }
 
         return super.onOptionsItemSelected(item)

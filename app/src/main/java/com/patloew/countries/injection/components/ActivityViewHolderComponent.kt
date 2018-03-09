@@ -1,3 +1,12 @@
+package com.patloew.countries.injection.components
+
+import com.patloew.countries.injection.modules.ViewHolderModule
+import com.patloew.countries.injection.modules.ViewModelModule
+import com.patloew.countries.injection.scopes.PerViewHolder
+import com.patloew.countries.ui.main.recyclerview.CountryViewHolder
+
+import dagger.Component
+
 /* Copyright 2017 Tailored Media GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,19 +20,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-
-package com.patloew.countries.ui.base.viewmodel
-
-import com.patloew.countries.ui.base.view.MvvmView
-
-import io.reactivex.disposables.CompositeDisposable
-
-abstract class RxBaseViewModel<T : MvvmView> : BaseViewModel<T>() {
-
-    protected val disposable = CompositeDisposable()
-
-    override fun detachView() {
-        super.detachView()
-        disposable.clear()
-    }
+@PerViewHolder
+@Component(dependencies = arrayOf(ActivityComponent::class), modules = arrayOf(ViewHolderModule::class, ViewModelModule::class))
+interface ActivityViewHolderComponent {
+    fun inject(viewHolder: CountryViewHolder)
 }

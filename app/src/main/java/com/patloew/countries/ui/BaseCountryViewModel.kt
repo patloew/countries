@@ -9,7 +9,6 @@ import android.net.Uri
 import android.support.v7.widget.AppCompatDrawableManager
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
-import android.view.View
 import com.patloew.countries.BR
 import com.patloew.countries.R
 import com.patloew.countries.data.local.CountryRepo
@@ -66,12 +65,12 @@ abstract class BaseCountryViewModel<V : MvvmView>(@AppContext context: Context, 
         this.mapsAvailable = mapsAvailable
     }
 
-    override fun onMapClick(view: View?) {
+    override fun onMapClick() {
         val gmmIntentUri = Uri.parse("geo:" + country.lat + "," + country.lng + "?q=" + country.name + "&z=2")
         navigator.startActivity(Intent.ACTION_VIEW, gmmIntentUri)
     }
 
-    override fun onBookmarkClick(view: View?) {
+    override fun onBookmarkClick() {
         val realmCountry = countryRepo.getByField("alpha2Code", country.alpha2Code, false)
 
         if (realmCountry == null) {

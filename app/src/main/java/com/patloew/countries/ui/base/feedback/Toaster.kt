@@ -10,20 +10,17 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.*/
 
-package com.patloew.countries.ui.base.viewmodel
+package com.patloew.countries.ui.base.feedback
 
-import android.os.Parcelable
-import com.patloew.countries.ui.base.view.MvvmView
-import io.reactivex.disposables.CompositeDisposable
+import android.support.annotation.StringRes
+import android.widget.Toast
 
-abstract class RxBaseStateViewModel<T : MvvmView, S : Parcelable> : BaseStateViewModel<T, S>() {
 
-    protected val disposable = CompositeDisposable()
+interface Toaster {
 
-    override fun detachView() {
-        super.detachView()
-        disposable.clear()
-    }
+    fun show(title: String, duration: Int = Toast.LENGTH_LONG)
+    fun show(@StringRes titleRes: Int, duration: Int = Toast.LENGTH_LONG)
+
 }

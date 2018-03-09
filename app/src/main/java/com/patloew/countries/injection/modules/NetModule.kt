@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.patloew.countries.BuildConfig
 import com.patloew.countries.data.model.Country
-import com.patloew.countries.data.model.RealmString
 import com.patloew.countries.data.model.RealmStringMapEntry
 import com.patloew.countries.data.remote.CountryApi
 import com.patloew.countries.injection.scopes.PerApplication
@@ -52,7 +51,7 @@ class NetModule() {
                 .registerTypeAdapter(Country::class.java, CountryTypeAdapter.INSTANCE)
                 // These type adapters for RealmLists are needed, since RealmString and RealmStringMapEntry
                 // wrappers are not recognized by Gson in the default configuration.
-                .registerTypeAdapter(object : TypeToken<RealmList<RealmString>>() {}.type, RealmStringListTypeAdapter.INSTANCE)
+                .registerTypeAdapter(object : TypeToken<RealmList<String>>() {}.type, RealmStringListTypeAdapter.INSTANCE)
                 .registerTypeAdapter(object : TypeToken<RealmList<RealmStringMapEntry>>() {}.type, RealmStringMapEntryListTypeAdapter.INSTANCE)
                 .create()
     }

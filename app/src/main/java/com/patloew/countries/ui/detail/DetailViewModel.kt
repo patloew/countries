@@ -58,8 +58,8 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
 
     override val isLoaded = ObservableBoolean()
 
-    override fun saveInstanceState(outState: Bundle?) {
-        outState?.putCharSequence(KEY_BORDER_LIST, borders.get())
+    override fun saveInstanceState(outState: Bundle) {
+        outState.putCharSequence(KEY_BORDER_LIST, borders.get())
     }
 
     public override fun restoreInstanceState(savedInstanceState: Bundle) {
@@ -98,7 +98,7 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
         val languageList = ArrayList<String>(country.languages!!.size)
 
         for (language in country.languages!!) {
-            languageList.add(Locale(language.value).getDisplayLanguage(BaseCountryViewModel.Companion.DISPLAY_LOCALE))
+            languageList.add(Locale(language).getDisplayLanguage(BaseCountryViewModel.Companion.DISPLAY_LOCALE))
         }
 
         Collections.sort(languageList)
@@ -121,8 +121,7 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
     private fun calculateCurrencies(): CharSequence {
         val currenciesList = ArrayList<String>(country.currencies!!.size)
 
-        for (currencyRealmString in country.currencies!!) {
-            val currencyString = currencyRealmString.value!!
+        for (currencyString in country.currencies!!) {
             if (Build.VERSION.SDK_INT >= 19) {
                 try {
                     val currency = Currency.getInstance(currencyString)
@@ -165,7 +164,7 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
             val alpha3List = ArrayList<String?>(country.borders!!.size)
 
             for (borderAlpha3CodeString in country.borders!!) {
-                alpha3List.add(borderAlpha3CodeString.value)
+                alpha3List.add(borderAlpha3CodeString)
             }
 
             for (c in countryList) {

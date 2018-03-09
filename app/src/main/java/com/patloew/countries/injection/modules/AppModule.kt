@@ -5,7 +5,8 @@ import android.content.Context
 import android.content.res.Resources
 import com.patloew.countries.injection.qualifier.AppContext
 import com.patloew.countries.injection.scopes.PerApplication
-
+import com.patloew.countries.ui.base.feedback.ApplicationToaster
+import com.patloew.countries.ui.base.feedback.Toaster
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import dagger.Module
@@ -35,26 +36,20 @@ class AppModule(private val app: Application) {
     @Provides
     @PerApplication
     @AppContext
-    internal fun provideAppContext(): Context {
-        return app
-    }
+    internal fun provideAppContext(): Context = app
 
     @Provides
     @PerApplication
-    internal fun provideResources(): Resources {
-        return app.resources
-    }
-
+    internal fun provideResources(): Resources = app.resources
 
     @Provides
     @PerApplication
-    internal fun provideRefWatcher(): RefWatcher {
-        return LeakCanary.install(app)
-    }
+    internal fun provideRefWatcher(): RefWatcher = LeakCanary.install(app)
 
     @Provides
-    internal fun provideRealm(): Realm {
-        return Realm.getDefaultInstance()
-    }
+    internal fun provideRealm(): Realm = Realm.getDefaultInstance()
 
+    @Provides
+    @PerApplication
+    internal fun provideToaster(): Toaster = ApplicationToaster(app)
 }

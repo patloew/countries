@@ -2,15 +2,15 @@ package com.patloew.countries.injection.components
 
 import android.content.Context
 import android.content.res.Resources
-
 import com.patloew.countries.data.local.CountryRepo
-import com.patloew.countries.data.local.encryption.EncryptionKeyManager
+import com.patloew.countries.data.local.PrefRepo
 import com.patloew.countries.data.remote.CountryApi
 import com.patloew.countries.injection.modules.AppModule
 import com.patloew.countries.injection.modules.DataModule
 import com.patloew.countries.injection.modules.NetModule
 import com.patloew.countries.injection.qualifier.AppContext
 import com.patloew.countries.injection.scopes.PerApplication
+import com.patloew.countries.ui.base.feedback.Toaster
 import com.squareup.leakcanary.RefWatcher
 import dagger.Component
 import io.realm.Realm
@@ -28,17 +28,26 @@ import io.realm.Realm
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. */
+ * limitations under the License.
+ *
+ * ------
+ *
+ * FILE MODIFIED 2017 Tailored Media GmbH */
 @PerApplication
 @Component(modules = arrayOf(AppModule::class, NetModule::class, DataModule::class))
-interface AppComponent {
+interface AppComponent : AppComponentProvides {
+
+}
+
+interface AppComponentProvides {
     @AppContext fun appContext(): Context
     fun resources(): Resources
     fun refWatcher(): RefWatcher
 
-    fun encryptionKeyManager(): EncryptionKeyManager
-
     fun realm(): Realm
     fun countryRepo(): CountryRepo
+    fun prefRepo(): PrefRepo
     fun countryApi(): CountryApi
+
+    fun toaster(): Toaster
 }

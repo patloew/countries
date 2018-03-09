@@ -1,10 +1,7 @@
 package com.patloew.countries.ui.main.viewpager.favorites
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-
 import com.patloew.countries.ui.main.viewpager.CountriesFragment
 
 /* Copyright 2016 Patrick Löwenstein
@@ -22,12 +19,7 @@ import com.patloew.countries.ui.main.viewpager.CountriesFragment
  * limitations under the License. */
 class FavoriteCountriesFragment : CountriesFragment<IFavoriteCountriesViewModel>() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentComponent.inject(this)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.swipeRefreshLayout.setOnRefreshListener { binding.swipeRefreshLayout.isRefreshing = false }
     }
