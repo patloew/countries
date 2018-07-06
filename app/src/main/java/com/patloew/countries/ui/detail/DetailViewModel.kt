@@ -101,7 +101,7 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
             languageList.add(Locale(language).getDisplayLanguage(BaseCountryViewModel.Companion.DISPLAY_LOCALE))
         }
 
-        Collections.sort(languageList)
+        languageList.sort()
 
         return SpannableStringBuilder(ctx.getText(R.string.country_languages)).append(TextUtils.join(", ", languageList))
     }
@@ -113,7 +113,7 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
             nameList.add(entry.value + " <i>(" + Locale(entry.key).getDisplayLanguage(BaseCountryViewModel.Companion.DISPLAY_LOCALE) + ")</i>")
         }
 
-        Collections.sort(nameList)
+        nameList.sort()
 
         return SpannableStringBuilder(ctx.getText(R.string.country_name_translations)).append(Html.fromHtml(TextUtils.join(", ", nameList)))
     }
@@ -139,7 +139,7 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
             }
         }
 
-        Collections.sort(currenciesList)
+        currenciesList.sort()
 
         return SpannableStringBuilder(ctx.getText(R.string.country_currencies)).append(TextUtils.join(", ", currenciesList))
     }
