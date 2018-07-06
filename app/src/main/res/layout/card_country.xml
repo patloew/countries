@@ -11,9 +11,9 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/card_outer_padding"
+        android:layout_marginStart="@dimen/card_outer_padding"
         android:layout_marginTop="@dimen/card_outer_padding"
-        android:layout_marginRight="@dimen/card_outer_padding"
+        android:layout_marginEnd="@dimen/card_outer_padding"
         android:layout_marginBottom='@{vm.cardBottomMargin}'
         android:foreground="?attr/selectableItemBackground"
         android:onClick="@{vm::onCardClick}"
@@ -24,9 +24,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
@@ -34,7 +34,7 @@
                 android:id="@+id/country_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="40dp"
+                android:layout_marginEnd="40dp"
                 android:text="@{vm.name}"
                 style="@style/TextAppearance.AppCompat.Headline"
                 tools:text="Country"/>
@@ -43,7 +43,7 @@
                 android:id="@+id/country_region"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="40dp"
+                android:layout_marginEnd="40dp"
                 android:paddingTop="4dp"
                 android:text='@{vm.region}'
                 style="@style/TextAppearance.AppCompat"
