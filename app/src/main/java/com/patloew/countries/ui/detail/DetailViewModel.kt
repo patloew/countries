@@ -97,11 +97,13 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
     private fun calculateLanguages(): CharSequence {
         val languageList = ArrayList<String>(country.languages!!.size)
 
-        for (language in country.languages!!) {
-            languageList.add(Locale(language).getDisplayLanguage(BaseCountryViewModel.Companion.DISPLAY_LOCALE))
+        country.languages!!.forEach {
+            language ->
+
+            languageList.add(Locale(language).getDisplayLanguage(BaseCountryViewModel.DISPLAY_LOCALE))
         }
 
-        Collections.sort(languageList)
+        languageList.sort()
 
         return SpannableStringBuilder(ctx.getText(R.string.country_languages)).append(TextUtils.join(", ", languageList))
     }
@@ -109,11 +111,11 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
     private fun calculateNameTranslations(): CharSequence {
         val nameList = ArrayList<String>(country.translations!!.size)
 
-        for (entry in country.translations!!) {
-            nameList.add(entry.value + " <i>(" + Locale(entry.key).getDisplayLanguage(BaseCountryViewModel.Companion.DISPLAY_LOCALE) + ")</i>")
+        country.translations!!.forEach { entry ->
+            nameList.add(entry.value + " <i>(" + Locale(entry.key).getDisplayLanguage(BaseCountryViewModel.DISPLAY_LOCALE) + ")</i>")
         }
 
-        Collections.sort(nameList)
+        nameList.sort()
 
         return SpannableStringBuilder(ctx.getText(R.string.country_name_translations)).append(Html.fromHtml(TextUtils.join(", ", nameList)))
     }
@@ -121,15 +123,17 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
     private fun calculateCurrencies(): CharSequence {
         val currenciesList = ArrayList<String>(country.currencies!!.size)
 
-        for (currencyString in country.currencies!!) {
+        country.currencies!!.forEach {
+            currencyString ->
+
             if (Build.VERSION.SDK_INT >= 19) {
                 try {
                     val currency = Currency.getInstance(currencyString)
                     var currencySymbol = currency.symbol
                     if (currencyString != currencySymbol) {
-                        currencySymbol = currencyString + ", " + currencySymbol
+                        currencySymbol = "$currencyString, $currencySymbol"
                     }
-                    currenciesList.add(currency.getDisplayName(BaseCountryViewModel.Companion.DISPLAY_LOCALE) + " (" + currencySymbol + ")")
+                    currenciesList.add("""${currency.getDisplayName(BaseCountryViewModel.DISPLAY_LOCALE)} ($currencySymbol)""")
                 } catch (ignore: IllegalArgumentException) {
                     currenciesList.add(currencyString)
                 }
@@ -139,7 +143,7 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
             }
         }
 
-        Collections.sort(currenciesList)
+        currenciesList.sort()
 
         return SpannableStringBuilder(ctx.getText(R.string.country_currencies)).append(TextUtils.join(", ", currenciesList))
     }
@@ -163,7 +167,9 @@ constructor(@AppContext context: Context, countryRepo: CountryRepo, private val 
             val borderList = ArrayList<String?>(country.borders!!.size)
             val alpha3List = ArrayList<String?>(country.borders!!.size)
 
-            for (borderAlpha3CodeString in country.borders!!) {
+
+            country.borders!!.forEach {
+                borderAlpha3CodeString ->
                 alpha3List.add(borderAlpha3CodeString)
             }
 
